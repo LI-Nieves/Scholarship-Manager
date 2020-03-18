@@ -1,0 +1,3 @@
+javac *.java
+javac -d . *.java
+java src.logic.Main
