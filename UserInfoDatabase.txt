@@ -5,3 +5,6 @@ user pass Student
 user pass Student
 user pass Staff
 user pass Coordinator
+name pass Coordinator
+nom pass Student
+q r Coordinator

@@ -6,19 +6,19 @@ public abstract class User {
 	private String username;
 	private String password;
 	
-	public User(String inputUsername, String inputPassword) {
-		setUsername(inputUsername);
-		setPassword(inputPassword);
-	}
+	// Can't be instantiated lmao
+	/*
+	 * public User(String inputUsername, String inputPassword) {
+	 * setUsername(inputUsername); setPassword(inputPassword); }
+	 */
 	
+
 	public String getUsername() {
-		String newUsername = this.username;
-		return newUsername;
+		return new String(this.username);
 	}
 	
 	public String getPassword() {
-		String newPassword = this.password;
-		return newPassword;		
+		return new String(this.password);		
 	}
 	
 	public void setUsername(String inputUsername) {
@@ -29,6 +29,6 @@ public abstract class User {
 		this.password = new String(inputPassword);
 	}
 	
-	public abstract void login();
+	//public abstract void login();
 
 }
