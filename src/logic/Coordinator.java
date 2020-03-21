@@ -16,6 +16,43 @@ public class Coordinator extends User {
 	}
 	
 	public void addScholarship() {
+		Scanner input = new Scanner(System.in);
+		
+		System.out.println("What is the name of the scholarship?");
+		
+		String sName = input.nextLine();
+		
+		System.out.println("How much is the reward? Please enter your amount only, with only numbers.");
+		
+		int sReward = input.nextInt();
+		
+		System.out.println("What is the GPA requirement? Please enter the decimal number only.");
+		
+		float sGPA = input.nextFloat();
+		
+		System.out.println("Is this department-specific? If so, please type the name of the department. If not, please type \"Across all departments\".");
+		
+		String sDept = input.nextLine();
+		
+		System.out.println("Is this faculty-specific? If so, please type the name of the faculty. If not, please type \"Across all faculties\".");		
+		
+		String sFac = input.nextLine();
+		
+		System.out.println("Is this university-specific? If so, please type the name of the university. If not, please type \"Across all universities\".");
+		
+		String sUni = input.nextLine();
+		
+		System.out.println("Is this degree-specific? If so, please type the name of the degree. If not, please type \"Across all degrees\".");
+		
+		String sDeg = input.nextLine();
+		
+		System.out.println("Do you have extra criteria you'd like to add? After typing each one, press ENTER. Once you have none, press ENTER without typing anything.");
+		
+		ArrayList<String> inputCrit = new ArrayList<String>();
+		
+		while (input.hasNextLine()) {
+			inputCrit.add(input.nextLine());
+		}
 		
 	}
 	

@@ -9,13 +9,15 @@ import java.io.*;
 
 public class Start {
 	
-	String userInfoDatabase = "UserInfoDatabase.txt";
+	private String userInfoDatabase = "UserInfoDatabase.txt";
 
-	String username; 
-	String password; 
-	String role;
+	private String username; 
+	private String password; 
+	private String role;
   
-	boolean loginSuccess = false;
+	private boolean loginSuccess = false;
+	
+	private ArrayList<Scholarship> allScholarships = new ArrayList<Scholarship>();
 	
 	// Getters
 	public String getUsername() {
@@ -28,6 +30,10 @@ public class Start {
 	
 	public String getRole() {
 		return new String(this.role);
+	}
+	
+	public ArrayList<Scholarship> getAllScholarships(){ 
+		return new ArrayList<Scholarship>(this.allScholarships);
 	}
 
 	// Setters
@@ -191,7 +197,7 @@ public class Start {
 		String command = newCommand.nextLine();
 		
 		if (command.contentEquals("View all scholarships")) {
-			inputStudent.viewScholarships();
+			inputStudent.viewScholarships(allScholarships);
 			studentCommands(inputStudent);
 		}
 		
@@ -241,7 +247,7 @@ public class Start {
 		String command = newCommand.nextLine();
 		
 		if (command.contentEquals("View all scholarships")) {
-			inputCoordinator.viewScholarships();
+			inputCoordinator.viewScholarships(allScholarships);
 			coordinatorCommands(inputCoordinator);
 		}
 		

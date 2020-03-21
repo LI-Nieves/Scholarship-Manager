@@ -35,32 +35,28 @@ public abstract class User {
 		this.password = new String(inputPassword);
 	}
 	
-	public void viewScholarships() {
-		// in case of error in reading from file
-        Scanner inputStream = null;
-        try {
-           inputStream = new Scanner(new File(scholarshipDatabase));
-        }
-        catch(FileNotFoundException e) {
-            System.out.println("Error opening the file " + scholarshipDatabase);
-            System.exit(0);
-        }
-        
-        // parse file to see if user exists
-        if (inputStream.hasNextLine()) {
-	        while (inputStream.hasNextLine()) {
-				  try {
-					  System.out.println(inputStream.nextLine());
-				  } 
-				  catch (NoSuchElementException e) {
-					  System.out.println("Error encountered while reading file."); 
-				  }
-	        }
-        }
-        else {
-        	System.out.println("There are no scholarships available.");
-        }
+	public void viewScholarships(ArrayList<Scholarship> inputScholarship) {
+		if (inputScholarship.size() <= 0) {
+			System.out.println("There are no scholarships available.");
+		}
+		for (Scholarship s : inputScholarship) {
+			System.out.println(s.getName() + " / " + s.getName() + " / $" + s.getRewardAmount() + " / " + s.getGPAreq() + " / " + s.getWonTranscript());
+			System.out.println(s.getDeptSpecific() + " / " + s.getFacultySpecific() + " / " + s.getUniSpecific() + " / " + s.getDegreeSpecific());
+			printExtraCriteria(s);
+			System.out.println();
+		}
 
+	}
+	
+	public void printExtraCriteria(Scholarship inputScholarship) {
+		ArrayList<String> newExtraCriteria = inputScholarship.getExtraCriteria();
+		
+		System.out.println("Extra criteria:");
+		
+		for (String c : newExtraCriteria) {
+			System.out.println(c);
+		}
+		
 	}
 	
 	//public abstract void login();
