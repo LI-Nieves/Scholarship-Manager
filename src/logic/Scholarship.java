@@ -22,12 +22,25 @@ public class Scholarship {
 		// ArrayList will look like: [["What are your hobbies?",textbox]]
 	
 	// Constructor
-	public Scholarship(String inputName, ArrayList<String> inputCriteria, ArrayList<ArrayList<String>> inputFormFormat) {
+	public Scholarship(String inputName, int inputReward, float inputGPA, boolean inputW, String inputDept, String inputFac, String inputUni, String inputDeg, ArrayList<String> inputCrit) {
 		setName(inputName);
-		//setAcceptanceRate(inputAcceptanceRate);
-		setCriteria(inputCriteria);
-		setFormFormat(inputFormFormat);
+		setRewardAmount(inputReward);
+		setGPAreq(inputGPA);
+		setWonTranscript(inputW);
+		setDeptSpecific(inputDept);
+		setFacultySpecific(inputFac);
+		setUniSpecific(inputUni);
+		setDegreeSpecific(inputDeg);
+		setCriteria(inputCrit);
 	}
+	
+	
+	/*
+	 * public Scholarship(String inputName, Integer inputReward,
+	 * ArrayList<ArrayList<String>> inputFormFormat) { setName(inputName);
+	 * //setAcceptanceRate(inputAcceptanceRate); setCriteria(inputCriteria);
+	 * setFormFormat(inputFormFormat); }
+	 */
 	
 	// GETTERS
 	public String getName() {
@@ -65,13 +78,14 @@ public class Scholarship {
 	public String getDegreeSpecific() {
 		return new String(this.degreeSpecific);
 	}	
-		
+	
+	//This is sketchy, fix this
 	public ArrayList<String> getExtraCriteria() {
-		ArrayList<String> newCriteria = null;
-		for (String i:(this.extraCriteria)) {
-			newCriteria.add(i);
-		}
-		return newCriteria;
+		/*
+		 * ArrayList<String> newCriteria = null; for (String i:(this.extraCriteria)) {
+		 * newCriteria.add(i); } return newCriteria;
+		 */
+		return this.extraCriteria;
 	}
 	
 	public ArrayList<ArrayList<String>> getFormFormat() {
@@ -89,6 +103,34 @@ public class Scholarship {
 	
 	public void setAcceptanceRate(Double inputAcceptanceRate) {
 		this.acceptanceRate = new Double(inputAcceptanceRate);
+	}
+	
+	public void setRewardAmount(int inputReward) {
+		this.rewardAmount = new Integer(inputReward);
+	}	
+	
+	public void setGPAreq(float inputGPAreq) {
+		this.GPAreq = new Float(inputGPAreq);
+	}
+	
+	public void setWonTranscript(boolean inputW) {
+		this.wOnTranscript = new Boolean(inputW);
+	}
+	
+	public void setDeptSpecific(String inputDept) {
+		this.deptSpecific = new String(inputDept);
+	}
+	
+	public void setFacultySpecific(String inputFac) {
+		this.facultySpecific = new String(inputFac);
+	}
+	
+	public void setUniSpecific(String inputUni) {
+		this.uniSpecific = new String(inputUni);
+	}	
+	
+	public void setDegreeSpecific(String inputDeg) {
+		this.degreeSpecific = new String(inputDeg);
 	}
 	
 	public void setCriteria(ArrayList<String> inputCriteriaList) {

@@ -49,6 +49,10 @@ public class Start {
 		this.role = new String(inputRole);
 	}
 	
+	public void addtoAllScholarships(Scholarship s) {
+		this.allScholarships.add(s);
+	}
+	
 	// FIRST METHOD EXECUTED; INITIATES LOGIN
 	public void initiateLogin() {
 		System.out.println("-----------------------------------------------------------------------------------------------");
@@ -252,7 +256,8 @@ public class Start {
 		}
 		
 		else if (command.contentEquals("Add scholarships")) {
-			inputCoordinator.addScholarship();
+			Scholarship newS = inputCoordinator.addScholarship();
+			addtoAllScholarships(newS);
 			coordinatorCommands(inputCoordinator);
 		}
 		

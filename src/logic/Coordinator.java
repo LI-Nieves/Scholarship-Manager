@@ -15,7 +15,7 @@ public class Coordinator extends User {
 		setPassword(inputPassword);
 	}
 	
-	public void addScholarship() {
+	public Scholarship addScholarship() {
 		Scanner input = new Scanner(System.in);
 		
 		System.out.println("What is the name of the scholarship?");
@@ -29,6 +29,10 @@ public class Coordinator extends User {
 		System.out.println("What is the GPA requirement? Please enter the decimal number only.");
 		
 		float sGPA = input.nextFloat();
+		
+		System.out.println("Could the applicant have a \"W\" on their transcript? Please input \"true\" or \"false\".");
+		
+		boolean sW = input.nextBoolean();
 		
 		System.out.println("Is this department-specific? If so, please type the name of the department. If not, please type \"Across all departments\".");
 		
@@ -48,11 +52,21 @@ public class Coordinator extends User {
 		
 		System.out.println("Do you have extra criteria you'd like to add? After typing each one, press ENTER. Once you have none, press ENTER without typing anything.");
 		
+		/*
+		 * ArrayList<String> inputCrit = new ArrayList<String>();
+		 * 
+		 * while (input.hasNextLine()) { inputCrit.add(input.nextLine()); }
+		 */
+		
 		ArrayList<String> inputCrit = new ArrayList<String>();
 		
-		while (input.hasNextLine()) {
-			inputCrit.add(input.nextLine());
-		}
+		String a = input.nextLine();
+		
+		inputCrit.add(a);
+		
+		Scholarship newS = new Scholarship(sName, sReward, sGPA, sW, sDept, sFac, sUni, sDeg, inputCrit);
+		
+		return newS;
 		
 	}
 	
