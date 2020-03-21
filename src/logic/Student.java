@@ -20,6 +20,20 @@ public class Student extends User {
 		setPassword(inputPassword);
 	}
 	
+
+	
+	public void apply() {
+		
+	}
+	
+	public void viewMyScholarships() {
+		
+	}
+	
+	public void upload() {
+		
+	}
+	
 	/*
 	 * public void increaseCurrentLimit() { this.current_limit+=1;
 	 * 

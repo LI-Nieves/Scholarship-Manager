@@ -45,7 +45,7 @@ public class Start {
 	
 	// FIRST METHOD EXECUTED; INITIATES LOGIN
 	public void initiateLogin() {
-		System.out.println("---------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------------------------------------");
 		System.out.println("Welcome to USask's Scholarship Center!\n Please type \"login\" to log in or \"register\" if you're a new user.");
 
 		Scanner loginPrompt = new Scanner(System.in);
@@ -150,11 +150,11 @@ public class Start {
         	
         	if (getRole().contentEquals("Student")) {
         		Student newStudent = new Student(getUsername(),getPassword());
-        		studentCommands();
+        		studentCommands(newStudent);
         	}
         	else if (getRole().contentEquals("Coordinator")) {
         		Coordinator newCoordinator = new Coordinator(getUsername(),getPassword());
-        		coordinatorCommands();
+        		coordinatorCommands(newCoordinator);
         	}
         	else {
         		System.out.println("User error.");
@@ -171,7 +171,7 @@ public class Start {
 		// try-catch: if parsing fails, spit out error
 	}
 	
-	public void studentCommands() {
+	public void studentCommands(Student inputStudent) {
 		// apply for scholarships
 			// choose semester for which scholarships to apply for
 			// see requirements of scholarships
@@ -182,6 +182,7 @@ public class Start {
 		// receive email notification to see what scholarships granted to me
 		// view all scholarships available
 		
+		System.out.println("***********************************************************************************************");
 		System.out.println("Here are your options: \n <View all scholarships> \n <Apply for scholarships> "
 				+ "\n <View scholarships I've applied to> \n <Upload transcripts, certificates, essays> \n <Log out>");
 		System.out.println("Please type the option of your choosing EXACTLY as it is shown. It is case-sensitive.");
@@ -189,13 +190,38 @@ public class Start {
 		Scanner newCommand = new Scanner(System.in);
 		String command = newCommand.nextLine();
 		
-		if (command.contentEquals("Log out")) {
+		if (command.contentEquals("View all scholarships")) {
+			inputStudent.viewScholarships();
+			studentCommands(inputStudent);
+		}
+		
+		else if (command.contentEquals("Apply for scholarships")) {
+			inputStudent.apply();
+			studentCommands(inputStudent);
+		}
+		
+		else if (command.contentEquals("View scholarships I've applied to")) {
+			inputStudent.viewMyScholarships();
+			studentCommands(inputStudent);
+		}		
+		
+		else if (command.contentEquals("Upload transcripts, certificates, essays")) {
+			inputStudent.upload();
+			studentCommands(inputStudent);
+		}	
+		
+		else if (command.contentEquals("Log out")) {
 			System.out.println("Thank you for using USask's Scholarship Center!");
 			initiateLogin();
 		}
+		
+		else {
+			System.out.println("Invalid command.");
+			studentCommands(inputStudent);
+		}
 	}
 	
-	public void coordinatorCommands() {
+	public void coordinatorCommands(Coordinator inputCoordinator) {
 		// edit scholarships
 			// define requirements/restrictions for each scholarships
 		// grant scholarships
@@ -214,11 +240,56 @@ public class Start {
 		Scanner newCommand = new Scanner(System.in);
 		String command = newCommand.nextLine();
 		
-		if (command.contentEquals("Log out")) {
+		if (command.contentEquals("View all scholarships")) {
+			inputCoordinator.viewScholarships();
+			coordinatorCommands(inputCoordinator);
+		}
+		
+		else if (command.contentEquals("Add scholarships")) {
+			inputCoordinator.addScholarship();
+			coordinatorCommands(inputCoordinator);
+		}
+		
+		else if (command.contentEquals("Edit scholarships")) {
+			inputCoordinator.editScholarship();
+			coordinatorCommands(inputCoordinator);
+		}		
+		
+		else if (command.contentEquals("Remove scholarships")) {
+			inputCoordinator.removeScholarship();
+			coordinatorCommands(inputCoordinator);
+		}	
+		
+		else if (command.contentEquals("Grant scholarships")) {
+			inputCoordinator.grantScholarship();
+			coordinatorCommands(inputCoordinator);
+		}
+		
+		else if (command.contentEquals("Log out")) {
 			System.out.println("Thank you for using USask's Scholarship Center!");
 			initiateLogin();
 		}
+		
+		else {
+			System.out.println("Invalid command.");
+			coordinatorCommands(inputCoordinator);
+		}
 	}
+	
+	/*
+	 * public boolean returnToMenu() { boolean returnToMenu = false;
+	 * 
+	 * System.out.println("Return to main menu? <yes,no>");
+	 * 
+	 * Scanner input = new Scanner(System.in); String response = input.nextLine();
+	 * 
+	 * if (response.contentEquals("yes")) { returnToMenu = true; } else if
+	 * (response.contentEquals("no")) {
+	 * 
+	 * }
+	 * 
+	 * return returnToMenu; }
+	 */
 	
 	public static void main(String[] args) {
 		Start s = new Start();

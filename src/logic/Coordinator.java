@@ -15,6 +15,21 @@ public class Coordinator extends User {
 		setPassword(inputPassword);
 	}
 	
+	public void addScholarship() {
+		
+	}
+	
+	public void editScholarship() {
+		
+	}
+	
+	public void removeScholarship() {
+		
+	}
+	
+	public void grantScholarship() {
+		
+	}
 }
 
 
