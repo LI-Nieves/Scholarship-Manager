@@ -15,12 +15,16 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
+
+import java.util.concurrent.TimeUnit;
 
 public class Guii extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField UsernameField;
 	private JTextField textField_1;
+	private static Guii frame = new Guii();
 
 	/**
 	 * Launch the application.
@@ -29,7 +33,7 @@ public class Guii extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Guii frame = new Guii();
+					//Guii frame = new Guii();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -49,6 +53,14 @@ public class Guii extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		
+		JLabel IncorrectLogin = new JLabel("The Username Or Password entered was Incorrect. Please try again");
+		IncorrectLogin.setFont(new Font("Tahoma", Font.BOLD, 13));
+		IncorrectLogin.setForeground(new Color(255, 0, 0));
+		IncorrectLogin.setBounds(361, 353, 441, 16);
+		IncorrectLogin.setVisible(false);
+		contentPane.add(IncorrectLogin);
 		
 		JLabel lblNewLabel = new JLabel("");
 		//lblNewLabel.setBackground(Color.WHITE);
@@ -96,6 +108,7 @@ public class Guii extends JFrame {
 				//contentPane.removeAll();
 				//contentPane.revalidate();
 				hello.setVisible(true);
+				frame.setVisible(false);
 				
 				
 				
@@ -112,8 +125,83 @@ public class Guii extends JFrame {
 		lblRegisterUsingYour.setBounds(902, 436, 199, 16);
 		contentPane.add(lblRegisterUsingYour);
 		
+		
+		
+		JCheckBox chckbxStudent = new JCheckBox("Student");
+		JCheckBox chckbxCoordinator = new JCheckBox("Coordinator");
+		chckbxStudent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chckbxCoordinator.setSelected(false);
+			}
+		});
+		chckbxStudent.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+		chckbxStudent.setBackground(new Color(0, 102, 0));
+		chckbxStudent.setBounds(671, 387, 113, 25);
+		contentPane.add(chckbxStudent);
+		
+		//JCheckBox chckbxCoordinator = new JCheckBox("Coordinator");
+		chckbxCoordinator.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chckbxStudent.setSelected(false);
+			}
+			
+		});
+		chckbxCoordinator.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+		chckbxCoordinator.setBackground(new Color(0, 102, 0));
+		chckbxCoordinator.setBounds(671, 422, 113, 25);
+		contentPane.add(chckbxCoordinator);
+		
+		
 		JButton btnNewButton = new JButton("Login");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				StartGui Lets_Login = new StartGui();
+				String Login_User = UsernameField.getText();
+				char[] Login_Password = password.getPassword();
+				String Login_Password1 = new String(Login_Password);
+				String role;
+				if(chckbxCoordinator.isSelected()) {
+					role = "Coordinator";
+				}
+				else if(chckbxStudent.isSelected()) {
+					role = "Student";
+					
+					
+				}
+				else {
+					role = "";
+				}
+				boolean Login_Work = Lets_Login.loginGui(Login_User, Login_Password1, role);
+				if(Login_Work) {
+					AfterLogin Loggedin = new AfterLogin();
+					Loggedin.setVisible(true);
+					frame.setVisible(false);
+				}
+				else {
+					//AfterLogin Loggedin = new AfterLogin();
+					//Loggedin.setVisible(true);
+					
+					frame.setVisible(false);
+					try {
+						TimeUnit.SECONDS.sleep((long)0.1);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					frame.setVisible(true);
+					IncorrectLogin.setVisible(true);
+				}
+				//Lets_Login.log
+				
+			}
+		});
 		btnNewButton.setBounds(517, 458, 98, 49);
 		contentPane.add(btnNewButton);
+		
+		
 	}
 }
+
+
+// https://www.techiedelight.com/convert-char-array-string-java/
+// https://stackoverflow.com/questions/15619682/uncheck-checkboxes-in-java
