@@ -17,6 +17,7 @@ public abstract class User {
 	 */
 	
 
+	// Getters
 	public String getUsername() {
 		return new String(this.username);
 	}
@@ -25,6 +26,7 @@ public abstract class User {
 		return new String(this.password);		
 	}
 	
+	// Setters
 	public void setUsername(String inputUsername) {
 		this.username = new String(inputUsername);
 	}
@@ -33,6 +35,7 @@ public abstract class User {
 		this.password = new String(inputPassword);
 	}
 	
+	/* Method used to view all scholarships available (since both students and coordinators can do this) */
 	public void viewScholarships(ArrayList<Scholarship> inputScholarship) {
 		if (inputScholarship.size() <= 0) {
 			System.out.println("There are no scholarships available.");
@@ -46,6 +49,7 @@ public abstract class User {
 
 	}
 	
+	/* Helper method for viewScholarships() */
 	public void printExtraCriteria(Scholarship inputScholarship) {
 		ArrayList<String> newExtraCriteria = inputScholarship.getExtraCriteria();
 		
@@ -57,6 +61,7 @@ public abstract class User {
 		
 	}
 	
+	/* Helper method for viewScholarships() */
 	public String printWonTranscript(boolean inputW) {
 		String returnString;
 		if (inputW) {

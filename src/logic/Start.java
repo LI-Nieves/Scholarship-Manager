@@ -181,6 +181,7 @@ public class Start {
 		// try-catch: if parsing fails, spit out error
 	}
 	
+	/* Once a student logs in and a student object is created, these are the commands it can use */
 	public void studentCommands(Student inputStudent) {
 		// apply for scholarships
 			// choose semester for which scholarships to apply for
@@ -231,6 +232,7 @@ public class Start {
 		}
 	}
 	
+	/* One a coordinator logs in and a coordinator object is created, these are the commands it can use */
 	public void coordinatorCommands(Coordinator inputCoordinator) {
 		// edit scholarships
 			// define requirements/restrictions for each scholarships

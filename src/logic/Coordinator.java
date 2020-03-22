@@ -15,6 +15,7 @@ public class Coordinator extends User {
 		setPassword(inputPassword);
 	}
 	
+	/* Method used to add a scholarship */
 	public Scholarship addScholarship() {
 		boolean repeat; // this will help for catching errors
 		String dummy;
@@ -147,6 +148,7 @@ public class Coordinator extends User {
 		return newS;
 	}
 	
+	/* Method used to edit a scholarhsip (incomplete) */
 	public void editScholarship() {
 		
 	}
@@ -155,6 +157,7 @@ public class Coordinator extends User {
 	 * public void removeScholarship() { }
 	 */
 	
+	/* Method used to grant a scholarship (incomplete) */
 	public void grantScholarship() {
 		
 	}

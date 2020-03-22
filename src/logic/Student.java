@@ -21,15 +21,17 @@ public class Student extends User {
 	}
 	
 
-	
+	/* Method used to apply to a scholarship (incomplete) */
 	public void apply() {
 		
 	}
 	
+	/* Method used to view the scholarships they applied for (incomplete) */
 	public void viewMyScholarships() {
 		
 	}
 	
+	/* Method used to upload transcripts, resumes, etc. (incomplete) */
 	public void upload() {
 		
 	}
