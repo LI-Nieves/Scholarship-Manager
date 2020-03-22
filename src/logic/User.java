@@ -1,7 +1,5 @@
 package logic;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 public abstract class User {
@@ -40,8 +38,8 @@ public abstract class User {
 			System.out.println("There are no scholarships available.");
 		}
 		for (Scholarship s : inputScholarship) {
-			System.out.println(s.getName() + " / " + s.getName() + " / $" + s.getRewardAmount() + " / " + s.getGPAreq() + " / " + s.getWonTranscript());
-			System.out.println(s.getDeptSpecific() + " / " + s.getFacultySpecific() + " / " + s.getUniSpecific() + " / " + s.getDegreeSpecific());
+			System.out.println(s.getName() + "\nReward: $" + s.getRewardAmount() + "\nGPA requirement: " + s.getGPAreq() + "\n" + printWonTranscript(s.getWonTranscript()));
+			System.out.println(s.getDeptSpecific() + "\n " + s.getFacultySpecific() + "\n " + s.getUniSpecific() + "\n " + s.getDegreeSpecific());
 			printExtraCriteria(s);
 			System.out.println();
 		}
@@ -57,6 +55,17 @@ public abstract class User {
 			System.out.println(c);
 		}
 		
+	}
+	
+	public String printWonTranscript(boolean inputW) {
+		String returnString;
+		if (inputW) {
+			returnString = "Applicants may have a \"W\" on their transcript.";
+		}
+		else {
+			returnString = "Applicants may not have a \"W\" on their transcript.";
+		}
+		return returnString;
 	}
 	
 	//public abstract void login();

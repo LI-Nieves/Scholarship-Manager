@@ -6,10 +6,10 @@ public class Scholarship {
 	
 	// Instance variables
 	private String name;
-	private Double acceptanceRate;
+	private double acceptanceRate;
 	
 	private int rewardAmount;
-	private float GPAreq;
+	private double GPAreq;
 	private boolean wOnTranscript;
 	private String deptSpecific = "Across all departments";
 	private String facultySpecific = "Across all faculty";
@@ -22,7 +22,7 @@ public class Scholarship {
 		// ArrayList will look like: [["What are your hobbies?",textbox]]
 	
 	// Constructor
-	public Scholarship(String inputName, int inputReward, float inputGPA, boolean inputW, String inputDept, String inputFac, String inputUni, String inputDeg, ArrayList<String> inputCrit) {
+	public Scholarship(String inputName, int inputReward, double inputGPA, boolean inputW, String inputDept, String inputFac, String inputUni, String inputDeg, ArrayList<String> inputCrit) {
 		setName(inputName);
 		setRewardAmount(inputReward);
 		setGPAreq(inputGPA);
@@ -55,8 +55,8 @@ public class Scholarship {
 		return new Integer(this.rewardAmount);
 	}	
 	
-	public float getGPAreq() {
-		return new Float(this.GPAreq);
+	public double getGPAreq() {
+		return new Double(this.GPAreq);
 	}
 	
 	public boolean getWonTranscript() {
@@ -109,8 +109,8 @@ public class Scholarship {
 		this.rewardAmount = new Integer(inputReward);
 	}	
 	
-	public void setGPAreq(float inputGPAreq) {
-		this.GPAreq = new Float(inputGPAreq);
+	public void setGPAreq(double inputGPAreq) {
+		this.GPAreq = new Double(inputGPAreq);
 	}
 	
 	public void setWonTranscript(boolean inputW) {

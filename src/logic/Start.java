@@ -242,7 +242,7 @@ public class Start {
 		// view all scholarships available
 			// view # of applicants to scholarship
 
-		
+		System.out.println("***********************************************************************************************");
 		System.out.println("Here are your options: \n <View all scholarships> \n <Add scholarships> "
 				+ "\n <Edit scholarships> \n <Remove scholarships> \n <Grant scholarships> \n <Log out>");
 		System.out.println("Please type the option of your choosing EXACTLY as it is shown. It is case-sensitive.");
@@ -266,8 +266,27 @@ public class Start {
 			coordinatorCommands(inputCoordinator);
 		}		
 		
+		// errors to consider: what if several scholarships have the same name?
 		else if (command.contentEquals("Remove scholarships")) {
-			inputCoordinator.removeScholarship();
+			Scanner input = new Scanner(System.in);
+			
+			System.out.println("What is the name of the scholarship you'd like to delete?"); 
+			
+			String findName = input.nextLine(); // this is the name of the scholarship to delete
+			ArrayList<Integer> indicesToDelete = new ArrayList<Integer>(); // this is where we will store the indices of the scholarships with the indicated name
+			int i = 0;
+			
+			for (Scholarship s : allScholarships) { // looking through all scholarships for the name...
+				if (s.getName().equals(findName)) {
+					indicesToDelete.add(i);
+				}
+				i++;
+			}
+			
+			for (int a : indicesToDelete) { // looking through all scholarships, deleting the ones we found and making them null
+				allScholarships.set(a, null);
+				allScholarships.remove(a);
+			}
 			coordinatorCommands(inputCoordinator);
 		}	
 		
