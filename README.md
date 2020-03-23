@@ -11,7 +11,7 @@ Step 2. Type the command: `javac -d . \*.java`
 
 Step 3. Type the command: `java logic.Start`
 
-the terminal will prompt you to do several things. Register with new login information by pressing typing `register`. Then use that information to login by typing `login` then entering that information in the form of `<user> <password> <role`. There are also more user/password combinations in `UserDatabaseInfo.txt`. 
+First of all, the terminal will prompt you to either register or login. Register with new login information by typing `register`. Then use that information to login by typing `login` then entering that information in the form of `<user> <password> <role>`. There are also more user/password combinations in `UserDatabaseInfo.txt`. 
 
 After logging in, the program will provide you with several options. Type them in verbatim in order to execute the commands.
 
