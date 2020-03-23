@@ -21,7 +21,7 @@ Students: log in, log out, view all scholarships available.
 
 Scholarship coordinators: log in, log out, add scholarships, remove scholarships, view all scholarships available.
 
-## Compiling and running the GUI-based
+## Compiling and running the GUI-based version
 
 #### Option 1: Running in Eclipse
 I ran this file on Eclipse, I would prefer running this file in Eclipse.
@@ -62,7 +62,7 @@ As well as:
 
 
 #### Option 2: Cloning/forking from GitHub and running in the terminal
-If you clone/download straight from GitHub, which is higly preferred, it makes the above step really easy.
+If you clone/download straight from GitHub, which is higly preferred, it makes the above running the program really easy.
 
 In order to run in terminal do the following:
 
