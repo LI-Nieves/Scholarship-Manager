@@ -11,7 +11,7 @@ Step 2. Type the command: `javac -d . \*.java`
 
 Step 3. Type the command: `java logic.Start`
 
-######User stories implemented in the terminal-based version:
+### User stories implemented in the terminal-based version:
 
 Students: log in, log out, view all scholarships available.
 
@@ -19,7 +19,7 @@ Scholarship coordinators: log in, log out, add scholarships, remove scholarships
 
 ## Compiling and running the GUI-based
 
-######User stories implemented in the GUI-based version:
+### User stories implemented in the GUI-based version:
 
 Students: log in, log out. 
 
