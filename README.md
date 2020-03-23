@@ -11,7 +11,9 @@ Step 2. Type the command: `javac -d . \*.java`
 
 Step 3. Type the command: `java logic.Start`
 
-By pressing the *Login* button, the program will try to log you in, but correct login information is needed. For now you can look inside the `UserInfoDatabase.txt` and choose one of the username/password combinations. It's in the form *<username> <password> <role>*; you will also have to check the correct role, depending on the account belongs to a student or a coordinator.
+the terminal will prompt you to do several things. Register with new login information by pressing typing `register`. Then use that information to login by typing `login` then entering that information in the form of `<user> <password> <role`. There are also more user/password combinations in `UserDatabaseInfo.txt`. 
+
+After logging in, the program will provide you with several options. Type them in verbatim in order to execute the commands.
 
 ### User stories implemented in the terminal-based version:
 
