@@ -1,4 +1,4 @@
-
+package logic;
 
 import java.util.*;
 import java.io.*;
@@ -111,13 +111,15 @@ public class StartGui {
 		
 		Scanner inputStream =null;
 		try {
-			//inputStream = new Scanner(new File(userInfoDatabase));
+			inputStream = new Scanner(new File(userInfoDatabase));
 			//File a = new File("");
 			//System.out.println(this.getClass().getResource("UserInfoDatabase.txt"));
 			//inputStream = new Scanner(a);
-			URL url = getClass().getResource("UserInfoDatabase.txt");
-			File a = new File(url.toURI());
-			inputStream = new Scanner(a);
+
+			//URL url = getClass().getResource(userInfoDatabase);
+			//File a = new File(url.toURI());
+			//inputStream = new Scanner(a);
+
 			//System.out.println(file.getAbsoloutePath);
 			//File check = new File(userInfoDatabase);
 		}
@@ -127,10 +129,10 @@ public class StartGui {
 			//System.out.println(a.getAbsoloutePath);
             System.exit(0);
 		}
-		catch(URISyntaxException e) {
+/* 		catch(URISyntaxException e) {
 			System.out.println("URI EXCEPTION");
 			System.exit(0);
-		}
+		} */
 		
 		
 		 while (inputStream.hasNextLine()) {

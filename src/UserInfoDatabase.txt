@@ -1,9 +1,7 @@
 l n Student
-k m Staff
 f g Student
 user pass Student
 user pass Student
-user pass Staff
 user pass Coordinator
 name pass Coordinator
 nom pass Student
