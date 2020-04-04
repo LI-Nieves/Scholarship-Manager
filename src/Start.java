@@ -4,7 +4,7 @@ import java.util.*;
 import java.io.*;
 
 /*
- * This will be our main class that starts everything.
+ * This is our main class that starts everything.
  */
 
 public class Start {
@@ -188,10 +188,10 @@ public class Start {
 			// see requirements of scholarships
 			// see scholarship stats
 			// submit prof's referral
-		// upload transcripts, certificates, essays
-		// see scholarships i've applied to
-		// receive email notification to see what scholarships granted to me
-		// view all scholarships available
+		// upload transcripts, certificates, essays - HOW??
+		// see scholarships i've applied to - IMPLEMENT AFTER APPLY FOR SCHOLARSHIPS
+		// receive email notification to see what scholarships granted to me - HOW??
+		// view all scholarships available - DONE
 		
 		System.out.println("***********************************************************************************************");
 		System.out.println("Here are your options: \n <View all scholarships> \n <Apply for scholarships> "
@@ -207,7 +207,7 @@ public class Start {
 		}
 		
 		else if (command.contentEquals("Apply for scholarships")) {
-			inputStudent.apply();
+			inputStudent.apply(inputStudent, getAllScholarships());
 			studentCommands(inputStudent);
 		}
 		
@@ -239,9 +239,9 @@ public class Start {
 		// grant scholarships
 			// view applications to scholarship
 			// view each student's accept/reject rate
-		// add scholarships
-		// remove scholarships
-		// view all scholarships available
+		// add scholarships - DONE
+		// remove scholarships - DONE
+		// view all scholarships available - DONE
 			// view # of applicants to scholarship
 
 		System.out.println("***********************************************************************************************");

@@ -44,6 +44,61 @@ public class Coordinator extends User {
 			}
 		}
 		
+		// GETTING THE SEMESTER IT APPLIES TO
+		System.out.println("Does this scholarship apply to a certain semester <Fall, Winter>? If not, press ENTER."); 
+		
+		String sSem = "Fall and Winter";
+		repeat = true;
+		
+		while (repeat) {
+			Scanner inputSem = new Scanner(System.in);
+			dummy = inputSem.nextLine();
+			if (dummy.contentEquals("Fall") || dummy.contentEquals("Winter")) {
+				sSem = dummy;
+				repeat = false;
+			}
+			else if (dummy.contentEquals("")) {
+				repeat = false;
+			}
+			else {
+				System.out.println("Invalid input. Please enter it again.");
+			}
+		}
+		
+		// GETTING THE YEAR IT APPLIES TO
+		System.out.println("Which year does this scholarship apply to?"); 
+		
+		int sYear = 0;
+		repeat = true;
+		
+		while (repeat) {
+			Scanner inputYear = new Scanner(System.in);
+			try {
+				sYear = inputYear.nextInt();
+				repeat = false;
+			}
+			catch (Exception e) {
+				System.out.println("Invalid input. Please enter it again.");
+			}
+		}
+		
+		// GETTING HOW MANY STUDENTS CAN RECEIVE THIS SCHOLARSHIP
+		System.out.println("How many students can receive this scholarship during the designated term?"); 
+		
+		int sRec = 0;
+		repeat = true;
+		
+		while (repeat) {
+			Scanner inputRec = new Scanner(System.in);
+			try {
+				sRec = inputRec.nextInt();
+				repeat = false;
+			}
+			catch (Exception e) {
+				System.out.println("Invalid input. Please enter it again.");
+			}
+		}
+		
 		// GETTING THE GPA REQ
 		System.out.println("What is the GPA requirement? Please enter the decimal number only.");
 		
@@ -143,12 +198,12 @@ public class Coordinator extends User {
 			inputCrit.add(a);
 		}
 		 
-		Scholarship newS = new Scholarship(sName, sReward, sGPA, sW, sDept, sFac, sUni, sDeg, inputCrit);
+		Scholarship newS = new Scholarship(sName, sReward, sSem, sYear, sRec, sGPA, sW, sDept, sFac, sUni, sDeg, inputCrit);
 		
 		return newS;
 	}
 	
-	/* Method used to edit a scholarhsip (incomplete) */
+	/* Method used to edit a scholarship (incomplete) */
 	public void editScholarship() {
 		
 	}

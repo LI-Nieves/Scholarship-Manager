@@ -5,10 +5,14 @@ import java.util.*;
 public class Scholarship {
 	
 	// Instance variables
-	private String name;
 	private double acceptanceRate;
+	private ArrayList<Student> applicants = new ArrayList<Student>();
 	
+	private String name;
 	private int rewardAmount;
+	private String semester;
+	private int year;
+	private int receive;
 	private double GPAreq;
 	private boolean wOnTranscript;
 	private String deptSpecific = "Across all departments";
@@ -17,14 +21,18 @@ public class Scholarship {
 	private String degreeSpecific = "Candidates to every degree (BSc, BA, MS, MBA, PhD, etc.)";
 	private ArrayList<String> extraCriteria; 
 	
-	private ArrayList<ArrayList<String>> formFormat;
+	//private ArrayList<ArrayList<String>> formFormat;
 		// The form will be entered as an ArrayList. For example, if they want "What are your hobbies?" and a textbox, the 
 		// ArrayList will look like: [["What are your hobbies?",textbox]]
 	
 	// Constructor
-	public Scholarship(String inputName, int inputReward, double inputGPA, boolean inputW, String inputDept, String inputFac, String inputUni, String inputDeg, ArrayList<String> inputCrit) {
+	public Scholarship(String inputName, int inputReward, String inputSem, int inputYear, int inputRec, double inputGPA, boolean inputW, String inputDept, 
+			String inputFac, String inputUni, String inputDeg, ArrayList<String> inputCrit) {
 		setName(inputName);
 		setRewardAmount(inputReward);
+		setSemester(inputSem);
+		setYear(inputYear);
+		setReceive(inputRec);
 		setGPAreq(inputGPA);
 		setWonTranscript(inputW);
 		setDeptSpecific(inputDept);
@@ -53,6 +61,18 @@ public class Scholarship {
 	
 	public int getRewardAmount() {
 		return new Integer(this.rewardAmount);
+	}	
+	
+	public String getSemester() {
+		return new String(this.semester);
+	}
+	
+	public int getYear() {
+		return new Integer(this.year);
+	}
+	
+	public int getReceive() {
+		return new Integer(this.receive);
 	}	
 	
 	public double getGPAreq() {
@@ -88,13 +108,16 @@ public class Scholarship {
 		return this.extraCriteria;
 	}
 	
-	public ArrayList<ArrayList<String>> getFormFormat() {
-		ArrayList<ArrayList<String>> newFormFormat = null;
-		for (ArrayList<String> i:(this.formFormat)) {
-			newFormFormat.add(i);
-		}
-		return newFormFormat;
+	//This is sketchy, fix this
+	public ArrayList<Student> getApplicants() {
+		return this.applicants;
 	}
+	
+	/*
+	 * public ArrayList<ArrayList<String>> getFormFormat() {
+	 * ArrayList<ArrayList<String>> newFormFormat = null; for (ArrayList<String>
+	 * i:(this.formFormat)) { newFormFormat.add(i); } return newFormFormat; }
+	 */
 	
 	// SETTERS
 	public void setName(String inputName) {
@@ -108,6 +131,18 @@ public class Scholarship {
 	public void setRewardAmount(int inputReward) {
 		this.rewardAmount = new Integer(inputReward);
 	}	
+	
+	public void setSemester(String inputSem) {
+		this.semester = new String(inputSem);
+	}
+	
+	public void setYear(int inputYear) {
+		this.year = new Integer(inputYear);
+	}
+	
+	public void setReceive(int inputRec) {
+		this.receive = new Integer(inputRec);
+	}
 	
 	public void setGPAreq(double inputGPAreq) {
 		this.GPAreq = new Double(inputGPAreq);
@@ -141,12 +176,16 @@ public class Scholarship {
 		this.extraCriteria.add(new String (newCriteria));
 	}
 	
-	public void setFormFormat(ArrayList<ArrayList<String>> inputFormFormatList) {
-		this.formFormat = new ArrayList<ArrayList<String>>(inputFormFormatList);
-	}	
-	
-	public void addToFormFormat(ArrayList<String> newFormFormat) {
-		this.formFormat.add(new ArrayList<String>(newFormFormat));
+	public void addApplicant(Student newApplicant) {
+		this.applicants.add(newApplicant);
 	}
+	
+	/*
+	 * public void setFormFormat(ArrayList<ArrayList<String>> inputFormFormatList) {
+	 * this.formFormat = new ArrayList<ArrayList<String>>(inputFormFormatList); }
+	 * 
+	 * public void addToFormFormat(ArrayList<String> newFormFormat) {
+	 * this.formFormat.add(new ArrayList<String>(newFormFormat)); }
+	 */
 	
 }

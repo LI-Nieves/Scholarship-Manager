@@ -41,8 +41,10 @@ public abstract class User {
 			System.out.println("There are no scholarships available.");
 		}
 		for (Scholarship s : inputScholarship) {
-			System.out.println(s.getName() + "\nReward: $" + s.getRewardAmount() + "\nGPA requirement: " + s.getGPAreq() + "\n" + printWonTranscript(s.getWonTranscript()));
-			System.out.println(s.getDeptSpecific() + "\n " + s.getFacultySpecific() + "\n " + s.getUniSpecific() + "\n " + s.getDegreeSpecific());
+			System.out.println(s.getName() + "\nReward: $" + s.getRewardAmount() + "\nTerm(s) considered: " + s.getSemester() + " " + 
+					s.getYear() + "\n" + s.getReceive() + " student(s) may receive this award for the indicated term(s)" + 
+					"\nGPA requirement: " + s.getGPAreq() + "\n" + printWonTranscript(s.getWonTranscript()));
+			System.out.println(s.getDeptSpecific() + "\n" + s.getFacultySpecific() + "\n" + s.getUniSpecific() + "\n" + s.getDegreeSpecific());
 			printExtraCriteria(s);
 			System.out.println();
 		}
@@ -56,7 +58,7 @@ public abstract class User {
 		System.out.println("Extra criteria:");
 		
 		for (String c : newExtraCriteria) {
-			System.out.println(c);
+			System.out.println("* " + c);
 		}
 		
 	}
