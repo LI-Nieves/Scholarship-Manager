@@ -183,12 +183,12 @@ public class Start {
 	
 	/* Once a student logs in and a student object is created, these are the commands it can use */
 	public void studentCommands(Student inputStudent) {
-		// apply for scholarships
-			// choose semester for which scholarships to apply for
-			// see requirements of scholarships
-			// see scholarship stats
+		// apply for scholarships - DONE
+			// choose semester for which scholarships to apply for - DONE
+			// see requirements of scholarships - DONE
+			// see scholarship stats - DONE
 			// submit prof's referral
-		// upload transcripts, certificates, essays - HOW??
+		// upload transcripts, certificates, essays - DONE 
 		// see scholarships i've applied to - IMPLEMENT AFTER APPLY FOR SCHOLARSHIPS
 		// receive email notification to see what scholarships granted to me - HOW??
 		// view all scholarships available - DONE

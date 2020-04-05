@@ -13,8 +13,10 @@ public class Student extends User {
 	//private String[] password = new String[getNumberOfStudents()];
 	//private int current_limit=0;
 	
-	private String username;
-	private String password;
+/* 	private String username;
+	private String password; */
+
+	private ArrayList<Scholarship> scholarshipsAppliedTo = new ArrayList<Scholarship>();
 	
 	private String fileDirectory;
 	private String uploadDir = "uploadedFiles\\";
@@ -52,10 +54,33 @@ public class Student extends User {
 	/* Method used to apply to a scholarship (incomplete) */
 	public void chooseTerm(Student inputStudent, ArrayList<Scholarship> inputS) {
 		// Asking for desired term and year
-		System.out.println("Which term and year would you like to see the scholarships of? Possible terms: Fall, Winter, Fall and Winter");
-		Scanner termYearInput = new Scanner(System.in);
-		String term = termYearInput.next();
-		int year = termYearInput.nextInt();
+		System.out.println("Which term would you like to see the scholarships of?\nType <1> for Fall, <2> for Winter, and <3> for Fall and Winter.");
+		Scanner termInput = new Scanner(System.in);
+		
+		int termInt = termInput.nextInt();
+		String term = "";
+
+		if (termInt == 1) {
+			term = "Fall";
+		}
+		else if (termInt == 2) {
+			term = "Winter";
+		}
+		else if (termInt == 3) {
+			term = "Fall and Winter";
+		}
+
+		// no error checking for other entries...
+
+		System.out.println("Which year would you like to see the scholarships of?");
+		Scanner yearInput = new Scanner(System.in);
+		
+		int year = yearInput.nextInt();
+
+		// no error checking for other entries...		
+
+		System.out.println("term: " + term);
+		System.out.println("year: " + year);
 		
 		ArrayList<Scholarship> potentialScholar = new ArrayList<Scholarship>();
 		
@@ -69,8 +94,10 @@ public class Student extends User {
 			System.out.println("Sorry, there are no scholarships for that term and/or year. Please try again.");
 			chooseTerm(inputStudent, inputS);
 		}
+		else {
+			apply(inputStudent, potentialScholar);
+		}
 		
-		apply(inputStudent, potentialScholar);
 	}
 	
 	public void apply(Student inputStudent, ArrayList<Scholarship> inputS) {
@@ -87,8 +114,12 @@ public class Student extends User {
 					if (alreadyApplied(inputStudent, s)) {
 						System.out.println("You have already applied for this scholarship.");
 					}
+					else if (applyLimit(s.getYear())){
+						System.out.println("You have already applied to the maximum of FOUR (4) scholarships.");
+					}
 					else {
 						s.addApplicant(inputStudent);
+						inputStudent.scholarshipsAppliedTo.add(s);
 						System.out.println("Congratulations! You have applied. Good luck.");
 					}
 					
@@ -111,10 +142,30 @@ public class Student extends User {
 		}
 		return applied;
 	}
+
+	public boolean applyLimit(int year) {
+		int applyInYear = 0;
+		for (Scholarship s : this.scholarshipsAppliedTo) {
+			if (s.getYear() == year) {
+				applyInYear++;
+			}
+		}
+		if (applyInYear == 4) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	
 	/* Method used to view the scholarships they applied for (incomplete) */
 	public void viewMyScholarships() {
-		
+		System.out.println("Student " + super.getUsername() + " " + super.getPassword() + " has applied to "
+				+ scholarshipsAppliedTo.size() + " scholarships.");
+		System.out.println("Scholarships applied to:");
+		for (Scholarship s : scholarshipsAppliedTo) {
+			System.out.println(s.getName());
+		}
 	}
 	
 	/* 
@@ -174,9 +225,25 @@ public class Student extends User {
  
         inputStream.close();
         outputStream.close();
-        
+		
 	}
-	
+
+	// For debugging
+	public static void main(String[] args) {
+		Student s = new Student("l","n");
+		Scholarship sF = new Scholarship("sF", 1, "Fall", 2020, 1, 1.0, true, "Across all departments",
+			"Across all faculties", "Across all universities", "Across all degrees", new ArrayList<String>());	
+		Scholarship sW = new Scholarship("sW", 1, "Winter", 2021, 1, 1.0, true, "Across all departments",
+			"Across all faculties", "Across all universities", "Across all degrees", new ArrayList<String>());
+		Scholarship sFW = new Scholarship("sFW", 1, "Fall and Winter", 2022, 1, 1.0, true, "Across all departments",
+			"Across all faculties", "Across all universities", "Across all degrees", new ArrayList<String>());
+		ArrayList<Scholarship> a = new ArrayList<Scholarship>();
+		a.add(sF);
+		a.add(sW);
+		a.add(sFW);
+
+		s.chooseTerm(s, a);
+	}
 	/*
 	 * public void increaseCurrentLimit() { this.current_limit+=1;
 	 * 
@@ -224,6 +291,7 @@ public class Student extends User {
 	 * public void setPassword(String inputPassword) { this.password = new
 	 * String(inputPassword); }
 	 */
+
 }
 
 // REFERENCES:
