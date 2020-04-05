@@ -50,6 +50,29 @@ public class Student extends User {
 	}
 	
 	/* Method used to apply to a scholarship (incomplete) */
+	public void chooseTerm(Student inputStudent, ArrayList<Scholarship> inputS) {
+		// Asking for desired term and year
+		System.out.println("Which term and year would you like to see the scholarships of? Possible terms: Fall, Winter, Fall and Winter");
+		Scanner termYearInput = new Scanner(System.in);
+		String term = termYearInput.next();
+		int year = termYearInput.nextInt();
+		
+		ArrayList<Scholarship> potentialScholar = new ArrayList<Scholarship>();
+		
+		for (Scholarship s : inputS) {
+			if (term.contentEquals(s.getSemester()) && (year == s.getYear())) {
+				potentialScholar.add(s);
+			}
+		}
+		
+		if (potentialScholar.size() <= 0) {
+			System.out.println("Sorry, there are no scholarships for that term and/or year. Please try again.");
+			chooseTerm(inputStudent, inputS);
+		}
+		
+		apply(inputStudent, potentialScholar);
+	}
+	
 	public void apply(Student inputStudent, ArrayList<Scholarship> inputS) {
 		System.out.println("Which scholarship would you like to apply to?");
 		
@@ -77,7 +100,6 @@ public class Student extends User {
 				System.out.println("A scholarship with that name has not been found. Please enter the name of the scholarship you'd like to apply to.");
 			}
 		}
-		
 	}
 	
 	public boolean alreadyApplied(Student inputStudent, Scholarship inputS) {

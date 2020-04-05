@@ -207,7 +207,7 @@ public class Start {
 		}
 		
 		else if (command.contentEquals("Apply for scholarships")) {
-			inputStudent.apply(inputStudent, getAllScholarships());
+			inputStudent.chooseTerm(inputStudent, getAllScholarships());
 			studentCommands(inputStudent);
 		}
 		
@@ -270,25 +270,7 @@ public class Start {
 		
 		// errors to consider: what if several scholarships have the same name?
 		else if (command.contentEquals("Remove scholarships")) {
-			Scanner input = new Scanner(System.in);
-			
-			System.out.println("What is the name of the scholarship you'd like to delete?"); 
-			
-			String findName = input.nextLine(); // this is the name of the scholarship to delete
-			ArrayList<Integer> indicesToDelete = new ArrayList<Integer>(); // this is where we will store the indices of the scholarships with the indicated name
-			int i = 0;
-			
-			for (Scholarship s : allScholarships) { // looking through all scholarships for the name...
-				if (s.getName().equals(findName)) {
-					indicesToDelete.add(i);
-				}
-				i++;
-			}
-			
-			for (int a : indicesToDelete) { // looking through all scholarships, deleting the ones we found and making them null
-				allScholarships.set(a, null);
-				allScholarships.remove(a);
-			}
+			removeScholarships();
 			coordinatorCommands(inputCoordinator);
 		}	
 		
@@ -305,6 +287,28 @@ public class Start {
 		else {
 			System.out.println("Invalid command.");
 			coordinatorCommands(inputCoordinator);
+		}
+	}
+	
+	public void removeScholarships() {
+		Scanner input = new Scanner(System.in);
+		
+		System.out.println("What is the name of the scholarship you'd like to delete?"); 
+		
+		String findName = input.nextLine(); // this is the name of the scholarship to delete
+		ArrayList<Integer> indicesToDelete = new ArrayList<Integer>(); // this is where we will store the indices of the scholarships with the indicated name
+		int i = 0;
+		
+		for (Scholarship s : allScholarships) { // looking through all scholarships for the name...
+			if (s.getName().equals(findName)) {
+				indicesToDelete.add(i);
+			}
+			i++;
+		}
+		
+		for (int a : indicesToDelete) { // looking through all scholarships, deleting the ones we found and making them null
+			allScholarships.set(a, null);
+			allScholarships.remove(a);
 		}
 	}
 	
