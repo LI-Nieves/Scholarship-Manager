@@ -1,10 +1,8 @@
 l n Student
 f g Student
 user pass Student
-user pass Student
 user pass Coordinator
 name pass Coordinator
 nom pass Student
 q r Coordinator
-user pass Student
 a b Coordinator

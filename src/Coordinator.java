@@ -15,6 +15,23 @@ public class Coordinator extends User {
 		setPassword(inputPassword);
 	}
 	
+	public void viewStatistics(ArrayList<Scholarship> inputS) {
+		System.out.println("For which scholarship would you like to see statistics for?");
+
+		Scanner inputStat = new Scanner(System.in);
+		String statSchol = inputStat.nextLine();
+
+		for (Scholarship s : inputS) {
+			if (s.getName().equals(statSchol)) {
+				System.out.println("This scholarship will be granted to " + s.getReceive() + " applicants.\n" + 
+				s.getApplicants().size() + " students have applied to this scholarship:");
+				for (String a : s.getApplicants()) {
+					System.out.println(a);
+				}
+			}
+		}
+	}
+
 	/* Method used to add a scholarship */
 	public Scholarship addScholarship() {
 		boolean repeat; // this will help for catching errors
@@ -119,16 +136,17 @@ public class Coordinator extends User {
 		// GETTING THE W REQ
 		System.out.println("Could the applicant have a \"W\" on their transcript? Please input \"true\" or \"false\".");
 		
-		boolean sW = false;
+		String sW = "false";
 		repeat = true;
 		
 		while (repeat) {
 			Scanner inputW = new Scanner(System.in);
-			try {
-				sW = inputW.nextBoolean();
+			dummy = inputW.nextLine();
+			if (dummy.contentEquals("true") || dummy.contentEquals("false")) {
+				sW = dummy;
 				repeat = false;
 			}
-			catch (Exception e) {
+			else {
 				System.out.println("Invalid input. Please enter it again.");
 			}
 		}
@@ -188,7 +206,13 @@ public class Coordinator extends User {
 		// GETTING EXTRA CRITERIA
 		System.out.println("Do you have extra criteria you'd like to add? After typing each one, press ENTER. Once you have none, press ENTER without typing anything.");
 		
-		ArrayList<String> inputCrit = new ArrayList<String>();
+		String inputCrit;
+		
+		Scanner inputCrite = new Scanner(System.in);
+		
+		inputCrit = inputCrite.nextLine();
+
+/* 		ArrayList<String> inputCrit = new ArrayList<String>();
 		
 		while (true) {
 			String a = inputFac.nextLine();
@@ -196,16 +220,30 @@ public class Coordinator extends User {
 				break;
 			}
 			inputCrit.add(a);
-		}
+		} */
 		 
 		Scholarship newS = new Scholarship(sName, sReward, sSem, sYear, sRec, sGPA, sW, sDept, sFac, sUni, sDeg, inputCrit);
 		
 		return newS;
 	}
 	
-	/* Method used to edit a scholarship (incomplete) */
-	public void editScholarship() {
+	/* Method used to edit a scholarship (PENDING) */
+	public void editScholarship(ArrayList<Scholarship> inputS) {
+/* 		System.out.println("Which scholarship would you like to edit?");
 		
+		Scanner inputEdit = new Scanner(System.in);
+		String editSchol = inputEdit.nextLine();
+
+		Scholarship targetS;
+		for (Scholarship s : inputS) {
+			if (s.getName().equals(editSchol)) {
+				targetS = s;
+			}
+		} */
+
+/* 		System.out.println("What would you like to edit? Enter \n<1> for the name \n<2> for the reward amount \n<3> for the semester it's offered in
+			\n<4> for the year it's offered in \n<5> for the number of students to receive this scholarship \n<6> for the GPA required
+			\n<7> for whether the ") */
 	}
 	
 	/*

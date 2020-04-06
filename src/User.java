@@ -8,8 +8,6 @@ public abstract class User {
 	private String username;
 	private String password;
 	
-	private String scholarshipDatabase = "ScholarshipDatabase.txt";
-	
 	// Can't be instantiated lmao
 	/*
 	 * public User(String inputUsername, String inputPassword) {
@@ -53,18 +51,19 @@ public abstract class User {
 	
 	/* Helper method for viewScholarships() */
 	public void printExtraCriteria(Scholarship inputScholarship) {
-		ArrayList<String> newExtraCriteria = inputScholarship.getExtraCriteria();
+/* 		ArrayList<String> newExtraCriteria = inputScholarship.getExtraCriteria();
 		
 		System.out.println("Extra criteria:");
 		
 		for (String c : newExtraCriteria) {
 			System.out.println("* " + c);
-		}
+		} */
+		System.out.print(inputScholarship.getExtraCriteria());
 		
 	}
 	
 	/* Helper method for viewScholarships() */
-	public String printWonTranscript(boolean inputW) {
+/* 	public String printWonTranscript(boolean inputW) {
 		String returnString;
 		if (inputW) {
 			returnString = "Applicants may have a \"W\" on their transcript.";
@@ -73,6 +72,9 @@ public abstract class User {
 			returnString = "Applicants may not have a \"W\" on their transcript.";
 		}
 		return returnString;
+	} */
+	public String printWonTranscript(String inputW) {
+		return inputW;
 	}
 	
 	//public abstract void login();

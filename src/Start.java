@@ -9,7 +9,9 @@ import java.io.*;
 
 public class Start {
 	
-	private String userInfoDatabase = "UserInfoDatabase.txt";
+	private String userInfoDatabase = "databases\\userInfo.txt";
+	private String scholarshipDir = "databases\\scholarships\\scholarships.txt";
+	private String scholarshipAppDir = "databases\\scholarships\\applicants.txt";
 
 	private String username; 
 	private String password; 
@@ -208,6 +210,7 @@ public class Start {
 		
 		else if (command.contentEquals("Apply for scholarships")) {
 			inputStudent.chooseTerm(inputStudent, getAllScholarships());
+			storeScholarshipApplicants();
 			studentCommands(inputStudent);
 		}
 		
@@ -234,18 +237,18 @@ public class Start {
 	
 	/* One a coordinator logs in and a coordinator object is created, these are the commands it can use */
 	public void coordinatorCommands(Coordinator inputCoordinator) {
-		// edit scholarships
-			// define requirements/restrictions for each scholarships
+		// edit scholarships - DONE (KINDA)
+			// define requirements/restrictions for each scholarships - DONE
 		// grant scholarships
 			// view applications to scholarship
 			// view each student's accept/reject rate
 		// add scholarships - DONE
 		// remove scholarships - DONE
 		// view all scholarships available - DONE
-			// view # of applicants to scholarship
+		// view # of applicants to scholarship - DONE
 
 		System.out.println("***********************************************************************************************");
-		System.out.println("Here are your options: \n <View all scholarships> \n <Add scholarships> "
+		System.out.println("Here are your options: \n <View all scholarships> \n <View statistics for all scholarships> \n <Add scholarships> "
 				+ "\n <Edit scholarships> \n <Remove scholarships> \n <Grant scholarships> \n <Log out>");
 		System.out.println("Please type the option of your choosing EXACTLY as it is shown. It is case-sensitive.");
 		
@@ -256,21 +259,33 @@ public class Start {
 			inputCoordinator.viewScholarships(allScholarships);
 			coordinatorCommands(inputCoordinator);
 		}
+
+		else if (command.contentEquals("View statistics for all scholarships")) {
+			inputCoordinator.viewStatistics(allScholarships);
+			coordinatorCommands(inputCoordinator);
+		}
 		
 		else if (command.contentEquals("Add scholarships")) {
 			Scholarship newS = inputCoordinator.addScholarship();
 			addtoAllScholarships(newS);
+			storeScholarships();
 			coordinatorCommands(inputCoordinator);
 		}
 		
 		else if (command.contentEquals("Edit scholarships")) {
-			inputCoordinator.editScholarship();
+			//inputCoordinator.editScholarship(allScholarships);
+			System.out.println("To edit a scholarship, you will remove the scholarship then add it back in with new information.");
+			removeScholarships();
+			Scholarship newS = inputCoordinator.addScholarship();
+			addtoAllScholarships(newS);
+			storeScholarships();
 			coordinatorCommands(inputCoordinator);
 		}		
 		
 		// errors to consider: what if several scholarships have the same name?
 		else if (command.contentEquals("Remove scholarships")) {
 			removeScholarships();
+			storeScholarships();
 			coordinatorCommands(inputCoordinator);
 		}	
 		
@@ -311,6 +326,171 @@ public class Start {
 			allScholarships.remove(a);
 		}
 	}
+
+	public void loadScholarships() {
+		Scanner inputStream = null;
+        try {
+           inputStream = new Scanner(new File(scholarshipDir));
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + scholarshipDir);
+            System.exit(0);
+        }
+        
+        // parse file to see if user exists
+        while (inputStream.hasNextLine()) {
+			String name = inputStream.nextLine();
+			//System.out.println("name" + name);
+			String rew1 = inputStream.nextLine();
+			int reward = Integer.parseInt(rew1);
+			//System.out.println("rew" + reward);
+			String sem = inputStream.nextLine();
+			//System.out.println("sem" + sem);
+			int year = inputStream.nextInt();
+			//System.out.println("y" + year);
+			int receive = inputStream.nextInt();
+			//System.out.println("rec" + receive);
+			double gpa = inputStream.nextDouble();
+			inputStream.nextLine(); // this is a dummy line, because the reading isn't cooperating...
+			//System.out.println("g" + gpa);
+			String w = inputStream.nextLine();
+			//System.out.println("w" + w);
+			String dept = inputStream.nextLine();
+			//System.out.println("dep" + dept);
+			String fac = inputStream.nextLine();
+			//System.out.println("fac" + fac);
+			String uni = inputStream.nextLine();
+			//System.out.println("uni" + uni);
+			String deg = inputStream.nextLine();
+			//System.out.println("deg" + deg);
+			String crit = inputStream.nextLine();
+			//System.out.println("crit" + crit);
+			allScholarships.add(new Scholarship(name, reward, sem, year, receive, gpa, w, dept, fac, uni, deg, crit));
+			if (inputStream.hasNextLine()) {
+				inputStream.nextLine();
+			}
+        }     
+		
+/* 		// For debugging
+        for (Scholarship s : allScholarships) {
+			System.out.println(s.getName());
+			System.out.println(s.getRewardAmount());
+			System.out.println(s.getSemester());
+			System.out.println(s.getYear());
+			System.out.println(s.getReceive());
+			System.out.println(s.getGPAreq());
+			System.out.println(s.getWonTranscript());
+			System.out.println(s.getDeptSpecific());
+			System.out.println(s.getFacultySpecific());
+			System.out.println(s.getUniSpecific());
+			System.out.println(s.getDegreeSpecific());
+			System.out.println(s.getExtraCriteria());
+			System.out.println();
+		} */
+        
+		inputStream.close();
+		
+	}
+
+	public void storeScholarships() {
+		PrintWriter outputStream = null;
+        try {
+            outputStream = new PrintWriter(new FileOutputStream (scholarshipDir, false));  //for append
+		}
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + scholarshipDir);
+            System.exit(0);
+        }
+		
+		for (Scholarship s : allScholarships) {
+			outputStream.println(s.getName());
+			outputStream.println(s.getRewardAmount());
+			outputStream.println(s.getSemester());
+			outputStream.println(s.getYear());
+			outputStream.println(s.getReceive());
+			outputStream.println(s.getGPAreq());
+			outputStream.println(s.getWonTranscript());
+			outputStream.println(s.getDeptSpecific());
+			outputStream.println(s.getFacultySpecific());
+			outputStream.println(s.getUniSpecific());
+			outputStream.println(s.getDegreeSpecific());
+			outputStream.println(s.getExtraCriteria());
+			outputStream.println();
+		}     
+        
+		outputStream.close();
+		
+	}
+
+	public void loadScholarshipApplicants() {
+		Scanner inputStream = null;
+        try {
+           inputStream = new Scanner(new File(scholarshipAppDir));
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + scholarshipAppDir);
+            System.exit(0);
+        }
+        
+        // parse file to see if user exists
+        while (inputStream.hasNextLine()) {
+
+			Scholarship s = findScholarship(inputStream.nextLine());
+
+			while (inputStream.hasNextLine()) {
+				String line = inputStream.nextLine();
+				if (line.equals("")) {
+					break;
+				}
+				else {
+					s.addApplicant(line);
+				}
+			}
+        }    
+		
+		// For debugging
+/*         for (Scholarship s : allScholarships) {
+			for (String a : s.getApplicants()) {
+				System.out.println(s.getName() + " " + a);
+			}
+			System.out.println();
+		} */
+        
+		inputStream.close();
+		
+	}
+
+	public void storeScholarshipApplicants() {
+		PrintWriter outputStream = null;
+        try {
+            outputStream = new PrintWriter(new FileOutputStream (scholarshipAppDir, false));  //for append
+		}
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + scholarshipAppDir);
+            System.exit(0);
+        }
+		
+		for (Scholarship s : allScholarships) {
+			outputStream.println(s.getName());
+			for (String a : s.getApplicants()) {
+				outputStream.println(a);
+			}
+			outputStream.println();
+		}     
+        
+		outputStream.close();
+		
+	}	
+
+	public Scholarship findScholarship(String name) {
+		Scholarship toReturn = new Scholarship();
+		for (Scholarship s : allScholarships) {
+			if (s.getName().equals(name)) {
+				toReturn = s;
+			}
+		}
+		return toReturn;
+	}
 	
 	/*
 	 * public boolean returnToMenu() { boolean returnToMenu = false;
@@ -329,7 +509,12 @@ public class Start {
 	
 	public static void main(String[] args) {
 		Start s = new Start();
+		s.loadScholarships();
+		s.loadScholarshipApplicants();
 		s.initiateLogin();
+		//s.allScholarships.add(new Scholarship("s",1,"Fall",2000,1,1.0,"true","dept","fac","uni","deg","aa"));
+		//s.storeScholarships();
+		//s.loadScholarships();
 	}
 
 }

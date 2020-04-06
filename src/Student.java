@@ -16,12 +16,14 @@ public class Student extends User {
 /* 	private String username;
 	private String password; */
 
-	private ArrayList<Scholarship> scholarshipsAppliedTo = new ArrayList<Scholarship>();
+	private ArrayList<String> scholarshipsAppliedTo = new ArrayList<String>();
+	private ArrayList<String> studentFiles = new ArrayList<String>();
+	private ArrayList<String> scholarshipsGranted = new ArrayList<String>();
 	
 	private String fileDirectory;
 	private String uploadDir = "uploadedFiles\\";
 	private String fileName;
-	private ArrayList<String> studentFiles = new ArrayList<String>();
+	
 	
 	// We can put all the data in a text
 	
@@ -118,7 +120,8 @@ public class Student extends User {
 						System.out.println("You have already applied to the maximum of FOUR (4) scholarships.");
 					}
 					else {
-						s.addApplicant(inputStudent);
+						//s.addApplicant(inputStudent);
+						s.addApplicant(inputStudent.getUsername());
 						inputStudent.scholarshipsAppliedTo.add(s);
 						System.out.println("Congratulations! You have applied. Good luck.");
 					}
@@ -135,8 +138,15 @@ public class Student extends User {
 	
 	public boolean alreadyApplied(Student inputStudent, Scholarship inputS) {
 		boolean applied = false;
-		for (Student a : inputS.getApplicants()) {
+/* 		for (Student a : inputS.getApplicants()) {
 			if (inputStudent.equals(a)) {
+				applied = true;
+			}
+		} */
+		String studentName = inputStudent.getUsername();
+
+		for (String a : inputS.getApplicants()) {
+			if (studentName.equals(a)) {
 				applied = true;
 			}
 		}
@@ -229,7 +239,7 @@ public class Student extends User {
 	}
 
 	// For debugging
-	public static void main(String[] args) {
+/* 	public static void main(String[] args) {
 		Student s = new Student("l","n");
 		Scholarship sF = new Scholarship("sF", 1, "Fall", 2020, 1, 1.0, true, "Across all departments",
 			"Across all faculties", "Across all universities", "Across all degrees", new ArrayList<String>());	
@@ -243,7 +253,7 @@ public class Student extends User {
 		a.add(sFW);
 
 		s.chooseTerm(s, a);
-	}
+	} */
 	/*
 	 * public void increaseCurrentLimit() { this.current_limit+=1;
 	 * 

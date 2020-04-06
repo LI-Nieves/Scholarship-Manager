@@ -6,7 +6,8 @@ public class Scholarship {
 	
 	// Instance variables
 	private double acceptanceRate;
-	private ArrayList<Student> applicants = new ArrayList<Student>();
+	//private ArrayList<Student> applicants = new ArrayList<Student>();
+	private ArrayList<String> applicants = new ArrayList<String>();
 	
 	private String name;
 	private int rewardAmount;
@@ -14,20 +15,41 @@ public class Scholarship {
 	private int year;
 	private int receive;
 	private double GPAreq;
-	private boolean wOnTranscript;
+	private String wOnTranscript;
 	private String deptSpecific = "Across all departments";
 	private String facultySpecific = "Across all faculty";
 	private String uniSpecific = "Across all universities across the country";
 	private String degreeSpecific = "Candidates to every degree (BSc, BA, MS, MBA, PhD, etc.)";
-	private ArrayList<String> extraCriteria; 
+	//private ArrayList<String> extraCriteria; 
+	private String extraCriteria;
 	
 	//private ArrayList<ArrayList<String>> formFormat;
 		// The form will be entered as an ArrayList. For example, if they want "What are your hobbies?" and a textbox, the 
 		// ArrayList will look like: [["What are your hobbies?",textbox]]
 	
 	// Constructor
-	public Scholarship(String inputName, int inputReward, String inputSem, int inputYear, int inputRec, double inputGPA, boolean inputW, String inputDept, 
+/* 	public Scholarship(String inputName, int inputReward, String inputSem, int inputYear, int inputRec, double inputGPA, boolean inputW, String inputDept, 
 			String inputFac, String inputUni, String inputDeg, ArrayList<String> inputCrit) {
+		setName(inputName);
+		setRewardAmount(inputReward);
+		setSemester(inputSem);
+		setYear(inputYear);
+		setReceive(inputRec);
+		setGPAreq(inputGPA);
+		setWonTranscript(inputW);
+		setDeptSpecific(inputDept);
+		setFacultySpecific(inputFac);
+		setUniSpecific(inputUni);
+		setDegreeSpecific(inputDeg);
+		setCriteria(inputCrit);
+	} */
+
+	public Scholarship() {
+		
+	}
+
+	public Scholarship(String inputName, int inputReward, String inputSem, int inputYear, int inputRec, double inputGPA, String inputW, String inputDept, 
+	String inputFac, String inputUni, String inputDeg, String inputCrit) {
 		setName(inputName);
 		setRewardAmount(inputReward);
 		setSemester(inputSem);
@@ -79,8 +101,8 @@ public class Scholarship {
 		return new Double(this.GPAreq);
 	}
 	
-	public boolean getWonTranscript() {
-		return new Boolean(this.wOnTranscript);
+	public String getWonTranscript() {
+		return new String(this.wOnTranscript);
 	}
 	
 	public String getDeptSpecific() {
@@ -100,7 +122,8 @@ public class Scholarship {
 	}	
 	
 	//This is sketchy, fix this
-	public ArrayList<String> getExtraCriteria() {
+	//public ArrayList<String> getExtraCriteria() {
+	public String getExtraCriteria() {
 		/*
 		 * ArrayList<String> newCriteria = null; for (String i:(this.extraCriteria)) {
 		 * newCriteria.add(i); } return newCriteria;
@@ -109,7 +132,10 @@ public class Scholarship {
 	}
 	
 	//This is sketchy, fix this
-	public ArrayList<Student> getApplicants() {
+/* 	public ArrayList<Student> getApplicants() {
+		return this.applicants;
+	} */
+	public ArrayList<String> getApplicants() {
 		return this.applicants;
 	}
 	
@@ -148,8 +174,8 @@ public class Scholarship {
 		this.GPAreq = new Double(inputGPAreq);
 	}
 	
-	public void setWonTranscript(boolean inputW) {
-		this.wOnTranscript = new Boolean(inputW);
+	public void setWonTranscript(String inputW) {
+		this.wOnTranscript = new String(inputW);
 	}
 	
 	public void setDeptSpecific(String inputDept) {
@@ -168,15 +194,23 @@ public class Scholarship {
 		this.degreeSpecific = new String(inputDeg);
 	}
 	
-	public void setCriteria(ArrayList<String> inputCriteriaList) {
+/* 	public void setCriteria(ArrayList<String> inputCriteriaList) {
 		this.extraCriteria = new ArrayList<String>(inputCriteriaList);
 	}
 	
 	public void addCriteria(String newCriteria) {
 		this.extraCriteria.add(new String (newCriteria));
+	} */
+
+	public void setCriteria(String inputCrit) {
+		this.extraCriteria = new String(inputCrit);
 	}
 	
-	public void addApplicant(Student newApplicant) {
+/* 	public void addApplicant(Student newApplicant) {
+		this.applicants.add(newApplicant);
+	} */
+
+	public void addApplicant(String newApplicant) {
 		this.applicants.add(newApplicant);
 	}
 	

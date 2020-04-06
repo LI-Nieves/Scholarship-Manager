@@ -1,0 +1,38 @@
+Jason Lang
+1000
+Fall
+2020
+1000
+3.7
+true
+Across all departments
+Across all faculties
+Across all universities
+Across all degrees (BA, BSc, MS, MBA, PhD, etc.)
+Community service
+
+Super Scholarship
+10000
+Fall and Winter
+2021
+5
+4.0
+false
+Across all departments
+Across all faculties
+Across all universities
+Across all degrees (BA, BSc, MS, MBA, PhD, etc.)
+Community service, trophies
+
+Average Scholarship
+500
+Winter
+2022
+10000
+2.0
+true
+Across all departments
+Across all faculties
+Across all universities
+Across all degrees (BA, BSc, MS, MBA, PhD, etc.)
+None
