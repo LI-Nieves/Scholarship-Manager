@@ -7,7 +7,7 @@ Step 0. Open the terminal
 
 Step 1. Change your directory to `\<projectFolder>\src`
 
-Step 2. Type the command: `javac -d . \*.java`
+Step 2. Type the command: `javac -d . *.java`
 
 Step 3. Type the command: `java logic.Start`
 
@@ -70,7 +70,7 @@ Step 0. Open the terminal
 
 Step 1. Change your directory to `\<projectFolder>\src`
 
-Step 2. Type the command: `javac -d . \*.java`
+Step 2. Type the command: `javac -d . *.java`
 
 Step 3. Type the command: `java logic.Guii`
 
