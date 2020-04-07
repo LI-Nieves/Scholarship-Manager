@@ -7,44 +7,22 @@ import java.io.PrintWriter;
 import java.util.*;
 
 public class Student extends User {
-
-	//private int NumberOfStudents=1000;
-	//private String[] username = new String[getNumberOfStudents()];
-	//private String[] password = new String[getNumberOfStudents()];
-	//private int current_limit=0;
 	
-/* 	private String username;
-	private String password; */
-
 	private ArrayList<String> scholarshipsAppliedTo = new ArrayList<String>();
 	private ArrayList<String> studentFiles = new ArrayList<String>();
 	private ArrayList<String> scholarshipsGranted = new ArrayList<String>();
-	
-	private String fileDirectory;
-	private String uploadDir = "uploadedFiles/";
-	private String fileName;
+	private ArrayList<String> scholarshipsAccepted = new ArrayList<String>();
+	private ArrayList<String> termsAndYearAccepted = new ArrayList<String>();
 	
 	
-	// We can put all the data in a text
-	
+	// Constructors
 	public Student() {}
 
-	// Constructor
 	public Student(String inputUsername, String inputPassword) {
-		setUsername(inputUsername);
-		setPassword(inputPassword);
+		super(inputUsername,inputPassword);
 	}
 	
 	// GETTERS
-	public String getFileDir() {
-		return new String(this.fileDirectory);
-	}
-	public String getFileName() {
-		return new String(this.fileName);
-	}
-	public String getUploadDir() {
-		return new String (this.uploadDir);
-	}
 	// sketchy
 	public ArrayList<String> getStudentFiles() {
 		return this.studentFiles;
@@ -53,21 +31,35 @@ public class Student extends User {
 	public ArrayList<String> getStudentApplied() {
 		return this.scholarshipsAppliedTo;
 	}
-	
-	
-	// SETTERS
-	public void setFileDir(String inputFileDir) {
-		this.fileDirectory = new String(inputFileDir);
-	}	
-	public void setFileName(String inputFileName) {
-		this.fileName = new String(inputFileName);
+	// sketchy
+	public ArrayList<String> getStudentGranted() {
+		return this.scholarshipsGranted;
 	}
+	// sketchy
+	public ArrayList<String> getStudentAccepted() {
+		return this.scholarshipsAccepted;
+	}
+	// sketchy
+	public ArrayList<String> getStudentTermsYearAccept() {
+		return this.termsAndYearAccepted;
+	}
+
+	// SETTERS
 	public void addStudentFiles(String inputFileName) {
 		this.studentFiles.add(inputFileName);
 	}
 	public void addStudentApplied(String inputSchol) {
-		this.studentFiles.add(inputSchol);
+		this.scholarshipsAppliedTo.add(inputSchol);
 	}
+	public void addStudentGranted(String inputSchol) {
+		this.scholarshipsGranted.add(inputSchol);
+	}
+	public void addStudentAccepted(String inputSchol) {
+		this.scholarshipsAccepted.add(inputSchol);
+	}
+	public void addStudentTermYear(String inputTY) {
+		this.termsAndYearAccepted.add(inputTY);
+	}	
 	
 	/* Method used to apply to a scholarship (incomplete) */
 	public void chooseTerm(Student inputStudent, ArrayList<Scholarship> inputS) {
@@ -155,11 +147,6 @@ public class Student extends User {
 	
 	public boolean alreadyApplied(Student inputStudent, Scholarship inputS) {
 		boolean applied = false;
-/* 		for (Student a : inputS.getApplicants()) {
-			if (inputStudent.equals(a)) {
-				applied = true;
-			}
-		} */
 		String studentName = inputStudent.getUsername();
 
 		for (String a : inputS.getApplicants()) {
@@ -185,7 +172,10 @@ public class Student extends User {
 		}
 	}
 	
-	/* Method used to view the scholarships they applied for (incomplete) */
+	/**
+	 * Method used to view the scholarships they applied for
+	 * You'll need a variation of this for the GUI
+	 */
 	public void viewMyScholarships() {
 		System.out.println("Student " + super.getUsername() + " " + super.getPassword() + " has applied to "
 				+ scholarshipsAppliedTo.size() + " scholarships.");
@@ -200,36 +190,37 @@ public class Student extends User {
 	 * Basically, you give it the directory (including the file name) of the file you'd like to upload
 	 * "uploading" is just the function parsing the file and copying the exact same thing in another 
 	 * file that's created in a designated folder accessible to the program
+	 * You'll just need to tweak this for the GUI
 	 */
 	public void upload() {
 		System.out.println("Please type in the directory that your file is in.");
 		
 		// taking in where the file is
 		Scanner upload = new Scanner(System.in);
-		setFileDir(upload.nextLine());
+		String fileDirectory = upload.nextLine());
 		
 		System.out.println("What would you like to call the uploaded file?");
 		
 		// taking in desired file name
 		Scanner inputName = new Scanner(System.in);
-		setFileName(upload.nextLine());
+		String fileName = upload.nextLine();
 		
 		
 		// add this file to the student's list of files they've uploaded
-		studentFiles.add(getFileName() + ".txt");
-		System.out.println("sizeS: "+getStudentFiles().size()); //
+		studentFiles.add(fileName + ".txt");
 		
 		// trying to open file to read
         Scanner inputStream = null;
         try {
-           inputStream = new Scanner(new File(getFileDir()));
+           inputStream = new Scanner(new File(fileDirectory));
         }
         catch(FileNotFoundException e) {
-            System.out.println("Error opening the file " + getFileDir());
+            System.out.println("Error opening the file " + fileDirectory);
             System.exit(0);
         }
-        
-        String completeUploadDir = getUploadDir() + getFileName() + ".txt";
+		
+		// path to place file
+        String completeUploadDir = "uploadedFiles/" + fileName + ".txt";
         
 		// Opening up for printing (I/O)
 		PrintWriter outputStream = null;
@@ -254,89 +245,109 @@ public class Student extends User {
         inputStream.close();
 		outputStream.close();
 		
-		
-
-		for (String a:this.getStudentFiles()) {
-			System.out.println(a);
-		}
-
-		System.out.println("sizeA: "+getStudentFiles().size());
-		
 	}
 
-	// For debugging
-/* 	public static void main(String[] args) {
-		Student s = new Student("l","n");
-		Scholarship sF = new Scholarship("sF", 1, "Fall", 2020, 1, 1.0, true, "Across all departments",
-			"Across all faculties", "Across all universities", "Across all degrees", new ArrayList<String>());	
-		Scholarship sW = new Scholarship("sW", 1, "Winter", 2021, 1, 1.0, true, "Across all departments",
-			"Across all faculties", "Across all universities", "Across all degrees", new ArrayList<String>());
-		Scholarship sFW = new Scholarship("sFW", 1, "Fall and Winter", 2022, 1, 1.0, true, "Across all departments",
-			"Across all faculties", "Across all universities", "Across all degrees", new ArrayList<String>());
-		ArrayList<Scholarship> a = new ArrayList<Scholarship>();
-		a.add(sF);
-		a.add(sW);
-		a.add(sFW);
+	/**
+	 * Used to view scholarships that have been granted to the student, and to accept them (if they want to)
+	 * Helper functions: findScholarships(), alreadyAccepted(), yearAccepted(), checkAccepted(), addToTermYear()
+	 * @param inputS
+	 */
+	public void viewGranted(ArrayList<Scholarship> inputS) {
+		for (String a : getStudentGranted()) {
+			System.out.println(a + " (" + findScholarship(a, inputS).getSemester() + " " + findScholarship(a, inputS).getYear() + ")");
+		}
 
-		s.chooseTerm(s, a);
-	} */
-	/*
-	 * public void increaseCurrentLimit() { this.current_limit+=1;
-	 * 
-	 * } public int getCurrentLimit() {
-	 * 
-	 * return current_limit; }
-	 * 
-	 * public int getNumberOfStudents() { return NumberOfStudents;
-	 * 
-	 * }
-	 * 
-	 * public void setNumberOfStudents(int Students) { this.NumberOfStudents =
-	 * Students;
-	 * 
-	 * }
-	 * 
-	 * public String[] getUsername() { return username; }
-	 * 
-	 * public String[] getPasswords() { return password; }
-	 */
-	
-	/*
-	 * public boolean studentLogin(String user, String pass) { int starting=0;
-	 * String[] users = getUsername(); String[] passwords = getPasswords();
-	 * while(starting<=getCurrentLimit()) { String lookingUser = users[starting];
-	 * String lookingPass = passwords[starting]; if(lookingUser.equals(user) &&
-	 * lookingPass.equals(pass)) { return true; }
-	 * 
-	 * starting+=1;
-	 * 
-	 * } return false;
-	 * 
-	 * }
-	 */
-	
-	// Already extends a class with these methods
-	/*
-	 * public String getUsername() { return new String(this.username); }
-	 * 
-	 * public String getPassword() { return new String(this.password); }
-	 * 
-	 * public void setUsername(String inputUsername) { this.username = new
-	 * String(inputUsername); }
-	 * 
-	 * public void setPassword(String inputPassword) { this.password = new
-	 * String(inputPassword); }
-	 */
+		System.out.println("Which scholarship(s) would you like to accept? Keep in mind you can only accept ONE (1) per academic year." + 
+		"(Fall and Winter 2019 = Fall 2019 and Winter 2020). Press ENTER to return to the main menu.");
 
+		while (true) {
+			Scanner input = new Scanner(System.in);
+			String schol = input.nextLine();
+
+			if (schol.equals("")) {
+				break;
+			}
+
+			Scholarship selectedSchol = findScholarship(schol, inputS);
+
+			// check if accepted already
+			if (alreadyAccepted(selectedSchol.getName())) {
+				System.out.println("You've already accepted this scholarship.");
+			}
+
+			// check if academic year accepted already
+			else if (yearAccepted(selectedSchol.getSemester(), selectedSchol.getYear())) {
+				System.out.println("You've already accepted a scholarship for this academic year.");
+			}
+
+			// accept
+				
+				// add to list of accepted terms
+			else {
+				// add to list of accepted
+				addStudentAccepted(selectedSchol.getName());
+				addToTermYear(selectedSchol.getSemester(), selectedSchol.getYear());
+				System.out.println("Congratulations! You've accepted the " + selectedSchol.getName() + ".");
+			}
+
+
+		}
+	}
+
+	public Scholarship findScholarship(String name, ArrayList<Scholarship> inputS) {
+		Scholarship toReturn = new Scholarship();
+		for (Scholarship s : inputS) {
+			if (s.getName().equals(name)) {
+				toReturn = s;
+			}
+		}
+		return toReturn;
+	}
+
+	public boolean alreadyAccepted (String name) {
+		boolean toReturn = false;
+		for (String a : getStudentAccepted()) {
+			if (a.equals(name)) {
+				toReturn = true;
+			}
+		}
+		return toReturn;
+	}
+
+	public boolean yearAccepted (String term, int year) {
+		boolean toReturn = false;
+		if (term.equals("Fall and Winter") || term.equals("Fall")) {
+			if (checkAccepted("Fall " + year, "Winter " + (year+1))) {
+				toReturn = true;
+			}
+		}
+		else if (term.equals("Winter")) {
+			if (checkAccepted("Fall " + (year-1), "Winter " + year)) {
+				toReturn = true;
+			}
+		}
+		return toReturn;
+	}
+
+	public boolean checkAccepted (String term1, String term2) {
+		boolean toReturn = false;
+		for (String a : getStudentTermsYearAccept()) {
+			if (a.equals(term1) || a.equals(term2)) {
+				toReturn = true;
+			}
+		}
+		return toReturn;
+	}
+
+	public void addToTermYear (String term, int year) {
+		if (term.equals("Fall and Winter") || term.equals("Fall")) {
+			addStudentTermYear("Fall " + year);
+			addStudentTermYear("Winter " + (year+1));
+		}
+		else if (term.equals("Winter")) {
+			addStudentTermYear("Fall " + (year-1));
+			addStudentTermYear("Winter " + year);
+		}
+	}
 }
-
-// REFERENCES:
-/**
- * https://www.w3schools.com/java/java_encapsulation.asp
- * https://www.javatpoint.com/how-to-return-an-array-in-java
- * 
- * 
- * 
- * 
- */
 
