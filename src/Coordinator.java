@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.*;
+import java.io.*;
 
 public class Coordinator extends User {
 
@@ -251,9 +252,115 @@ public class Coordinator extends User {
 	 */
 	
 	/* Method used to grant a scholarship (incomplete) */
-	public void grantScholarship() {
-		
+	public void grantScholarship(ArrayList<Scholarship> inputS) {
+		System.out.println("Which scholarship would you like distribute?");
+		Scanner scholInput = new Scanner(System.in);
+		String scholName = scholInput.nextLine();
+
+		Scholarship selectedS = findScholarship(scholName, inputS);
+
+		if (selectedS.getName() != null) {
+			System.out.println("Here are the applicant(s) of " + selectedS.getName() + ":");
+			int counter = 0;
+			for (String a : selectedS.getApplicants()) {
+				System.out.println("<" + counter + ">" + a);
+				counter++;
+				chooseApplicants(selectedS);
+			}
+		}
+		else {
+			System.out.println("No scholarship of this name was found.");
+		}
 	}
+
+	// practically a duplicate from Start
+	public Scholarship findScholarship(String name, ArrayList<Scholarship> inputS) {
+		Scholarship toReturn = new Scholarship();
+		for (Scholarship s : inputS) {
+			if (s.getName().equals(name)) {
+				toReturn = s;
+			}
+		}
+		return toReturn;
+	}
+
+	public void chooseApplicants(Scholarship schol) {
+		System.out.println("Please type down the corresponding number(s) for the students you'd like to grant this scholarship to.\nKeep in mind that there are " 
+		+ schol.getApplicants().size() + " applicants and this scholarship may only be distributed to " 
+		+ schol.getReceive() + " students. Please format your reply as shown: 0 1 2 ..");
+
+		Scanner inputApp = new Scanner(System.in);
+
+	}
+
+	public void viewProfiles(ArrayList<Student> inputS) {
+		System.out.println("For which student would you like to view the profile of?");
+
+		Scanner inputName = new Scanner(System.in);
+		String name = inputName.nextLine();
+
+		boolean studentNotFound = true;
+		for (Student a : inputS) {
+			if (a.getUsername().equals(name)) {
+				viewFiles(a);
+				studentNotFound = false;
+			}
+		}
+		
+		if (studentNotFound) {
+			System.out.println("No student of that name has been found.");
+		}
+	}
+
+	public void viewFiles(Student inputS) {
+
+		if (inputS.getStudentFiles().size() == 0) {
+			System.out.println("The student " + inputS.getUsername() + " has not uploaded any files. Redirecting.");
+		}
+
+		else {
+			System.out.println("The student " + inputS.getUsername() + " has uploaded " + inputS.getStudentFiles().size() + " files. Type the name of the file to view or press ENTER to quit:");
+			for (String a : inputS.getStudentFiles()) {
+				System.out.println(a);
+			}
+			Scanner inputF = new Scanner(System.in);
+			String fName = inputF.nextLine();
+	
+			// if the file's name is "" this doesn't work lmao
+			if (fName.equals("")) {}
+			else {
+				boolean fileMissing = true;
+				for (String a : inputS.getStudentFiles()) {
+					if (a.equals(fName)) {
+						openFile(fName);
+						fileMissing = false; 
+					}
+				}
+				if (fileMissing) {
+					System.out.println("The file was not found. Try again.");
+					viewFiles(inputS);
+				}
+			}
+		}
+	}
+
+	public void openFile(String fName) {
+		String fileDir = "uploadedFiles/" + fName;
+
+		Scanner inputStream = null;
+		try {
+		inputStream = new Scanner(new File(fileDir));
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("Error opening the file " + fileDir);
+			System.exit(0);
+		}
+
+		while(inputStream.hasNextLine()) {
+			System.out.println(inputStream.nextLine());
+		}
+	}
+
 }
 
 

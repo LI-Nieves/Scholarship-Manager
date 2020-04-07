@@ -8,6 +8,7 @@ public class Scholarship {
 	private double acceptanceRate;
 	//private ArrayList<Student> applicants = new ArrayList<Student>();
 	private ArrayList<String> applicants = new ArrayList<String>();
+	private ArrayList<String> grantedTo = new ArrayList<String>();
 	
 	private String name;
 	private int rewardAmount;
@@ -44,9 +45,7 @@ public class Scholarship {
 		setCriteria(inputCrit);
 	} */
 
-	public Scholarship() {
-		
-	}
+	public Scholarship() {}
 
 	public Scholarship(String inputName, int inputReward, String inputSem, int inputYear, int inputRec, double inputGPA, String inputW, String inputDept, 
 	String inputFac, String inputUni, String inputDeg, String inputCrit) {

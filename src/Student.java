@@ -21,12 +21,14 @@ public class Student extends User {
 	private ArrayList<String> scholarshipsGranted = new ArrayList<String>();
 	
 	private String fileDirectory;
-	private String uploadDir = "uploadedFiles\\";
+	private String uploadDir = "uploadedFiles/";
 	private String fileName;
 	
 	
 	// We can put all the data in a text
 	
+	public Student() {}
+
 	// Constructor
 	public Student(String inputUsername, String inputPassword) {
 		setUsername(inputUsername);
@@ -43,6 +45,14 @@ public class Student extends User {
 	public String getUploadDir() {
 		return new String (this.uploadDir);
 	}
+	// sketchy
+	public ArrayList<String> getStudentFiles() {
+		return this.studentFiles;
+	}
+	// sketchy
+	public ArrayList<String> getStudentApplied() {
+		return this.scholarshipsAppliedTo;
+	}
 	
 	
 	// SETTERS
@@ -52,9 +62,16 @@ public class Student extends User {
 	public void setFileName(String inputFileName) {
 		this.fileName = new String(inputFileName);
 	}
+	public void addStudentFiles(String inputFileName) {
+		this.studentFiles.add(inputFileName);
+	}
+	public void addStudentApplied(String inputSchol) {
+		this.studentFiles.add(inputSchol);
+	}
 	
 	/* Method used to apply to a scholarship (incomplete) */
 	public void chooseTerm(Student inputStudent, ArrayList<Scholarship> inputS) {
+
 		// Asking for desired term and year
 		System.out.println("Which term would you like to see the scholarships of?\nType <1> for Fall, <2> for Winter, and <3> for Fall and Winter.");
 		Scanner termInput = new Scanner(System.in);
@@ -96,6 +113,9 @@ public class Student extends User {
 			System.out.println("Sorry, there are no scholarships for that term and/or year. Please try again.");
 			chooseTerm(inputStudent, inputS);
 		}
+		else if (applyLimit(year, inputS)) { // checking if the student has already applied to the maximum # of scholarships for that year
+			System.out.println("You have already applied to the maximum of FOUR (4) scholarships for " + year + ".");
+		}
 		else {
 			apply(inputStudent, potentialScholar);
 		}
@@ -116,13 +136,10 @@ public class Student extends User {
 					if (alreadyApplied(inputStudent, s)) {
 						System.out.println("You have already applied for this scholarship.");
 					}
-					else if (applyLimit(s.getYear())){
-						System.out.println("You have already applied to the maximum of FOUR (4) scholarships.");
-					}
 					else {
 						//s.addApplicant(inputStudent);
 						s.addApplicant(inputStudent.getUsername());
-						inputStudent.scholarshipsAppliedTo.add(s);
+						inputStudent.scholarshipsAppliedTo.add(s.getName());
 						System.out.println("Congratulations! You have applied. Good luck.");
 					}
 					
@@ -153,9 +170,9 @@ public class Student extends User {
 		return applied;
 	}
 
-	public boolean applyLimit(int year) {
+	public boolean applyLimit(int year, ArrayList<Scholarship> inputS) {
 		int applyInYear = 0;
-		for (Scholarship s : this.scholarshipsAppliedTo) {
+		for (Scholarship s : inputS) {
 			if (s.getYear() == year) {
 				applyInYear++;
 			}
@@ -173,8 +190,8 @@ public class Student extends User {
 		System.out.println("Student " + super.getUsername() + " " + super.getPassword() + " has applied to "
 				+ scholarshipsAppliedTo.size() + " scholarships.");
 		System.out.println("Scholarships applied to:");
-		for (Scholarship s : scholarshipsAppliedTo) {
-			System.out.println(s.getName());
+		for (String s : scholarshipsAppliedTo) {
+			System.out.println(s);
 		}
 	}
 	
@@ -200,6 +217,7 @@ public class Student extends User {
 		
 		// add this file to the student's list of files they've uploaded
 		studentFiles.add(getFileName() + ".txt");
+		System.out.println("sizeS: "+getStudentFiles().size()); //
 		
 		// trying to open file to read
         Scanner inputStream = null;
@@ -234,7 +252,15 @@ public class Student extends User {
         }     
  
         inputStream.close();
-        outputStream.close();
+		outputStream.close();
+		
+		
+
+		for (String a:this.getStudentFiles()) {
+			System.out.println(a);
+		}
+
+		System.out.println("sizeA: "+getStudentFiles().size());
 		
 	}
 

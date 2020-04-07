@@ -5,19 +5,22 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-/*
- * This will be our main class that starts everything.
- */
-
 public class StartGui {
-	
-	String userInfoDatabase = "UserInfoDatabase.txt";
+	private String userInfoDatabase = "databases/userInfo.txt";
+	private String scholarshipDir = "databases/scholarships/scholarships.txt";
+	private String scholarshipAppDir = "databases/scholarships/applicants.txt";
+	private String studentsAppliedDir = "databases/students/applied.txt";
+	private String studentsFilesDir = "databases/students/files.txt";
+	private String studentsGrantedDir = "databases/students/granted.txt";
 
-	String username; 
-	String password; 
-	String role;
+	private String username; 
+	private String password; 
+	private String role;
   
-	boolean loginSuccess = false;
+	private boolean loginSuccess = false;
+	
+	private ArrayList<Scholarship> allScholarships = new ArrayList<Scholarship>();
+	private ArrayList<Student> allStudents = new ArrayList<Student>();
 	
 	// Getters
 	public String getUsername() {
@@ -30,6 +33,10 @@ public class StartGui {
 	
 	public String getRole() {
 		return new String(this.role);
+	}
+	
+	public ArrayList<Scholarship> getAllScholarships(){ 
+		return new ArrayList<Scholarship>(this.allScholarships);
 	}
 
 	// Setters
@@ -45,9 +52,13 @@ public class StartGui {
 		this.role = new String(inputRole);
 	}
 	
+	public void addtoAllScholarships(Scholarship s) {
+		this.allScholarships.add(s);
+	}
+	
 	// FIRST METHOD EXECUTED; INITIATES LOGIN
 	public void initiateLogin() {
-		System.out.println("---------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------------------------------------");
 		System.out.println("Welcome to USask's Scholarship Center!\n Please type \"login\" to log in or \"register\" if you're a new user.");
 
 		Scanner loginPrompt = new Scanner(System.in);
@@ -55,6 +66,7 @@ public class StartGui {
 		
 		if (prompt1.contentEquals("register")) {
 			register();
+			loadStudents();
 		}
 		else if (prompt1.contentEquals("login")) {
 			login();
@@ -106,54 +118,6 @@ public class StartGui {
 	}
 	
 	// To log in existing user
-	
-	public boolean loginGui(String user, String Password, String role) {
-		
-		Scanner inputStream =null;
-		try {
-			inputStream = new Scanner(new File(userInfoDatabase));
-			//File a = new File("");
-			//System.out.println(this.getClass().getResource("UserInfoDatabase.txt"));
-			//inputStream = new Scanner(a);
-
-			//URL url = getClass().getResource(userInfoDatabase);
-			//File a = new File(url.toURI());
-			//inputStream = new Scanner(a);
-
-			//System.out.println(file.getAbsoloutePath);
-			//File check = new File(userInfoDatabase);
-		}
-		catch(FileNotFoundException e ) {
-			System.out.println("Error opening the file " + userInfoDatabase);
-			//System.out.println(inputStream);
-			//System.out.println(a.getAbsoloutePath);
-            System.exit(0);
-		}
-/* 		catch(URISyntaxException e) {
-			System.out.println("URI EXCEPTION");
-			System.exit(0);
-		} */
-		
-		
-		 while (inputStream.hasNextLine()) {
-			  try {
-		        	String readUser = inputStream.next();
-		        	String readPass = inputStream.next();
-		        	String readRole = inputStream.next();
-				  
-				  if (readUser.contentEquals(user) && readPass.contentEquals(Password) && readRole.contentEquals(role)) {
-					  System.out.println("Login successful.");
-					  return true;
-				  } 
-			  } 
-			  catch (NoSuchElementException e) {
-				  System.out.println("Login error."); 
-			  }
-       }
-		 return false;
-		
-		
-	}
 	public void login() {
 		System.out.println("Please log in by typing <username> <password> <one of: Student, Coordinator>.");
 		
@@ -199,12 +163,17 @@ public class StartGui {
         	setRole(pendingRole);
         	
         	if (getRole().contentEquals("Student")) {
-        		Student newStudent = new Student(getUsername(),getPassword());
-        		studentCommands();
+				//Student newStudent = new Student(getUsername(),getPassword());
+				for (Student a : allStudents) {
+					if (username.equals(a.getUsername()) && password.equals(a.getPassword())) {
+						studentCommands(a);
+					}
+				}
+        		
         	}
         	else if (getRole().contentEquals("Coordinator")) {
         		Coordinator newCoordinator = new Coordinator(getUsername(),getPassword());
-        		coordinatorCommands();
+        		coordinatorCommands(newCoordinator);
         	}
         	else {
         		System.out.println("User error.");
@@ -221,17 +190,19 @@ public class StartGui {
 		// try-catch: if parsing fails, spit out error
 	}
 	
-	public void studentCommands() {
-		// apply for scholarships
-			// choose semester for which scholarships to apply for
-			// see requirements of scholarships
-			// see scholarship stats
+	/* Once a student logs in and a student object is created, these are the commands it can use */
+	public void studentCommands(Student inputStudent) {
+		// apply for scholarships - DONE
+			// choose semester for which scholarships to apply for - DONE
+			// see requirements of scholarships - DONE
+			// see scholarship stats - DONE
 			// submit prof's referral
-		// upload transcripts, certificates, essays
-		// see scholarships i've applied to
-		// receive email notification to see what scholarships granted to me
-		// view all scholarships available
+		// upload transcripts, certificates, essays - DONE 
+		// see scholarships i've applied to - IMPLEMENT AFTER APPLY FOR SCHOLARSHIPS
+		// receive email notification to see what scholarships granted to me - HOW??
+		// view all scholarships available - DONE
 		
+		System.out.println("***********************************************************************************************");
 		System.out.println("Here are your options: \n <View all scholarships> \n <Apply for scholarships> "
 				+ "\n <View scholarships I've applied to> \n <Upload transcripts, certificates, essays> \n <Log out>");
 		System.out.println("Please type the option of your choosing EXACTLY as it is shown. It is case-sensitive.");
@@ -239,42 +210,512 @@ public class StartGui {
 		Scanner newCommand = new Scanner(System.in);
 		String command = newCommand.nextLine();
 		
-		if (command.contentEquals("Log out")) {
+		if (command.contentEquals("View all scholarships")) {
+			inputStudent.viewScholarships(allScholarships);
+			studentCommands(inputStudent);
+		}
+		
+		else if (command.contentEquals("Apply for scholarships")) {
+			inputStudent.chooseTerm(inputStudent, getAllScholarships());
+			storeScholarshipApplicants();
+			storeStudentApplied();
+			studentCommands(inputStudent);
+		}
+		
+		else if (command.contentEquals("View scholarships I've applied to")) {
+			inputStudent.viewMyScholarships();
+			studentCommands(inputStudent);
+		}		
+		
+		else if (command.contentEquals("Upload transcripts, certificates, essays")) {
+			inputStudent.upload();
+			storeStudentFiles();
+			studentCommands(inputStudent);
+		}	
+		
+		else if (command.contentEquals("Log out")) {
 			System.out.println("Thank you for using USask's Scholarship Center!");
 			initiateLogin();
 		}
+		
+		else {
+			System.out.println("Invalid command.");
+			studentCommands(inputStudent);
+		}
 	}
 	
-	public void coordinatorCommands() {
-		// edit scholarships
-			// define requirements/restrictions for each scholarships
+	/* One a coordinator logs in and a coordinator object is created, these are the commands it can use */
+	public void coordinatorCommands(Coordinator inputCoordinator) {
+		// edit scholarships - DONE (KINDA)
+			// define requirements/restrictions for each scholarships - DONE
 		// grant scholarships
 			// view applications to scholarship
 			// view each student's accept/reject rate
-		// add scholarships
-		// remove scholarships
-		// view all scholarships available
-			// view # of applicants to scholarship
+		// add scholarships - DONE
+		// remove scholarships - DONE
+		// view all scholarships available - DONE
+		// view # of applicants to scholarship - DONE
 
-		
-		System.out.println("Here are your options: \n <View all scholarships> \n <Add scholarships> "
-				+ "\n <Edit scholarships> \n <Remove scholarships> \n <Grant scholarships> \n <Log out>");
+		System.out.println("***********************************************************************************************");
+		System.out.println("Here are your options: \n <View all scholarships> \n <View statistics for all scholarships> \n <Add scholarships> "
+				+ "\n <Edit scholarships> \n <Remove scholarships> \n <Grant scholarships> \n <View student profiles> \n <Log out>");
 		System.out.println("Please type the option of your choosing EXACTLY as it is shown. It is case-sensitive.");
 		
 		Scanner newCommand = new Scanner(System.in);
 		String command = newCommand.nextLine();
 		
-		if (command.contentEquals("Log out")) {
+		if (command.contentEquals("View all scholarships")) {
+			inputCoordinator.viewScholarships(allScholarships);
+			coordinatorCommands(inputCoordinator);
+		}
+
+		else if (command.contentEquals("View statistics for all scholarships")) {
+			inputCoordinator.viewStatistics(allScholarships);
+			coordinatorCommands(inputCoordinator);
+		}
+		
+		else if (command.contentEquals("Add scholarships")) {
+			Scholarship newS = inputCoordinator.addScholarship();
+			addtoAllScholarships(newS);
+			storeScholarships();
+			coordinatorCommands(inputCoordinator);
+		}
+		
+		else if (command.contentEquals("Edit scholarships")) {
+			//inputCoordinator.editScholarship(allScholarships);
+			System.out.println("To edit a scholarship, you will remove the scholarship then add it back in with new information.");
+			removeScholarships();
+			Scholarship newS = inputCoordinator.addScholarship();
+			addtoAllScholarships(newS);
+			storeScholarships();
+			coordinatorCommands(inputCoordinator);
+		}		
+		
+		// errors to consider: what if several scholarships have the same name?
+		else if (command.contentEquals("Remove scholarships")) {
+			removeScholarships();
+			storeScholarships();
+			coordinatorCommands(inputCoordinator);
+		}	
+		
+		else if (command.contentEquals("Grant scholarships")) {
+			inputCoordinator.grantScholarship(allScholarships);
+			coordinatorCommands(inputCoordinator);
+		}
+
+		else if (command.contentEquals("View student profiles")) {
+			inputCoordinator.viewProfiles(allStudents);
+			coordinatorCommands(inputCoordinator);
+		}
+		
+		else if (command.contentEquals("Log out")) {
 			System.out.println("Thank you for using USask's Scholarship Center!");
 			initiateLogin();
 		}
+		
+		else {
+			System.out.println("Invalid command.");
+			coordinatorCommands(inputCoordinator);
+		}
 	}
 	
-	public static void main(String[] args) {
-		StartGui s = new StartGui();
-		//s.initiateLogin();
-		//s.loginGui("user", "pass", "Student");
-		//s.login();
+	public void removeScholarships() {
+		Scanner input = new Scanner(System.in);
+		
+		System.out.println("What is the name of the scholarship you'd like to delete?"); 
+		
+		String findName = input.nextLine(); // this is the name of the scholarship to delete
+		ArrayList<Integer> indicesToDelete = new ArrayList<Integer>(); // this is where we will store the indices of the scholarships with the indicated name
+		int i = 0;
+		
+		for (Scholarship s : allScholarships) { // looking through all scholarships for the name...
+			if (s.getName().equals(findName)) {
+				indicesToDelete.add(i);
+			}
+			i++;
+		}
+		
+		for (int a : indicesToDelete) { // looking through all scholarships, deleting the ones we found and making them null
+			allScholarships.set(a, null);
+			allScholarships.remove(a);
+		}
 	}
 
+	public void loadScholarships() {
+		Scanner inputStream = null;
+        try {
+           inputStream = new Scanner(new File(scholarshipDir));
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + scholarshipDir);
+            System.exit(0);
+        }
+        
+        // parse file to see if user exists
+        while (inputStream.hasNextLine()) {
+			String name = inputStream.nextLine();
+			//System.out.println("name" + name);
+			String rew1 = inputStream.nextLine();
+			int reward = Integer.parseInt(rew1);
+			//System.out.println("rew" + reward);
+			String sem = inputStream.nextLine();
+			//System.out.println("sem" + sem);
+			int year = inputStream.nextInt();
+			//System.out.println("y" + year);
+			int receive = inputStream.nextInt();
+			//System.out.println("rec" + receive);
+			double gpa = inputStream.nextDouble();
+			inputStream.nextLine(); // this is a dummy line, because the reading isn't cooperating...
+			//System.out.println("g" + gpa);
+			String w = inputStream.nextLine();
+			//System.out.println("w" + w);
+			String dept = inputStream.nextLine();
+			//System.out.println("dep" + dept);
+			String fac = inputStream.nextLine();
+			//System.out.println("fac" + fac);
+			String uni = inputStream.nextLine();
+			//System.out.println("uni" + uni);
+			String deg = inputStream.nextLine();
+			//System.out.println("deg" + deg);
+			String crit = inputStream.nextLine();
+			//System.out.println("crit" + crit);
+			allScholarships.add(new Scholarship(name, reward, sem, year, receive, gpa, w, dept, fac, uni, deg, crit));
+			if (inputStream.hasNextLine()) {
+				inputStream.nextLine();
+			}
+        }     
+		
+/* 		// For debugging
+        for (Scholarship s : allScholarships) {
+			System.out.println(s.getName());
+			System.out.println(s.getRewardAmount());
+			System.out.println(s.getSemester());
+			System.out.println(s.getYear());
+			System.out.println(s.getReceive());
+			System.out.println(s.getGPAreq());
+			System.out.println(s.getWonTranscript());
+			System.out.println(s.getDeptSpecific());
+			System.out.println(s.getFacultySpecific());
+			System.out.println(s.getUniSpecific());
+			System.out.println(s.getDegreeSpecific());
+			System.out.println(s.getExtraCriteria());
+			System.out.println();
+		} */
+        
+		inputStream.close();
+		
+	}
+
+	public void storeScholarships() {
+		PrintWriter outputStream = null;
+        try {
+            outputStream = new PrintWriter(new FileOutputStream (scholarshipDir, false));  //for append
+		}
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + scholarshipDir);
+            System.exit(0);
+        }
+		
+		for (Scholarship s : allScholarships) {
+			outputStream.println(s.getName());
+			outputStream.println(s.getRewardAmount());
+			outputStream.println(s.getSemester());
+			outputStream.println(s.getYear());
+			outputStream.println(s.getReceive());
+			outputStream.println(s.getGPAreq());
+			outputStream.println(s.getWonTranscript());
+			outputStream.println(s.getDeptSpecific());
+			outputStream.println(s.getFacultySpecific());
+			outputStream.println(s.getUniSpecific());
+			outputStream.println(s.getDegreeSpecific());
+			outputStream.println(s.getExtraCriteria());
+			outputStream.println();
+		}     
+        
+		outputStream.close();
+		
+	}
+
+	public void loadScholarshipApplicants() {
+		Scanner inputStream = null;
+        try {
+           inputStream = new Scanner(new File(scholarshipAppDir));
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + scholarshipAppDir);
+            System.exit(0);
+        }
+        
+        // parse file to see if user exists
+        while (inputStream.hasNextLine()) {
+
+			Scholarship s = findScholarship(inputStream.nextLine());
+
+			while (inputStream.hasNextLine()) {
+				String line = inputStream.nextLine();
+				if (line.equals("")) {
+					break;
+				}
+				else {
+					s.addApplicant(line);
+				}
+			}
+        }    
+		
+		// For debugging
+/*         for (Scholarship s : allScholarships) {
+			for (String a : s.getApplicants()) {
+				System.out.println(s.getName() + " " + a);
+			}
+			System.out.println();
+		} */
+        
+		inputStream.close();
+		
+	}
+
+	public void storeScholarshipApplicants() {
+		PrintWriter outputStream = null;
+        try {
+            outputStream = new PrintWriter(new FileOutputStream (scholarshipAppDir, false));  //for append
+		}
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + scholarshipAppDir);
+            System.exit(0);
+        }
+		
+		for (Scholarship s : allScholarships) {
+			outputStream.println(s.getName());
+			for (String a : s.getApplicants()) {
+				outputStream.println(a);
+			}
+			outputStream.println();
+		}     
+        
+		outputStream.close();
+		
+	}	
+
+	public void loadStudents() {
+		Scanner inputStream = null;
+        try {
+           inputStream = new Scanner(new File(userInfoDatabase));
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + userInfoDatabase);
+            System.exit(0);
+        }
+        
+        // look for students
+        while (inputStream.hasNextLine()) {
+
+			String username = inputStream.next();
+			String password = inputStream.next();
+			String role = inputStream.next();
+
+			if (role.equals("Student")) {
+				allStudents.add(new Student(username,password));
+			}
+        }    
+		
+		// For debugging
+/*         for (Student s : allStudents) {
+			System.out.println("username: " + s.getUsername());
+			System.out.println("password: " + s.getPassword());
+			System.out.println();
+		} */
+        
+		inputStream.close();
+		
+	}
+
+	public void loadStudentFiles() {
+		Scanner inputStream = null;
+        try {
+           inputStream = new Scanner(new File(studentsFilesDir));
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + studentsFilesDir);
+            System.exit(0);
+        }
+        
+        // parse file to see if user exists
+        while (inputStream.hasNextLine()) {
+
+			Student s = findStudent(inputStream.nextLine());
+
+			while (inputStream.hasNextLine()) {
+				String line = inputStream.nextLine();
+				if (line.equals("")) {
+					break;
+				}
+				else {
+					s.addStudentFiles(line);
+				}
+			}
+        }    
+		
+		// For debugging
+/*         for (Student s : allStudents) {
+			for (String a : s.getStudentFiles()) {
+				System.out.println(s.getUsername() + " " + a);
+			}
+			System.out.println();
+		} */
+        
+		inputStream.close();
+		
+	}
+
+	public void storeStudentFiles() {
+		PrintWriter outputStream = null;
+        try {
+            outputStream = new PrintWriter(new FileOutputStream (studentsFilesDir, false));  //for append
+		}
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + studentsFilesDir);
+            System.exit(0);
+        }
+		
+		for (Student s : allStudents) {
+			outputStream.println(s.getUsername());
+			for (String a : s.getStudentFiles()) {
+				outputStream.println(a);
+			}
+			outputStream.println();
+		}     
+        
+		outputStream.close();
+		
+	}
+
+	public void loadStudentApplied() {
+		Scanner inputStream = null;
+        try {
+           inputStream = new Scanner(new File(studentsAppliedDir));
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + studentsAppliedDir);
+            System.exit(0);
+        }
+        
+        // parse file to see if user exists
+        while (inputStream.hasNextLine()) {
+
+			Student s = findStudent(inputStream.nextLine());
+
+			while (inputStream.hasNextLine()) {
+				String line = inputStream.nextLine();
+				if (line.equals("")) {
+					break;
+				}
+				else {
+					s.addStudentApplied(line);
+				}
+			}
+        }    
+		
+		// For debugging
+/*         for (Student s : allStudents) {
+			for (String a : s.getStudentApplied()) {
+				System.out.println(s.getUsername() + " " + a);
+			}
+			System.out.println();
+		} */
+        
+		inputStream.close();
+		
+	}
+
+	public void storeStudentApplied() {
+		PrintWriter outputStream = null;
+        try {
+            outputStream = new PrintWriter(new FileOutputStream (studentsAppliedDir, false));  //for append
+		}
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + studentsAppliedDir);
+            System.exit(0);
+        }
+		
+		for (Student s : allStudents) {
+			outputStream.println(s.getUsername());
+			System.out.println("size: " + s.getStudentApplied().size());
+			for (String a : s.getStudentApplied()) {
+				outputStream.println(a);
+			}
+			outputStream.println();
+		}     
+        
+		outputStream.close();
+		
+	}
+
+	// Duplicate function in Student
+	public Scholarship findScholarship(String name) {
+		Scholarship toReturn = new Scholarship();
+		for (Scholarship s : allScholarships) {
+			if (s.getName().equals(name)) {
+				toReturn = s;
+			}
+		}
+		return toReturn;
+	}
+	
+	public Student findStudent(String name) {
+		Student toReturn = new Student();
+		for (Student s : allStudents) {
+			if (s.getUsername().equals(name)) {
+				toReturn = s;
+			}
+		}
+		return toReturn;
+	}
+    
+    public boolean loginGui(String user, String Password, String role) {
+		
+        Scanner inputStream =null;
+        try {
+            inputStream = new Scanner(new File(userInfoDatabase));
+            //File a = new File("");
+            //System.out.println(this.getClass().getResource("UserInfoDatabase.txt"));
+            //inputStream = new Scanner(a);
+    
+            //URL url = getClass().getResource(userInfoDatabase);
+            //File a = new File(url.toURI());
+            //inputStream = new Scanner(a);
+    
+            //System.out.println(file.getAbsoloutePath);
+            //File check = new File(userInfoDatabase);
+        }
+        catch(FileNotFoundException e ) {
+            System.out.println("Error opening the file " + userInfoDatabase);
+            //System.out.println(inputStream);
+            //System.out.println(a.getAbsoloutePath);
+            System.exit(0);
+        }
+    /* 		catch(URISyntaxException e) {
+            System.out.println("URI EXCEPTION");
+            System.exit(0);
+        } */
+        
+        
+         while (inputStream.hasNextLine()) {
+              try {
+                    String readUser = inputStream.next();
+                    String readPass = inputStream.next();
+                    String readRole = inputStream.next();
+                  
+                  if (readUser.contentEquals(user) && readPass.contentEquals(Password) && readRole.contentEquals(role)) {
+                      System.out.println("Login successful.");
+                      return true;
+                  } 
+              } 
+              catch (NoSuchElementException e) {
+                  System.out.println("Login error."); 
+              }
+       }
+         return false;
+        
+        
+    }
 }

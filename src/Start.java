@@ -9,9 +9,12 @@ import java.io.*;
 
 public class Start {
 	
-	private String userInfoDatabase = "databases\\userInfo.txt";
-	private String scholarshipDir = "databases\\scholarships\\scholarships.txt";
-	private String scholarshipAppDir = "databases\\scholarships\\applicants.txt";
+	private String userInfoDatabase = "databases/userInfo.txt";
+	private String scholarshipDir = "databases/scholarships/scholarships.txt";
+	private String scholarshipAppDir = "databases/scholarships/applicants.txt";
+	private String studentsAppliedDir = "databases/students/applied.txt";
+	private String studentsFilesDir = "databases/students/files.txt";
+	private String studentsGrantedDir = "databases/students/granted.txt";
 
 	private String username; 
 	private String password; 
@@ -20,6 +23,7 @@ public class Start {
 	private boolean loginSuccess = false;
 	
 	private ArrayList<Scholarship> allScholarships = new ArrayList<Scholarship>();
+	private ArrayList<Student> allStudents = new ArrayList<Student>();
 	
 	// Getters
 	public String getUsername() {
@@ -65,6 +69,7 @@ public class Start {
 		
 		if (prompt1.contentEquals("register")) {
 			register();
+			loadStudents();
 		}
 		else if (prompt1.contentEquals("login")) {
 			login();
@@ -161,8 +166,13 @@ public class Start {
         	setRole(pendingRole);
         	
         	if (getRole().contentEquals("Student")) {
-        		Student newStudent = new Student(getUsername(),getPassword());
-        		studentCommands(newStudent);
+				//Student newStudent = new Student(getUsername(),getPassword());
+				for (Student a : allStudents) {
+					if (username.equals(a.getUsername()) && password.equals(a.getPassword())) {
+						studentCommands(a);
+					}
+				}
+        		
         	}
         	else if (getRole().contentEquals("Coordinator")) {
         		Coordinator newCoordinator = new Coordinator(getUsername(),getPassword());
@@ -211,6 +221,7 @@ public class Start {
 		else if (command.contentEquals("Apply for scholarships")) {
 			inputStudent.chooseTerm(inputStudent, getAllScholarships());
 			storeScholarshipApplicants();
+			storeStudentApplied();
 			studentCommands(inputStudent);
 		}
 		
@@ -221,6 +232,7 @@ public class Start {
 		
 		else if (command.contentEquals("Upload transcripts, certificates, essays")) {
 			inputStudent.upload();
+			storeStudentFiles();
 			studentCommands(inputStudent);
 		}	
 		
@@ -249,7 +261,7 @@ public class Start {
 
 		System.out.println("***********************************************************************************************");
 		System.out.println("Here are your options: \n <View all scholarships> \n <View statistics for all scholarships> \n <Add scholarships> "
-				+ "\n <Edit scholarships> \n <Remove scholarships> \n <Grant scholarships> \n <Log out>");
+				+ "\n <Edit scholarships> \n <Remove scholarships> \n <Grant scholarships> \n <View student profiles> \n <Log out>");
 		System.out.println("Please type the option of your choosing EXACTLY as it is shown. It is case-sensitive.");
 		
 		Scanner newCommand = new Scanner(System.in);
@@ -290,7 +302,12 @@ public class Start {
 		}	
 		
 		else if (command.contentEquals("Grant scholarships")) {
-			inputCoordinator.grantScholarship();
+			inputCoordinator.grantScholarship(allScholarships);
+			coordinatorCommands(inputCoordinator);
+		}
+
+		else if (command.contentEquals("View student profiles")) {
+			inputCoordinator.viewProfiles(allStudents);
 			coordinatorCommands(inputCoordinator);
 		}
 		
@@ -482,6 +499,161 @@ public class Start {
 		
 	}	
 
+	public void loadStudents() {
+		Scanner inputStream = null;
+        try {
+           inputStream = new Scanner(new File(userInfoDatabase));
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + userInfoDatabase);
+            System.exit(0);
+        }
+        
+        // look for students
+        while (inputStream.hasNextLine()) {
+
+			String username = inputStream.next();
+			String password = inputStream.next();
+			String role = inputStream.next();
+
+			if (role.equals("Student")) {
+				allStudents.add(new Student(username,password));
+			}
+        }    
+		
+		// For debugging
+/*         for (Student s : allStudents) {
+			System.out.println("username: " + s.getUsername());
+			System.out.println("password: " + s.getPassword());
+			System.out.println();
+		} */
+        
+		inputStream.close();
+		
+	}
+
+	public void loadStudentFiles() {
+		Scanner inputStream = null;
+        try {
+           inputStream = new Scanner(new File(studentsFilesDir));
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + studentsFilesDir);
+            System.exit(0);
+        }
+        
+        // parse file to see if user exists
+        while (inputStream.hasNextLine()) {
+
+			Student s = findStudent(inputStream.nextLine());
+
+			while (inputStream.hasNextLine()) {
+				String line = inputStream.nextLine();
+				if (line.equals("")) {
+					break;
+				}
+				else {
+					s.addStudentFiles(line);
+				}
+			}
+        }    
+		
+		// For debugging
+/*         for (Student s : allStudents) {
+			for (String a : s.getStudentFiles()) {
+				System.out.println(s.getUsername() + " " + a);
+			}
+			System.out.println();
+		} */
+        
+		inputStream.close();
+		
+	}
+
+	public void storeStudentFiles() {
+		PrintWriter outputStream = null;
+        try {
+            outputStream = new PrintWriter(new FileOutputStream (studentsFilesDir, false));  //for append
+		}
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + studentsFilesDir);
+            System.exit(0);
+        }
+		
+		for (Student s : allStudents) {
+			outputStream.println(s.getUsername());
+			for (String a : s.getStudentFiles()) {
+				outputStream.println(a);
+			}
+			outputStream.println();
+		}     
+        
+		outputStream.close();
+		
+	}
+
+	public void loadStudentApplied() {
+		Scanner inputStream = null;
+        try {
+           inputStream = new Scanner(new File(studentsAppliedDir));
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + studentsAppliedDir);
+            System.exit(0);
+        }
+        
+        // parse file to see if user exists
+        while (inputStream.hasNextLine()) {
+
+			Student s = findStudent(inputStream.nextLine());
+
+			while (inputStream.hasNextLine()) {
+				String line = inputStream.nextLine();
+				if (line.equals("")) {
+					break;
+				}
+				else {
+					s.addStudentApplied(line);
+				}
+			}
+        }    
+		
+		// For debugging
+/*         for (Student s : allStudents) {
+			for (String a : s.getStudentApplied()) {
+				System.out.println(s.getUsername() + " " + a);
+			}
+			System.out.println();
+		} */
+        
+		inputStream.close();
+		
+	}
+
+	public void storeStudentApplied() {
+		PrintWriter outputStream = null;
+        try {
+            outputStream = new PrintWriter(new FileOutputStream (studentsAppliedDir, false));  //for append
+		}
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + studentsAppliedDir);
+            System.exit(0);
+        }
+		
+		for (Student s : allStudents) {
+			outputStream.println(s.getUsername());
+			System.out.println("size: " + s.getStudentApplied().size());
+			for (String a : s.getStudentApplied()) {
+				outputStream.println(a);
+			}
+			outputStream.println();
+		}     
+        
+		outputStream.close();
+		
+	}
+
+	// Duplicate function in Student
 	public Scholarship findScholarship(String name) {
 		Scholarship toReturn = new Scholarship();
 		for (Scholarship s : allScholarships) {
@@ -492,6 +664,15 @@ public class Start {
 		return toReturn;
 	}
 	
+	public Student findStudent(String name) {
+		Student toReturn = new Student();
+		for (Student s : allStudents) {
+			if (s.getUsername().equals(name)) {
+				toReturn = s;
+			}
+		}
+		return toReturn;
+	}
 	/*
 	 * public boolean returnToMenu() { boolean returnToMenu = false;
 	 * 
@@ -511,6 +692,13 @@ public class Start {
 		Start s = new Start();
 		s.loadScholarships();
 		s.loadScholarshipApplicants();
+		s.loadStudents();
+		s.loadStudentFiles();
+		s.loadStudentApplied();
+/* 		Student a = new Student("u","p");
+		s.allStudents.add(a);
+		a.upload();
+		s.storeStudentFiles(); */
 		s.initiateLogin();
 		//s.allScholarships.add(new Scholarship("s",1,"Fall",2000,1,1.0,"true","dept","fac","uni","deg","aa"));
 		//s.storeScholarships();

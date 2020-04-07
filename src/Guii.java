@@ -66,7 +66,7 @@ public class Guii extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("");
 		//lblNewLabel.setBackground(Color.WHITE);
-		Image img = new ImageIcon(this.getClass().getResource("/sask.jpg")).getImage();
+		Image img = new ImageIcon(this.getClass().getResource("/images/sask.jpg")).getImage();
 		lblNewLabel.setIcon(new ImageIcon (img));
 		lblNewLabel.setBounds(177, 33, 812, 307);
 		lblNewLabel.setBackground(Color.BLUE);

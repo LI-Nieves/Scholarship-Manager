@@ -54,7 +54,7 @@ public class AfterLogin extends JFrame {
 		
 		
 		JLabel logo = new JLabel("");
-		Image img = new ImageIcon(this.getClass().getResource("/rsz_usask.png")).getImage();
+		Image img = new ImageIcon(this.getClass().getResource("/images/rsz_usask.png")).getImage();
 		logo.setIcon(new ImageIcon (img));
 		logo.setBounds(0, 0, 179, 161);
 		contentPane.add(logo);
@@ -87,7 +87,7 @@ public class AfterLogin extends JFrame {
 		LocalDateTime now = LocalDateTime.now();  
 		
 		JLabel lblNewLabel = new JLabel("");
-		Image img1 = new ImageIcon(this.getClass().getResource("/rsz_2019_05_03-cap_and_gown_commercial_shoot_jatorner_-0255-web.jpg")).getImage();
+		Image img1 = new ImageIcon(this.getClass().getResource("/images/cap_gown.jpg")).getImage();
 		lblNewLabel.setIcon(new ImageIcon (img1));
 		lblNewLabel.setBounds(0, 0, 695, 135);
 		panel_1.add(lblNewLabel);

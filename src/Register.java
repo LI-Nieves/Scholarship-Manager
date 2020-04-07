@@ -74,7 +74,7 @@ public class Register extends JFrame {
 		contentPane.add(lblStudentid);
 		
 		JLabel logo = new JLabel("");
-		Image img = new ImageIcon(this.getClass().getResource("/rsz_usask.png")).getImage();
+		Image img = new ImageIcon(this.getClass().getResource("/images/rsz_usask.png")).getImage();
 		logo.setIcon(new ImageIcon (img));
 		logo.setBounds(0, 0, 179, 161);
 		contentPane.add(logo);
