@@ -44,7 +44,7 @@ public class Coordinator extends User {
 		Scanner input = new Scanner(System.in);
 		
 		// GETTING THE NAME 
-		System.out.println("What is the name of the scholarship?");
+		System.out.println("What is the name of the scholarship you'd like to add?");
 		String sName = input.nextLine();
 
 		// GETTING THE REWARD AMOUNT
@@ -258,30 +258,13 @@ public class Coordinator extends User {
 				for (String a : selectedS.getApplicants()) {
 					System.out.println("<" + counter + ">" + a);
 					counter++;
-					chooseApplicants(selectedS, inputA);
 				}
+				chooseApplicants(selectedS, inputA);
 			}
 		}
 		else {	// this probably will not be needed for the GUI
 			System.out.println("No scholarship of this name was found.");
 		}
-	}
-
-	/**
-	 * find the Scholarship associated with the name of the indicated scholarship
-	 * practically a duplicate function from Start
-	 * @param name indicated scholarship
-	 * @param inputS allScholarships
-	 * @return	the Scholarship with the name of the indicated scholarship
-	 */
-	public Scholarship findScholarship(String name, ArrayList<Scholarship> inputS) {
-		Scholarship toReturn = new Scholarship();
-		for (Scholarship s : inputS) {
-			if (s.getName().equals(name)) {
-				toReturn = s;
-			}
-		}
-		return toReturn;
 	}
 
 	/**
@@ -343,9 +326,9 @@ public class Coordinator extends User {
 
 	/**
 	 * Used to check if the student has already been granted said scholarship
-	 * @param name
-	 * @param inputA
-	 * @return
+	 * @param name		indicated student
+	 * @param inputA	allStudents
+	 * @return			true if they have, false otherwise
 	 */
 	public boolean alreadyGranted(String name, ArrayList<String> inputA) {
 		boolean toReturn = false;
@@ -361,7 +344,7 @@ public class Coordinator extends User {
 	 * Used to read the files each student uploaded.
 	 * Helper functions: viewFiles() and openFile()
 	 * A variation of viewProfiles() will probably be needed for the GUI, but the
-	 * other functions will only need minor tweaks
+	 * other functions will need some tweaks
 	 *  */
 	public void viewProfiles(ArrayList<Student> inputS) {
 		System.out.println("For which student would you like to view the profile of?");
@@ -384,6 +367,7 @@ public class Coordinator extends User {
 
 	/**
 	 * Used to see which files the indicated student uploaded
+	 * variation needed for GUI
 	 * @param inputS
 	 */
 	public void viewFiles(Student inputS) {
@@ -419,27 +403,24 @@ public class Coordinator extends User {
 
 	/**
 	 * Used to see the contents of an indicated file
+	 * Variation needed for the GUI
 	 * @param fName
 	 */
 	public void openFile(String fName) {
 		String fileDir = "uploadedFiles/" + fName;
 
 		Scanner inputStream = null;
-		try {
-		inputStream = new Scanner(new File(fileDir));
-		}
+		try { inputStream = new Scanner(new File(fileDir)); }
 		catch(FileNotFoundException e) {
 			System.out.println("Error opening the file " + fileDir);
 			System.exit(0);
 		}
 
+		// this prints the lines of the file out
 		while(inputStream.hasNextLine()) {
 			System.out.println(inputStream.nextLine());
 		}
 	}
-
-
-
 }
 
 

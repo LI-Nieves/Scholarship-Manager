@@ -9,15 +9,15 @@ import java.io.*;
 
 public class Start {
 	
-	private String userInfoDatabase = "databases/userInfo.txt";
-	private String scholarshipDir = "databases/scholarships/scholarships.txt";
-	private String scholarshipAppDir = "databases/scholarships/applicants.txt";
-	private String scholarshipGrantDir = "databases/scholarships/granted.txt";
-	private String studentsAppliedDir = "databases/students/applied.txt";
-	private String studentsFilesDir = "databases/students/files.txt";
-	private String studentsGrantedDir = "databases/students/granted.txt";
-	private String studentsAcceptedDir = "databases/students/accepted.txt";
-	private String studentsTermYearDir = "databases/students/termYear.txt";
+	private String userInfoDatabase		= "databases/userInfo.txt";
+	private String scholarshipDir		= "databases/scholarships/scholarships.txt";
+	private String scholarshipAppDir	= "databases/scholarships/applicants.txt";
+	private String scholarshipGrantDir	= "databases/scholarships/granted.txt";
+	private String studentsAppliedDir	= "databases/students/applied.txt";
+	private String studentsFilesDir		= "databases/students/files.txt";
+	private String studentsGrantedDir	= "databases/students/granted.txt";
+	private String studentsAcceptedDir	= "databases/students/accepted.txt";
+	private String studentsTermYearDir	= "databases/students/termYear.txt";
 	
 	private ArrayList<Scholarship> allScholarships = new ArrayList<Scholarship>();
 	private ArrayList<Student> allStudents = new ArrayList<Student>();
@@ -60,16 +60,15 @@ public class Start {
 	
 	/**
 	 * This is the function called if the user decides to register themselves.
+	 * Helper function: userAlreadyExists()
 	 * (Will need a variation for the GUI)
 	 */
 	public void register() {
-		System.out.println("Please register by typing your desired <username> <password> <Student, Coordinator>");
+		System.out.println("Please register by typing your desired <username> <password> <Student, Coordinator>. To cancel, type \"Please cancel registration\".");
 		
 		// Opening up for printing (I/O)
 		PrintWriter outputStream = null;
-        try {
-            outputStream = new PrintWriter(new FileOutputStream (userInfoDatabase, true));  //for append
-		}
+        try { outputStream = new PrintWriter(new FileOutputStream (userInfoDatabase, true)); }
         catch(FileNotFoundException e) {
             System.out.println("Error opening the file " + userInfoDatabase);
             System.exit(0);
@@ -86,7 +85,10 @@ public class Start {
 			System.out.println("Registration failed. Please select a valid role (Student, Staff, Coordinator). Role is case-sensitive.");
 			outputStream.close();
 		}
-		
+		else if (userAlreadyExists(username)) {
+			System.out.println("This username already exists in the server. Please try again.");
+			register();
+		}
 		// if everything is valid (minor variation needed for GUI)
 		else {
 			outputStream.print("\n" + username + " " + password + " " + role);
@@ -98,9 +100,32 @@ public class Start {
 		}
 
 		initiateLogin();
+	}
+
+	/**
+	 * Reads the database file to see if an indicated username already exists in the database
+	 * @param name	the indicated username
+	 * @return		true if it already exists, false otherwise
+	 */
+	public boolean userAlreadyExists(String name) {
+		boolean toReturn = false;
+
+		Scanner inputStream = null;
+        try { inputStream = new Scanner(new File(userInfoDatabase)); }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + userInfoDatabase);
+            System.exit(0);
+		}
 		
-		// error in case person is already in the system ?
-	
+		while (inputStream.hasNextLine()) {
+			String readUser = inputStream.next();
+			inputStream.next(); inputStream.next();	// skipping over the password and role
+			if (readUser.equals(name)) {
+				toReturn = true;
+			}
+		}
+
+		return toReturn;
 	}
 	
 	/**
@@ -118,9 +143,7 @@ public class Start {
 		
 		// in case of error in reading from file
         Scanner inputStream = null;
-        try {
-           inputStream = new Scanner(new File(userInfoDatabase));
-        }
+        try { inputStream = new Scanner(new File(userInfoDatabase)); }
         catch(FileNotFoundException e) {
             System.out.println("Error opening the file " + userInfoDatabase);
             System.exit(0);
@@ -187,7 +210,7 @@ public class Start {
 		System.out.println("***********************************************************************************************");
 		System.out.println("Here are your options: \n <View all scholarships> \n <Apply for scholarships> "
 				+ "\n <View scholarships I've applied to> \n <Upload transcripts, certificates, essays> " +
-				"\n <View and accept granted scholarships> \n <Log out>");
+				"\n <View my uploaded files> \n <View and accept granted scholarships> \n <Log out>");
 		System.out.println("Please type the option of your choosing EXACTLY as it is shown. It is case-sensitive.");
 		
 		Scanner newCommand = new Scanner(System.in);
@@ -214,7 +237,12 @@ public class Start {
 			inputStudent.upload();
 			storeStudentFiles();
 			studentCommands(inputStudent);
-		}	
+		}
+		
+		else if (command.contentEquals("View my uploaded files")) {
+			inputStudent.viewUploaded();
+			studentCommands(inputStudent);
+		}
 
 		else if (command.contentEquals("View and accept granted scholarships")) {
 			inputStudent.viewGranted(allScholarships);
@@ -603,7 +631,6 @@ public class Start {
 		
 		for (Student s : allStudents) {
 			outputStream.println(s.getUsername());
-			System.out.println("size: " + s.getStudentApplied().size());
 			for (String a : s.getStudentApplied()) {
 				outputStream.println(a);
 			}
@@ -641,12 +668,12 @@ public class Start {
         }    
 		
 		// For debugging
-        for (Scholarship s : allScholarships) {
+/*         for (Scholarship s : allScholarships) {
 			for (String a : s.getGranted()) {
 				System.out.println(s.getName() + " " + a);
 			}
 			System.out.println();
-		}
+		} */
         
 		inputStream.close();
 		
@@ -724,7 +751,6 @@ public class Start {
 		
 		for (Student s : allStudents) {
 			outputStream.println(s.getUsername());
-			System.out.println("size: " + s.getStudentApplied().size());
 			for (String a : s.getStudentGranted()) {
 				outputStream.println(a);
 			}
@@ -855,7 +881,7 @@ public class Start {
 		
 	}
 
-	// Duplicate function in Student
+	// Similar function in Student
 	public Scholarship findScholarship(String name) {
 		Scholarship toReturn = new Scholarship();
 		for (Scholarship s : allScholarships) {

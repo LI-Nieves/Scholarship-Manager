@@ -1,9 +1,18 @@
 Jason Lang
 hi
+comp
 
 Super Scholarship
 l
+comp
 
 Average Scholarship
 l
+comp
+
+Cool Scholarship
+comp
+
+Uncool Scholarship
+comp
 

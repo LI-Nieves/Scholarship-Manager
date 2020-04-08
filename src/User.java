@@ -34,7 +34,8 @@ public class User {
 	/**
 	 * Method used to view all scholarships available
 	 * A variation of this will be needed for the GUI
-	 *  */ 
+	 * @param inputScholarship
+	 */
 	public void viewScholarships(ArrayList<Scholarship> inputScholarship) {
 		if (inputScholarship.size() <= 0) {
 			System.out.println("There are no scholarships available.");
@@ -48,6 +49,23 @@ public class User {
 			System.out.println();
 		}
 
+	}
+
+	/**
+	 * find the Scholarship associated with the name of the indicated scholarship
+	 * practically a duplicate function from Start, and this method is used in both Coordinator and Student
+	 * @param name indicated scholarship
+	 * @param inputS allScholarships
+	 * @return	the Scholarship with the name of the indicated scholarship
+	 */
+	public Scholarship findScholarship(String name, ArrayList<Scholarship> inputS) {
+		Scholarship toReturn = new Scholarship();
+		for (Scholarship s : inputS) {
+			if (s.getName().equals(name)) {
+				toReturn = s;
+			}
+		}
+		return toReturn;
 	}
 
 }

@@ -11,3 +11,12 @@ nom
 hi
 Jason Lang
 
+k
+
+comp
+Cool Scholarship
+Jason Lang
+Super Scholarship
+Average Scholarship
+Uncool Scholarship
+

@@ -7,3 +7,5 @@ nom pass Student
 q r Coordinator
 a b Coordinator
 hi there Student
+k t Student
+comp sci Student

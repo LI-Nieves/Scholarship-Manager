@@ -8,3 +8,10 @@ user
 
 nom
 
+hi
+
+k
+
+comp
+CompSciTranscript.txt
+
