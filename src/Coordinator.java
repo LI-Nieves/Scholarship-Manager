@@ -215,7 +215,39 @@ public class Coordinator extends User {
 		Scanner input = new Scanner(System.in);
 		String findName = input.nextLine(); // this is the name of the scholarship to delete
 
-		ArrayList<Integer> indicesToDelete = new ArrayList<Integer>(); // this is where we will store the indices of the scholarships with the indicated name
+		Scholarship scholSelected = findScholarship(findName, inputS);
+
+		if (scholSelected.getName() != null) {
+			// if the scholarship has already been granted to students, it shouldn't be removed - that's messed up
+			if (scholSelected.getGranted().size() > 0) {
+				System.out.println("This scholarship has already been granted. You cannot remove/edit it.");
+			}
+			// if students have already applied to the scholarship...
+			else if (scholSelected.getApplicants().size() > 0) {
+				System.out.println("Students have already applied to this scholarship. You cannot remove/edit it.");
+			}
+			// otherwise...
+			else {
+				int count = 0;
+				int indexOfSchol = 0;
+				for (Scholarship s : inputS) {
+					if (s.getName().equals(scholSelected.getName())) {
+						s.remove();
+						indexOfSchol = count;
+					}
+					count++;
+				}
+				inputS.remove(indexOfSchol);
+				System.out.println(findName + " has been removed.");
+			}
+		}
+		else {
+			System.out.println("There is no scholarship with that name.");
+		}
+
+		return inputS;
+
+/* 		ArrayList<Integer> indicesToDelete = new ArrayList<Integer>(); // this is where we will store the indices of the scholarships with the indicated name
 		int i = 0;
 		
 		for (Scholarship s : inputS) { // looking through all scholarships for the name...
@@ -229,7 +261,7 @@ public class Coordinator extends User {
 			inputS.set(a, null);
 			inputS.remove(a);
 		}
-		return inputS;
+		return inputS; */
 	}
 	
 	/**

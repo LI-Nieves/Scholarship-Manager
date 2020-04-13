@@ -309,6 +309,8 @@ public class Start {
 		else if (command.contentEquals("Remove scholarships")) {
 			this.allScholarships = inputCoordinator.removeScholarships(allScholarships);
 			storeScholarships();
+			storeStudentApplied();
+			storeScholarshipApplicants();
 			coordinatorCommands(inputCoordinator);
 		}	
 		

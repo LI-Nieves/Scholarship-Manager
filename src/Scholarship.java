@@ -43,6 +43,23 @@ public class Scholarship {
 		setDegreeSpecific(inputDeg);
 		setCriteria(inputCrit);
 	}
+
+	public void remove() {
+		this.name = "<REMOVED SCHOLARSHIP>";
+		this.rewardAmount = 0;
+		this.semester = null;
+		this.year = 0;
+		this.receive = 0;
+		this.GPAreq = 0;
+		this.wOnTranscript = null;
+		this.deptSpecific = null;
+		this.facultySpecific = null; 
+		this.uniSpecific = null; 
+		this.degreeSpecific = null; 
+		this.extraCriteria = null; 
+		this.applicants = new ArrayList<String>();
+		this.grantedTo = new ArrayList<String>();
+	}
 	
 	// GETTERS
 	public String getName() {
