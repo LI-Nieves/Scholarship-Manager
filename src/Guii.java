@@ -1,4 +1,4 @@
-package logic;
+
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -22,7 +22,8 @@ import javax.swing.JCheckBox;
 import java.util.concurrent.TimeUnit;
 
 public class Guii extends JFrame {
-
+	String Login_Username;
+	String Login_Password;
 	private JPanel contentPane;
 	private JTextField UsernameField;
 	private JTextField textField_1;
@@ -123,9 +124,9 @@ public class Guii extends JFrame {
 		lblNewLabel_1.setBounds(926, 335, 154, 38);
 		contentPane.add(lblNewLabel_1);
 		
-		JLabel lblRegisterUsingYour = new JLabel("Register Using your Student ID!");
-		lblRegisterUsingYour.setBounds(902, 436, 199, 16);
-		contentPane.add(lblRegisterUsingYour);
+		//JLabel lblRegisterUsingYour = new JLabel("Register Using your Student ID!");
+		//lblRegisterUsingYour.setBounds(902, 436, 199, 16);
+		//contentPane.add(lblRegisterUsingYour);
 		
 		
 		
@@ -157,10 +158,12 @@ public class Guii extends JFrame {
 		JButton btnNewButton = new JButton("Login");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				StartGui Lets_Login = new StartGui();
+				Start Lets_Login = new Start();
 				String Login_User = UsernameField.getText();
-				char[] Login_Password = password.getPassword();
-				String Login_Password1 = new String(Login_Password);
+				Login_Username = Login_User;
+				char[] Login_Pass = password.getPassword();
+				String Login_Pass1 = new String(Login_Pass);
+				Login_Password = Login_Pass1;
 				String role;
 				if(chckbxCoordinator.isSelected()) {
 					role = "Coordinator";
@@ -173,11 +176,17 @@ public class Guii extends JFrame {
 				else {
 					role = "";
 				}
-				boolean Login_Work = Lets_Login.loginGui(Login_User, Login_Password1, role);
-				if(Login_Work) {
-					AfterLogin Loggedin = new AfterLogin();
+				boolean Login_Work = Lets_Login.loginGui(Login_User, Login_Pass1, role);
+				if(Login_Work & role.equals("Student")) {
+					AfterLogin Loggedin = new AfterLogin(Login_User);
 					Loggedin.setVisible(true);
 					frame.setVisible(false);
+				}
+				else if(Login_Work & role.equals("Coordinator")) {
+					AfterLoginCoord logginCord = new AfterLoginCoord(Login_Username);
+					logginCord.setVisible(true);
+					frame.setVisible(false);
+					
 				}
 				else {
 					//AfterLogin Loggedin = new AfterLogin();

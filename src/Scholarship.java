@@ -1,4 +1,4 @@
-package logic;
+
 
 import java.util.*;
 
@@ -27,6 +27,7 @@ public class Scholarship {
 	
 	// Constructors
 	public Scholarship() {}
+	
 
 	public Scholarship(String inputName, int inputReward, String inputSem, int inputYear, int inputRec, double inputGPA, String inputW, String inputDept, 
 		String inputFac, String inputUni, String inputDeg, String inputCrit) {
@@ -43,7 +44,6 @@ public class Scholarship {
 		setDegreeSpecific(inputDeg);
 		setCriteria(inputCrit);
 	}
-
 	public void remove() {
 		this.name = "<REMOVED SCHOLARSHIP>";
 		this.rewardAmount = 0;

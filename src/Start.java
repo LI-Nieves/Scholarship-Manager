@@ -1,4 +1,4 @@
-package logic;
+
 
 import java.util.*;
 import java.io.*;
@@ -26,10 +26,16 @@ public class Start {
 	public ArrayList<Scholarship> getAllScholarships(){ 
 		return new ArrayList<Scholarship>(this.allScholarships);
 	}
+	public ArrayList<Student> getAllStudents(){ 
+		return new ArrayList<Student>(this.allStudents);
+	}
 
 	// Setters
 	public void addtoAllScholarships(Scholarship s) {
 		this.allScholarships.add(s);
+	}
+	public void setAllScholarships(ArrayList<Scholarship> change) {
+		this.allScholarships=change;
 	}
 	
 	/**
@@ -100,6 +106,45 @@ public class Start {
 		}
 
 		initiateLogin();
+	}
+	public int registerGui(String username, String password, String role) {
+		//System.out.println("Please register by typing your desired <username> <password> <Student, Coordinator>. To cancel, type \"Please cancel registration\".");
+		
+		// Opening up for printing (I/O)
+		PrintWriter outputStream = null;
+        try { outputStream = new PrintWriter(new FileOutputStream (userInfoDatabase, true)); }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + userInfoDatabase);
+            System.exit(0);
+        }
+     // Registering them (for the GUI, use text boxes)
+     		//Scanner register = new Scanner(System.in);
+     		//String username = register.next();
+     		//String password = register.next();
+     		//String role = register.next();
+     	
+     		// if the entered role is invalid (for the GUI, this might not be needed - use tick boxes)
+     		if (!(role.contentEquals("Student")) && !(role.contentEquals("Coordinator"))) {
+     			System.out.println("Registration failed. Please select a valid role (Student,Coordinator). Role is case-sensitive.");
+     			outputStream.close();
+     			return 1;
+     		}
+     		else if (userAlreadyExists(username)) {
+     			System.out.println("This username already exists in the server. Please try again.");
+     			return 2;
+     			//register();
+     		}
+     		// if everything is valid (minor variation needed for GUI)
+     		else {
+     			outputStream.print("\n" + username + " " + password + " " + role);
+     			if (role.equals("Student")) {
+     				allStudents.add(new Student(username,password)); // if the newly registered person is a student, create an object for them
+     			}
+     			System.out.println("Registration successful.");
+     	        outputStream.close();	
+     		}
+     		return 3;
+
 	}
 
 	/**
@@ -200,6 +245,53 @@ public class Start {
         
 		// try-catch: if parsing fails, spit out error
 	}
+public boolean loginGui(String user, String Password, String role) {
+		
+        Scanner inputStream =null;
+        try {
+            inputStream = new Scanner(new File(userInfoDatabase));
+            //File a = new File("");
+            //System.out.println(this.getClass().getResource("UserInfoDatabase.txt"));
+            //inputStream = new Scanner(a);
+    
+            //URL url = getClass().getResource(userInfoDatabase);
+            //File a = new File(url.toURI());
+            //inputStream = new Scanner(a);
+    
+            //System.out.println(file.getAbsoloutePath);
+            //File check = new File(userInfoDatabase);
+        }
+        catch(FileNotFoundException e ) {
+            System.out.println("Error opening the file " + userInfoDatabase);
+            //System.out.println(inputStream);
+            //System.out.println(a.getAbsoloutePath);
+            System.exit(0);
+        }
+    /* 		catch(URISyntaxException e) {
+            System.out.println("URI EXCEPTION");
+            System.exit(0);
+        } */
+        
+        
+         while (inputStream.hasNextLine()) {
+              try {
+                    String readUser = inputStream.next();
+                    String readPass = inputStream.next();
+                    String readRole = inputStream.next();
+                  
+                  if (readUser.contentEquals(user) && readPass.contentEquals(Password) && readRole.contentEquals(role)) {
+                      System.out.println("Login successful.");
+                      return true;
+                  } 
+              } 
+              catch (NoSuchElementException e) {
+                  System.out.println("Login error."); 
+              }
+       }
+         return false;
+        
+        
+    }
 	
 	/**
 	 * Once a student logs in, these are the actions they can do
@@ -221,7 +313,7 @@ public class Start {
 			studentCommands(inputStudent);
 		}
 		
-		else if (command.contentEquals("Apply for scholarships")) {
+		else if (command.contentEquals("Apply for scholarships")) { // *******************************
 			inputStudent.chooseTerm(inputStudent, getAllScholarships());
 			storeScholarshipApplicants();
 			storeStudentApplied();
@@ -233,7 +325,7 @@ public class Start {
 			studentCommands(inputStudent);
 		}		
 		
-		else if (command.contentEquals("Upload transcripts, certificates, essays")) {
+		else if (command.contentEquals("Upload transcripts, certificates, essays")) {       // Instead of uploading, u modify your Portfolio
 			inputStudent.upload();
 			storeStudentFiles();
 			studentCommands(inputStudent);
@@ -244,14 +336,14 @@ public class Start {
 			studentCommands(inputStudent);
 		}
 
-		else if (command.contentEquals("View and accept granted scholarships")) {
+		else if (command.contentEquals("View and accept granted scholarships")) {		//Check over, Error with checkGrantedGui
 			inputStudent.viewGranted(allScholarships);
 			storeStudentAccepted();
 			storeStudentTermYear();
 			studentCommands(inputStudent);
 		}
 		
-		else if (command.contentEquals("Log out")) {
+		else if (command.contentEquals("Log out")) {							
 			System.out.println("Thank you for using USask's Scholarship Center!");
 			initiateLogin();
 		}
@@ -276,24 +368,24 @@ public class Start {
 		Scanner newCommand = new Scanner(System.in);
 		String command = newCommand.nextLine();
 		
-		if (command.contentEquals("View all scholarships")) {
+		if (command.contentEquals("View all scholarships")) {			
 			inputCoordinator.viewScholarships(allScholarships);
 			coordinatorCommands(inputCoordinator);
 		}
 
-		else if (command.contentEquals("View statistics for all scholarships")) {
+		else if (command.contentEquals("View statistics for all scholarships")) {		//Prints all as of now, can print one by one later if needed
 			inputCoordinator.viewStatistics(allScholarships);
 			coordinatorCommands(inputCoordinator);
 		}
 		
-		else if (command.contentEquals("Add scholarships")) {
+		else if (command.contentEquals("Add scholarships")) {			//***************************
 			Scholarship newS = inputCoordinator.addScholarship();
 			addtoAllScholarships(newS);
 			storeScholarships();
 			coordinatorCommands(inputCoordinator);
 		}
 		
-		else if (command.contentEquals("Edit scholarships")) {
+		else if (command.contentEquals("Edit scholarships")) {			//**************************
 			// Somewhat questionable implementation - I noticed that editing a scholarship would take a 
 			// ridiculous amount of time, so instead it just allows them to remove the indicated one and
 			// create a new one. You can do this differently in the GUI if you want.
@@ -306,7 +398,7 @@ public class Start {
 		}		
 		
 		// errors to consider: what if several scholarships have the same name?
-		else if (command.contentEquals("Remove scholarships")) {
+		else if (command.contentEquals("Remove scholarships")) {					// Removes from Getall, but what if a student applied for it? Doesn't remove it from there
 			this.allScholarships = inputCoordinator.removeScholarships(allScholarships);
 			storeScholarships();
 			storeStudentApplied();
@@ -314,19 +406,19 @@ public class Start {
 			coordinatorCommands(inputCoordinator);
 		}	
 		
-		else if (command.contentEquals("Grant scholarships")) {
+		else if (command.contentEquals("Grant scholarships")) {					//I think its done?
 			inputCoordinator.grantScholarship(allScholarships, allStudents);
 			storeScholarshipGrant();
 			storeStudentGranted();
 			coordinatorCommands(inputCoordinator);
 		}
 
-		else if (command.contentEquals("View student profiles")) {
+		else if (command.contentEquals("View student profiles")) {				
 			inputCoordinator.viewProfiles(allStudents);
 			coordinatorCommands(inputCoordinator);
 		}
 		
-		else if (command.contentEquals("Log out")) {
+		else if (command.contentEquals("Log out")) {			
 			System.out.println("Thank you for using USask's Scholarship Center!");
 			initiateLogin();
 		}
@@ -903,6 +995,16 @@ public class Start {
 		}
 		return toReturn;
 	}
+	public boolean checkStudentGui(String name) {
+		Student toReturn = new Student();
+		for (Student s : allStudents) {
+			if (s.getUsername().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	public static void main(String[] args) {
 		Start s = new Start();

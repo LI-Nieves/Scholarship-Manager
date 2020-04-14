@@ -1,4 +1,4 @@
-package logic;
+
 
 import java.util.*;
 import java.io.*;
@@ -8,6 +8,9 @@ public class Coordinator extends User {
 	// Constructor
 	public Coordinator(String inputUsername, String inputPassword) {
 		super(inputUsername,inputPassword);
+	}
+	public Coordinator(String inputUsername) {	// I ADDED THIS -KAM
+		super(inputUsername);
 	}
 	
 	/**
@@ -30,6 +33,28 @@ public class Coordinator extends User {
 				}
 			}
 		}
+	}
+	public String viewAllStatisticsGui(ArrayList<Scholarship> inputS) {
+		String returnThis = "";
+		//System.out.println("For which scholarship would you like to see statistics for?");
+
+		//Scanner inputStat = new Scanner(System.in);
+		//String statSchol = inputStat.nextLine();
+
+		for (Scholarship s : inputS) {
+			//if (s.getName().equals(statSchol)) {
+				//System.out.println("This scholarship will be granted to " + s.getReceive() + " applicants.\n" + 
+				//s.getApplicants().size() + " students have applied to this scholarship:");
+			returnThis = returnThis+s.getName()+":\nThis scholarship will be granted to " + s.getReceive() + " applicants.\n" + 
+					s.getApplicants().size() + " students have applied to this scholarship:\n\n";
+				for (String a : s.getApplicants()) {
+					//System.out.println(a);
+					returnThis = returnThis+" * "+a+"\n";
+				}
+				returnThis = returnThis +"\n\n--------------------------------------------------------------------------------------\n\n";
+			//}
+		}
+		return returnThis;
 	}
 
 	/**
@@ -246,8 +271,16 @@ public class Coordinator extends User {
 		}
 
 		return inputS;
+		
+		
+		
+		
+		/**
+		System.out.println("What is the name of the scholarship you'd like to delete?"); 
+		Scanner input = new Scanner(System.in);
+		String findName = input.nextLine(); // this is the name of the scholarship to delete
 
-/* 		ArrayList<Integer> indicesToDelete = new ArrayList<Integer>(); // this is where we will store the indices of the scholarships with the indicated name
+		ArrayList<Integer> indicesToDelete = new ArrayList<Integer>(); // this is where we will store the indices of the scholarships with the indicated name
 		int i = 0;
 		
 		for (Scholarship s : inputS) { // looking through all scholarships for the name...
@@ -261,7 +294,29 @@ public class Coordinator extends User {
 			inputS.set(a, null);
 			inputS.remove(a);
 		}
-		return inputS; */
+		return inputS;
+		**/
+	}
+	public ArrayList<Scholarship> removeScholarshipsGui(ArrayList<Scholarship> inputS, String delete) {
+		//System.out.println("What is the name of the scholarship you'd like to delete?"); 
+		//Scanner input = new Scanner(System.in);
+		//String findName = input.nextLine(); // this is the name of the scholarship to delete
+
+		ArrayList<Integer> indicesToDelete = new ArrayList<Integer>(); // this is where we will store the indices of the scholarships with the indicated name
+		int i = 0;
+		
+		for (Scholarship s : inputS) { // looking through all scholarships for the name...
+			if (s.getName().equals(delete)) {
+				indicesToDelete.add(i);
+			}
+			i++;
+		}
+		
+		for (int a : indicesToDelete) { // looking through all scholarships, deleting the ones we found and making them null
+			inputS.set(a, null);
+			inputS.remove(a);
+		}
+		return inputS;
 	}
 	
 	/**
@@ -297,6 +352,36 @@ public class Coordinator extends User {
 		else {	// this probably will not be needed for the GUI
 			System.out.println("No scholarship of this name was found.");
 		}
+	}
+	
+	public String grantScholarshipGui(ArrayList<Scholarship> inputS, ArrayList<Student> inputA, String scholName) {
+		//System.out.println("Which scholarship would you like distribute?");
+		//Scanner scholInput = new Scanner(System.in);
+		//String scholName = scholInput.nextLine();
+		String returnThis = "";
+
+		Scholarship selectedS = findScholarship(scholName, inputS);	// find the Scholarship associated with the name of the indicated scholarship
+
+		if (selectedS.getName() != null) {	// this specific if statement won't be used for the GUI
+			if (selectedS.getApplicants().size() == 0) {	// THESE ARE IMPORTANT
+				System.out.println("There are no applicants to this scholarship yet.");
+				return "There are no applicants to this scholarship";
+			} 
+			else {
+				System.out.println("Here are the applicant(s) of " + selectedS.getName() + ":");
+				int counter = 0;
+				for (String a : selectedS.getApplicants()) {
+					System.out.println("<" + counter + ">" + a);
+					counter++;
+					returnThis = returnThis+a+"\n";
+				}
+				//chooseApplicants(selectedS, inputA);
+			}
+		}
+		//else {	// this probably will not be needed for the GUI
+		//	System.out.println("No scholarship of this name was found.");
+		//}
+		return returnThis;
 	}
 
 	/**
@@ -338,6 +423,44 @@ public class Coordinator extends User {
 			}
 
 		}
+	}
+	public String chooseApplicantsGui(Scholarship schol, ArrayList<Student> inputA, String student) {
+	//	System.out.println("Please type down the corresponding number for the student you'd like to grant this scholarship to.\nKeep in mind that there are " 
+	//	+ schol.getApplicants().size() + " applicants and this scholarship may only be distributed to " 
+	//	+ schol.getReceive() + " students. Please type ENTER when you wish to exit the loop.");
+		String returnThis="";
+	//	boolean loop = true;
+	//	while (loop) {
+			//try {
+		//		Scanner inputApp = new Scanner(System.in);
+		//		String indexS = inputApp.nextLine();
+		//		int index = Integer.parseInt(indexS);
+		
+				if (schol.getGranted().size() <= schol.getReceive()) {
+				//	String student = schol.getApplicants().get(index);
+					Student foundStu = findStudent(student,inputA);
+					if (alreadyGranted(student, schol.getGranted())) {
+						System.out.println("This scholarship has already been granted to this student.");
+						return"This scholarship has already been granted to this student.";
+					}
+					else {
+						foundStu.addStudentGranted(schol.getName());
+						schol.addGranted(foundStu.getUsername());
+						returnThis = returnThis + "Student: " + foundStu.getUsername()+ " Has been granted " + schol.getName();
+					}
+				}
+				else {
+					System.out.println("This scholarship has been granted to the maximum (" + schol.getReceive() + ") amount of student(s).");
+					returnThis = returnThis+ "This scholarship has been granted to the maximum (" + schol.getReceive() + ") amount of student(s).";
+			//		loop = false;
+				}
+		//	}
+		//	catch (Exception e) {
+			//	loop = false;
+		//		System.out.println("Exiting loop. Redirecting.");
+		//	}
+			return returnThis;
+	//	}
 	}
 
 	/**
@@ -453,6 +576,22 @@ public class Coordinator extends User {
 			System.out.println(inputStream.nextLine());
 		}
 	}
+	public String getAllScholarshipsGui(ArrayList<Scholarship> inputScholarship) {
+		String returnThis="";
+		//if (inputScholarship.size() <= 0) {
+		//	System.out.println("There are no scholarships available.");
+		//	returnThis = "There are no scholarships avaliable.";
+		//	return returnThis;
+		//}
+		for (Scholarship s : inputScholarship) {
+			String eachScholarship="";
+			eachScholarship = eachScholarship +s.getName()+ " (" + s.getSemester() + " " + s.getYear() + ")\n\n";
+			returnThis = returnThis.concat(eachScholarship);
+		}
+		return returnThis;
+
+	}
+	
 }
 
 

@@ -1,4 +1,4 @@
-package logic;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -116,7 +116,7 @@ public class Student extends User {
 			System.out.println("Sorry, there are no scholarships for that term and/or year. Please try again.");
 			chooseTerm(inputStudent, inputS);
 		}
-		else if (applyLimit(term, year, inputS)) { // checking if the student has already applied to the maximum # of scholarships for that year
+		else if (applyLimit(year, inputS)) { // checking if the student has already applied to the maximum # of scholarships for that year
 			System.out.println("You have already applied to the maximum of FOUR (4) scholarships for " + year + ".");
 		}
 		else {
@@ -124,6 +124,75 @@ public class Student extends User {
 			apply(inputStudent, potentialScholar);
 		}
 		
+	}
+	
+	public String chooseTermGui(Student inputStudent, ArrayList<Scholarship> inputS, int termInt, int year) {
+		
+		String term = "";
+		if (termInt == 0) {
+			term = "Fall";
+		}
+		else if (termInt == 1) {
+			term = "Winter";
+		}
+		else if (termInt == 2) {
+			term = "Fall and Winter";
+		}
+
+		// no error checking for other entries...
+
+
+		// no error checking for other entries...		
+		
+		// this is an ArrayList of all scholarships in the term + year the user indicated
+		ArrayList<Scholarship> potentialScholar = new ArrayList<Scholarship>();
+		for (Scholarship s : inputS) {
+			if (term.contentEquals(s.getSemester()) && (year == s.getYear())) {
+				potentialScholar.add(s);
+			}
+		}
+		
+		// if there are no scholarships of that term + year indicated...
+		if (potentialScholar.size() <= 0) {
+			String ErrorMessage = "<html><p>Sorry, there are no scholarships for that term and/or year. Please try again.</p></html>";
+			return ErrorMessage;
+			
+		}
+		else if (applyLimit(year, inputS)) { // checking if the student has already applied to the maximum # of scholarships for that year
+			String ErrorMessage = "<html><p>You have already applied to the maximum of FOUR (4) scholarships for " + year + "." + "</p></html>";
+			return ErrorMessage; 
+		}
+		String ErrorMessage = "found";
+		return ErrorMessage;
+	}
+	
+	public ArrayList<Scholarship> getPotentialScholar(Student inputStudent, ArrayList<Scholarship> inputS, int termInt, int year) {
+		
+		String term = "";
+		if (termInt == 0) {
+			term = "Fall";
+		}
+		else if (termInt == 1) {
+			term = "Winter";
+		}
+		else if (termInt == 2) {
+			term = "Fall and Winter";
+		}
+
+		// no error checking for other entries...
+
+
+		// no error checking for other entries...		
+		
+		// this is an ArrayList of all scholarships in the term + year the user indicated
+		ArrayList<Scholarship> potentialScholar = new ArrayList<Scholarship>();
+		for (Scholarship s : inputS) {
+			if (term.contentEquals(s.getSemester()) && (year == s.getYear())) {
+				potentialScholar.add(s);
+			}
+		}
+		
+		return potentialScholar;
 	}
 	
 	/**
@@ -163,6 +232,45 @@ public class Student extends User {
 	}
 	
 	/**
+	 * Used to apply for the scholarships
+	 * Variation needed for GUI
+	 * @param inputStudent
+	 * @param inputS
+	 */
+	public String applyGui(Student inputStudent, ArrayList<Scholarship> inputS, String toApply) {
+		
+		
+		boolean notApplied = true;
+		String ErrorMessage ="";
+
+			
+			for (Scholarship s : inputS) {	// looking through all scholarships that matches the input...
+				if (s.getName().equals(toApply)) {
+					if (alreadyApplied(inputStudent, s)) {	// if the student has already applied for the scholarhship...
+						ErrorMessage = "<html><p>You have already applied for this scholarship.</p></html>";
+						return ErrorMessage;
+					}
+					else {
+						s.addApplicant(inputStudent.getUsername());	// the scholarship adds the name of the user to its own list of applicants
+						inputStudent.scholarshipsAppliedTo.add(s.getName());	// the student adds the name of the scholarship to their own list of scholarships applied to
+						ErrorMessage = "<html><p>Congratulations! You have applied. Good luck.</p></html>";
+						return ErrorMessage;
+					}
+					
+				}
+			}
+			//notApplied = false;	// quits the loop
+			if (notApplied) {
+				ErrorMessage = "<html><p>A scholarship with that name has not been found. Please enter the name of the scholarship you'd like to apply to.</p></html>";
+				return ErrorMessage;
+			}
+			
+			
+		return ErrorMessage;
+		
+	}
+	
+	/**
 	 * Checks if the student has already applied to the indicated scholarship (using the student's list of scholarships applied to)
 	 * Will need this for the GUI
 	 * @param inputStudent the student indicated
@@ -188,41 +296,19 @@ public class Student extends User {
 	 * @param inputS	allScholarships
 	 * @return			true if they have already applied to the max amount, false otherwise
 	 */
-	public boolean applyLimit(String term, int year, ArrayList<Scholarship> inputS) {
-		ArrayList<Integer> yearsAppliedTo = new ArrayList<Integer>();
-
-		for (String s : this.scholarshipsAppliedTo) {
-			int yearToAdd = 0;
-			Scholarship potentialSchol = findScholarship(s, inputS);
-			if (potentialSchol.getSemester().equals("Winter")) {
-				yearToAdd = potentialSchol.getYear() - 1;
-			}
-			else {
-				yearToAdd = potentialSchol.getYear();
-			}
-			yearsAppliedTo.add(yearToAdd);
-		}
-
-		int pendingYear = year;
-		boolean toReturn = false;
-		
-		if (term.equals("Fall") || term.equals("Fall and Winter")) {
-			pendingYear = year;
-		}
-		else if (term.equals("Winter")) {
-			pendingYear = year-1;
-		}
-
+	public boolean applyLimit(int year, ArrayList<Scholarship> inputS) {
 		int applyInYear = 0;
-		for (int i : yearsAppliedTo) {
-			if (i == pendingYear) {
+		for (Scholarship s : inputS) {
+			if (s.getYear() == year) {
 				applyInYear++;
 			}
 		}
 		if (applyInYear == 4) {
-			return toReturn = true;
+			return true;
 		}
-		return toReturn;
+		else {
+			return false;
+		}
 	}
 	
 	/**
@@ -235,6 +321,17 @@ public class Student extends User {
 		for (String s : scholarshipsAppliedTo) {
 			System.out.println(s);
 		}
+	}
+	public String viewMyScholarshipsGui() {
+		String Finals = "You have applied to the following Scholarships: \n\n";
+		//System.out.println("Student " + super.getUsername() + " " + super.getPassword() + " has applied to " + scholarshipsAppliedTo.size() + " scholarships.");
+		System.out.println("Scholarships applied to:");
+		for (String s : scholarshipsAppliedTo) {
+			System.out.println(s);
+			String temp =" * "+s +"\n\n";
+			Finals=Finals.concat(temp);
+		}
+		return Finals;
 	}
 	
 	/* 
@@ -294,6 +391,62 @@ public class Student extends User {
         inputStream.close();
 		outputStream.close();
 	}
+	
+	public void uploadGui(String fileName, String portfolio) {
+		//System.out.println("Please type in the directory that your file is in.");
+		// taking in where the file is
+		//Scanner upload = new Scanner(System.in);
+		//String fileDirectory = upload.nextLine();
+		
+		System.out.println("What would you like to call the uploaded file?");
+		// taking in desired file name
+		//Scanner inputName = new Scanner(System.in);
+		//String fileName = upload.nextLine();
+				
+		// add this file to the student's list of files they've uploaded
+		studentFiles.clear();
+		studentFiles.add(fileName + ".txt");
+		
+		// trying to open file to read
+		
+		/**
+        Scanner inputStream = null;
+        try {
+           inputStream = new Scanner(new File(fileDirectory));
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + fileDirectory);
+            System.exit(0);
+        }
+        **/
+        
+		
+		// path to place file
+        String completeUploadDir = "uploadedFiles/" + fileName + ".txt";
+        
+		// Opening up for printing (I/O)
+		PrintWriter outputStream = null;
+        try {
+            outputStream = new PrintWriter(new FileOutputStream (completeUploadDir,false));  //for append - i changed to False - Kam
+		}
+        catch(FileNotFoundException e) {
+            System.out.println("Error opening the file " + completeUploadDir);
+            System.exit(0);
+        }
+		
+        // parsing file, reading each line from source and writing it to destination 
+        //while (inputStream.hasNextLine()) {
+			  try {
+		        	outputStream.print(portfolio);
+			  } 
+			  catch (NoSuchElementException e) {
+				  System.out.println("File read error."); 
+			  }
+		//}     
+		
+        //inputStream.close();
+		outputStream.close();
+	}
 
 	/**
 	 * Method to view the names of the files they've uploaded.
@@ -305,6 +458,19 @@ public class Student extends User {
 			System.out.println(a);
 		}
 	}
+	
+	public String viewUploadedGui() {
+		String returnThis="";
+		
+		for(String b: studentFiles) {
+			returnThis = returnThis+b;
+		}
+		
+		
+		
+		return returnThis;
+	}
+
 
 	/**
 	 * Used to view scholarships that have been granted to the student, and to accept them (if they want to)
@@ -349,6 +515,40 @@ public class Student extends User {
 			}
 		}
 	}
+	public String viewGrantedGui(ArrayList<Scholarship> inputS) {
+		//String granted="You have been granted in the following scholarships:\n\n";
+		String granted = "";
+		for (String a : getStudentGranted()) {
+			System.out.println(a + " (" + findScholarship(a, inputS).getSemester() + " " + findScholarship(a, inputS).getYear() + ")");
+			granted = granted +a+ " (" + findScholarship(a, inputS).getSemester() + " " + findScholarship(a, inputS).getYear() + ")\n\n";
+		}
+		//granted = granted + "\n\nThe next step is to decide if you would to accept these scholarships or not.";
+		return granted;
+	}
+	
+	public String checkGrantedGui(String schol, ArrayList<Scholarship> inputS) {
+		
+		Scholarship selectedSchol = findScholarship(schol, inputS);
+		if (alreadyAccepted(selectedSchol.getName())) {
+			//System.out.println("You've already accepted this scholarship.");
+			return "You've already accepted this scholarship.";
+		}
+
+		// check the student has already accepted a scholarship for that academic year
+		//else if (yearAccepted(selectedSchol.getSemester(), selectedSchol.getYear())) {
+		//	//System.out.println("You've already accepted a scholarship for this academic year.");
+		//	return "You've already accepted a scholarship for this academic year.";
+		//}
+
+		// accepts the scholarship
+		else {
+			addStudentAccepted(selectedSchol.getName());	// add to list of scholarships they've accepted
+			addToTermYear(selectedSchol.getSemester(), selectedSchol.getYear());	// add the term + year of the scholarship they accepted to the list of terms + years they've accepted
+			//System.out.println("Congratulations! You've accepted the " + selectedSchol.getName() + ".");
+			return "Congratulations! You've accepted the " + selectedSchol.getName() + ".";
+		}
+		
+	}
 
 	/**
 	 * Checks if the student had already accepted this scholarship
@@ -376,7 +576,7 @@ public class Student extends User {
 	 */
 	public boolean yearAccepted (String term, int year) {
 		boolean toReturn = false;
-		if (term.equals("Fall and Winter") || term.equals("Fall")) {
+		if (term.equals("Fall and Winter") || term.equals("Fall") ) {
 			if (checkAccepted("Fall " + year, "Winter " + (year+1))) {
 				toReturn = true;
 			}
@@ -404,6 +604,24 @@ public class Student extends User {
 			}
 		}
 		return toReturn;
+	}
+	public String openFileGui(String fName) {
+		String returnThis="";
+		String fileDir = "uploadedFiles/" + fName;
+
+		Scanner inputStream = null;
+		try { inputStream = new Scanner(new File(fileDir)); }
+		catch(FileNotFoundException e) {
+			System.out.println("Error opening the file " + fileDir);
+			System.exit(0);
+		}
+
+		// this prints the lines of the file out
+		while(inputStream.hasNextLine()) {
+			returnThis = returnThis + inputStream.nextLine() + "\n";
+			//System.out.println(inputStream.nextLine());
+		}
+		return returnThis;
 	}
 }
 
