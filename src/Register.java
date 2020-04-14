@@ -1,4 +1,4 @@
-
+package logic;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -13,16 +13,17 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.Image;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class Register extends JFrame {
 
 	private JPanel contentPane;
+	private JTextField textField;
+	private JTextField textField_1;
 	private JButton btnRegister;
-	private JTextField Username;
-	private JTextField Password;
+	private JTextField textField_2;
+	private JLabel lblFirstName;
+	private JTextField textField_3;
+	private JLabel lblLastName;
 
 	/**
 	 * Launch the application.
@@ -52,103 +53,55 @@ public class Register extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		
+		textField = new JTextField();
+		textField.setBounds(364, 189, 145, 22);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblEmailAddress = new JLabel("Email Address:");
+		lblEmailAddress.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblEmailAddress.setBounds(228, 190, 145, 16);
+		contentPane.add(lblEmailAddress);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(364, 232, 145, 22);
+		contentPane.add(textField_1);
+		textField_1.setColumns(10);
+		
+		JLabel lblStudentid = new JLabel("StudentId:");
+		lblStudentid.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblStudentid.setBounds(228, 233, 145, 16);
+		contentPane.add(lblStudentid);
+		
 		JLabel logo = new JLabel("");
 		Image img = new ImageIcon(this.getClass().getResource("/images/rsz_usask.png")).getImage();
 		logo.setIcon(new ImageIcon (img));
 		logo.setBounds(0, 0, 179, 161);
 		contentPane.add(logo);
 		
-		JCheckBox chckbxCoordinator = new JCheckBox("Coordinator");
-		JCheckBox chckbxStudent = new JCheckBox("Student");
-		chckbxCoordinator.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				chckbxStudent.setSelected(false);
-				
-			}
-		});
-		chckbxStudent.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				chckbxCoordinator.setSelected(false);
-			}
-		});
-		chckbxStudent.setBounds(389, 257, 113, 25);
-		contentPane.add(chckbxStudent);
-		
-		
-		chckbxCoordinator.setBounds(389, 294, 113, 25);
-		contentPane.add(chckbxCoordinator);
-		
-		Username = new JTextField();
-		Username.setBounds(386, 166, 116, 22);
-		contentPane.add(Username);
-		Username.setColumns(10);
-		
-		JLabel lblUsername = new JLabel("Username:");
-		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblUsername.setBounds(272, 169, 79, 16);
-		contentPane.add(lblUsername);
-		
-		Password = new JTextField();
-		Password.setBounds(388, 216, 116, 22);
-		contentPane.add(Password);
-		Password.setColumns(10);
-		
-		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblPassword.setBounds(272, 218, 79, 16);
-		contentPane.add(lblPassword);
-		
-		JLabel errorLabel = new JLabel("New label");
-		errorLabel.setVisible(false);
-		
 		btnRegister = new JButton("Register");
-		btnRegister.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Start lets_Register = new Start();
-				String username1 = Username.getText();
-				String password1 = Password.getText();
-				String role1 = " ";
-				if(chckbxStudent.isSelected()) {
-					role1 = "Student";
-					
-				}
-				else if(chckbxCoordinator.isSelected()) {
-					role1 = "Coordinator";
-				}
-				int result = lets_Register.registerGui(username1, password1, role1);
-				if(result==1) {
-					errorLabel.setText("Registration failed. Please select a valid role (Student,Coordinator)");
-					errorLabel.setForeground(Color.RED);
-					errorLabel.setVisible(true);
-				}
-				else if(result==2) {
-					errorLabel.setText("This username already exists in the server. Please try again.");
-					errorLabel.setForeground(Color.RED);
-					errorLabel.setVisible(true);
-				}
-				else if(result==3) {
-					errorLabel.setText("Your New account has been succesfully created, please try logging in now");
-					errorLabel.setForeground(Color.CYAN);
-					errorLabel.setVisible(true);
-					Guii ChangeToLogin = new Guii();
-					ChangeToLogin.setVisible(true);
-					
-				}
-				
-								
-			}
-		});
-		btnRegister.setBounds(389, 371, 113, 54);
+		btnRegister.setBounds(388, 388, 97, 54);
 		contentPane.add(btnRegister);
 		
-		//JLabel errorLabel = new JLabel("New label");
+		textField_2 = new JTextField();
+		textField_2.setBounds(364, 275, 145, 22);
+		contentPane.add(textField_2);
+		textField_2.setColumns(10);
 		
-		errorLabel.setBounds(272, 121, 480, 16);
-		contentPane.add(errorLabel);
+		lblFirstName = new JLabel("First Name:");
+		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblFirstName.setBounds(228, 281, 145, 16);
+		contentPane.add(lblFirstName);
 		
+		textField_3 = new JTextField();
+		textField_3.setColumns(10);
+		textField_3.setBounds(364, 318, 145, 22);
+		contentPane.add(textField_3);
 		
+		lblLastName = new JLabel("Last Name:");
+		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblLastName.setBounds(228, 324, 145, 16);
+		contentPane.add(lblLastName);
 	}
+
 }
