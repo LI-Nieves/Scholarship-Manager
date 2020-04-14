@@ -9,3 +9,4 @@ a b Coordinator
 hi there Student
 k t Student
 comp sci Student
+new dude Student

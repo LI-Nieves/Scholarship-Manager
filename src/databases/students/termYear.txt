@@ -15,4 +15,6 @@ k
 comp
 Fall 2021
 Winter 2022
+Fall 2020
+Winter 2021
 
