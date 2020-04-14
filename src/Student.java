@@ -116,7 +116,7 @@ public class Student extends User {
 			System.out.println("Sorry, there are no scholarships for that term and/or year. Please try again.");
 			chooseTerm(inputStudent, inputS);
 		}
-		else if (applyLimit(year, inputS)) { // checking if the student has already applied to the maximum # of scholarships for that year
+		else if (applyLimit(term, year, inputS)) { // checking if the student has already applied to the maximum # of scholarships for that year
 			System.out.println("You have already applied to the maximum of FOUR (4) scholarships for " + year + ".");
 		}
 		else {
@@ -158,7 +158,7 @@ public class Student extends User {
 			return ErrorMessage;
 			
 		}
-		else if (applyLimit(year, inputS)) { // checking if the student has already applied to the maximum # of scholarships for that year
+		else if (applyLimit(term, year, inputS)) { // checking if the student has already applied to the maximum # of scholarships for that year
 			String ErrorMessage = "<html><p>You have already applied to the maximum of FOUR (4) scholarships for " + year + "." + "</p></html>";
 			return ErrorMessage; 
 		}
@@ -296,19 +296,41 @@ public class Student extends User {
 	 * @param inputS	allScholarships
 	 * @return			true if they have already applied to the max amount, false otherwise
 	 */
-	public boolean applyLimit(int year, ArrayList<Scholarship> inputS) {
+	public boolean applyLimit(String term, int year, ArrayList<Scholarship> inputS) {
+		ArrayList<Integer> yearsAppliedTo = new ArrayList<Integer>();
+
+		for (String s : this.scholarshipsAppliedTo) {
+			int yearToAdd = 0;
+			Scholarship potentialSchol = findScholarship(s, inputS);
+			if (potentialSchol.getSemester().equals("Winter")) {
+				yearToAdd = potentialSchol.getYear() - 1;
+			}
+			else {
+				yearToAdd = potentialSchol.getYear();
+			}
+			yearsAppliedTo.add(yearToAdd);
+		}
+
+		int pendingYear = year;
+		boolean toReturn = false;
+		
+		if (term.equals("Fall") || term.equals("Fall and Winter")) {
+			pendingYear = year;
+		}
+		else if (term.equals("Winter")) {
+			pendingYear = year-1;
+		}
+
 		int applyInYear = 0;
-		for (Scholarship s : inputS) {
-			if (s.getYear() == year) {
+		for (int i : yearsAppliedTo) {
+			if (i == pendingYear) {
 				applyInYear++;
 			}
 		}
 		if (applyInYear == 4) {
-			return true;
+			return toReturn = true;
 		}
-		else {
-			return false;
-		}
+		return toReturn;
 	}
 	
 	/**
