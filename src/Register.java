@@ -1,4 +1,5 @@
-
+package frontend;
+import backend.*;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -17,6 +18,10 @@ import javax.swing.JCheckBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * The Register class is used to register a user into the database it will ask for username and password with textbox
+ * and ask for which type of user though checkbox
+ */
 public class Register extends JFrame {
 
 	private JPanel contentPane;
@@ -26,6 +31,7 @@ public class Register extends JFrame {
 
 	/**
 	 * Launch the application.
+	 * main function
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -42,9 +48,12 @@ public class Register extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * function that deisplayes the register gui
+	 * @return
+	 * @param
 	 */
 	public Register() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 904, 687);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 102, 0));
@@ -58,6 +67,7 @@ public class Register extends JFrame {
 		logo.setBounds(0, 0, 179, 161);
 		contentPane.add(logo);
 		
+		//checkbox for determining what type of user
 		JCheckBox chckbxCoordinator = new JCheckBox("Coordinator");
 		JCheckBox chckbxStudent = new JCheckBox("Student");
 		chckbxCoordinator.addMouseListener(new MouseAdapter() {
@@ -85,6 +95,7 @@ public class Register extends JFrame {
 		contentPane.add(Username);
 		Username.setColumns(10);
 		
+		//text fields used to grab username and password of the new user
 		JLabel lblUsername = new JLabel("Username:");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblUsername.setBounds(272, 169, 79, 16);
@@ -103,6 +114,7 @@ public class Register extends JFrame {
 		JLabel errorLabel = new JLabel("New label");
 		errorLabel.setVisible(false);
 		
+		//button to complete register
 		btnRegister = new JButton("Register");
 		btnRegister.addMouseListener(new MouseAdapter() {
 			@Override
@@ -111,6 +123,8 @@ public class Register extends JFrame {
 				String username1 = Username.getText();
 				String password1 = Password.getText();
 				String role1 = " ";
+				
+				//check checkboxes
 				if(chckbxStudent.isSelected()) {
 					role1 = "Student";
 					
@@ -119,6 +133,7 @@ public class Register extends JFrame {
 					role1 = "Coordinator";
 				}
 				int result = lets_Register.registerGui(username1, password1, role1);
+				//display messages based on result
 				if(result==1) {
 					errorLabel.setText("Registration failed. Please select a valid role (Student,Coordinator)");
 					errorLabel.setForeground(Color.RED);
@@ -133,7 +148,7 @@ public class Register extends JFrame {
 					errorLabel.setText("Your New account has been succesfully created, please try logging in now");
 					errorLabel.setForeground(Color.CYAN);
 					errorLabel.setVisible(true);
-					Guii ChangeToLogin = new Guii();
+					Main ChangeToLogin = new Main();
 					ChangeToLogin.setVisible(true);
 					
 				}

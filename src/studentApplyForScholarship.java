@@ -1,3 +1,6 @@
+package frontend;
+import backend.*;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -14,7 +17,12 @@ import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
-public class studentApplyForScholarship extends JFrame {
+/**
+ * 
+ * @author navjeethundal
+ *This class is the first window and part to apply for a scholarship it asked for the term and year then searches for scholarships 
+ */
+public class StudentApplyForScholarship extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -27,8 +35,7 @@ public class studentApplyForScholarship extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//coordinatorRemoveScholarship frame = new coordinatorRemoveScholarship();
-					//frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -37,9 +44,12 @@ public class studentApplyForScholarship extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * This function is the gui part of applying for a scholarship where it asks the student for a term and year they
+	 * wish to apply for
+	 * @param a is the student that is currently applying
+	 * @param b is the reference to start
 	 */
-	public studentApplyForScholarship(Student a, Start b) {
+	public StudentApplyForScholarship(Student a, Start b) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -81,24 +91,29 @@ public class studentApplyForScholarship extends JFrame {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int selectedTerm = comboBox.getSelectedIndex();
-				int selectedYear = Integer.parseInt(textField.getText());
-				String returnMessage = a.chooseTermGui(a, b.getAllScholarships(), selectedTerm, selectedYear);
-				if(returnMessage.equals("found"))
-				{
-					ArrayList<Scholarship> potentialScholar = a.getPotentialScholar(a, b.getAllScholarships(), selectedTerm, selectedYear);
-					studentApplyForScholarship2 apply2 = new studentApplyForScholarship2(a,b,potentialScholar);
-					dispose();
-					apply2.setVisible(true);
+				try {
+					int selectedTerm = comboBox.getSelectedIndex();
+					int selectedYear = Integer.parseInt(textField.getText());
+					String returnMessage = a.chooseTermGui(a, b.getAllScholarships(), selectedTerm, selectedYear);
+					// if a potential scholarship is found add it into the arrayList and go to the next window 
+					if(returnMessage.equals("found")) {
+						// call the function to get all the potentialscholarships so we can pass it to the next window
+						ArrayList<Scholarship> potentialScholar = a.getPotentialScholar(a, b.getAllScholarships(), selectedTerm, selectedYear);
+						// call the new Jframe window that has the next steps to apply
+						StudentApplyForScholarship2 apply2 = new StudentApplyForScholarship2(a,b,b.getAllScholarships(), potentialScholar, selectedTerm, selectedYear);
+						dispose();
+						apply2.setVisible(true); // make the next window visible which asked you for which scholarship you wish to apply for
+					}
+					// give error message 
+					else {
+						lblErrorMessage.setText(returnMessage);
+						
+					}
 				}
-				else
-				{
-					lblErrorMessage.setText(returnMessage);
-					
+				catch (Exception exception) {
+					lblErrorMessage.setText("Invalid input. Please try again.");
 				}
-				System.out.println(selectedTerm);
-				System.out.println(selectedYear);
-				System.out.println(returnMessage);
+				
 			}
 		});
 		btnNewButton.setBounds(135, 169, 184, 29);

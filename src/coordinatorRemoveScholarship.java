@@ -1,3 +1,6 @@
+package frontend;
+import backend.*;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -12,18 +15,23 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class coordinatorRemoveScholarship extends JFrame {
+/**
+ * This class is used to create the GUI for the coordinator to remove scholarships from the database
+ * 
+ */
+public class CoordinatorRemoveScholarship extends JFrame {
 
 	private JPanel contentPane;
 
 	/**
 	 * Launch the application.
+	 * main function
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//coordinatorRemoveScholarship frame = new coordinatorRemoveScholarship();
+					//CoordinatorRemoveScholarship frame = new CoordinatorRemoveScholarship();
 					//frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -34,8 +42,9 @@ public class coordinatorRemoveScholarship extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * function used to create GUI components 
 	 */
-	public coordinatorRemoveScholarship(Coordinator a, Start b, String scholar) {
+	public CoordinatorRemoveScholarship(Coordinator a, Start b, String scholar) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -45,6 +54,7 @@ public class coordinatorRemoveScholarship extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		//creating the labels
 		JLabel lblWouldYouLike = new JLabel("Would you like to remove the Following Scholarship?");
 		lblWouldYouLike.setForeground(Color.WHITE);
 		lblWouldYouLike.setFont(new Font("Times New Roman", Font.BOLD, 15));
@@ -65,11 +75,13 @@ public class coordinatorRemoveScholarship extends JFrame {
 		contentPane.add(lblNewLabel);
 		lblNewLabel.setVisible(false);
 		
+		//button creation
 		JButton btnYes = new JButton("Yes");
 		btnYes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String getScholarName ="";
+				//loop to get the name of scholarship that corrdinator inputs
 				for(int i=0 ;i<scholar.length();i++) {
 					if(scholar.charAt(i)!='(') {
 						getScholarName = getScholarName+scholar.charAt(i);
@@ -78,10 +90,13 @@ public class coordinatorRemoveScholarship extends JFrame {
 						break;
 					}
 				}
+				
+			
 				getScholarName = getScholarName.substring(0,getScholarName.length()-1);
 		        ArrayList<Scholarship> updated = new ArrayList<Scholarship>();
 		        updated = b.getAllScholarships();
-			    //updated= a.removeScholarshipsGui(b.getAllScholarships(), getScholarName);
+		        
+		        //find the schoalrship in the database
 				Scholarship scholSelected = a.findScholarship(getScholarName, b.getAllScholarships());
 				if (scholSelected.getName() != null) {
 					// if the scholarship has already been granted to students, it shouldn't be removed - that's messed up
@@ -98,6 +113,7 @@ public class coordinatorRemoveScholarship extends JFrame {
 					else {
 						int count = 0;
 						int indexOfSchol = 0;
+						//loop to remove the scholarship from database
 						for (Scholarship s : updated) {
 							if (s.getName().equals(scholSelected.getName())) {
 								s.remove();
@@ -105,6 +121,7 @@ public class coordinatorRemoveScholarship extends JFrame {
 							}
 							count++;
 						}
+						//update the database
 						updated.remove(indexOfSchol);
 						System.out.println(getScholarName + " has been removed.");
 						lblNewLabel.setText(getScholarName + " has been removed.");
@@ -116,8 +133,7 @@ public class coordinatorRemoveScholarship extends JFrame {
 			    System.out.println(scholar);
 			    b.setAllScholarships(updated);
 				b.storeScholarships();
-				//b.storeStudentApplied();
-				//b.storeScholarshipApplicants();
+				
 				lblNewLabel.setVisible(true);
 			}
 		});

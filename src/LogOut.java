@@ -1,3 +1,6 @@
+package frontend;
+import backend.*;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -25,13 +28,17 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+/**
+ * This class is the log out class used to exit the prgram once user logs out
+ * 
+ */
 public class LogOut extends JFrame {
 
 	private JPanel contentPane;
 
 	/**
 	 * Launch the application.
+	 * main function
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -48,6 +55,7 @@ public class LogOut extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * Will open a new window when the user presses log out button and will close the application after
 	 */
 	public LogOut() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,11 +74,13 @@ public class LogOut extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel();
 		
+		//display message to user
 		JLabel lblThankYouFor = new JLabel("Thank you for using the University Of Saskatchewan Scholarship System!");
 		lblThankYouFor.setForeground(Color.LIGHT_GRAY);
 		lblThankYouFor.setBackground(Color.LIGHT_GRAY);
 		lblThankYouFor.setFont(new Font("Times New Roman", Font.BOLD, 18));
 		
+		//button for logout
 		JButton btnLogOut = new JButton("Log Out");
 		btnLogOut.addMouseListener(new MouseAdapter() {
 			@Override
@@ -107,9 +117,9 @@ public class LogOut extends JFrame {
 					.addContainerGap(38, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
+		//setting image
 		BufferedImage img = null;
 		try {
-			//img = ImageIO.read(new File("images/sask.jpg"));
 			img = ImageIO.read(getClass().getResource("/images/sask.jpg"));
 		}
 		catch(IOException e) {

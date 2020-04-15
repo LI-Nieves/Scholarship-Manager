@@ -1,20 +1,25 @@
-
+// DONE
+package backend;
 
 import java.util.*;
 
+/**
+ * This class includes shared functions between Student and Coordinator, who both extend this class.
+ */
 public class User {
 	
 	// Instance variables
 	private String username;
 	private String password;
 	
+	// Constructors
 	public User() {}
 
 	 public User(String inputUsername, String inputPassword) {
 		setUsername(inputUsername); 
 		setPassword(inputPassword); 
 	}
-	 public User(String inputUsername) {	//I ADDED THIS- KAM
+	 public User(String inputUsername) {
 		 setUsername(inputUsername);
 	 }
 
@@ -36,38 +41,16 @@ public class User {
 	
 	/**
 	 * Method used to view all scholarships available
-	 * A variation of this will be needed for the GUI
-	 * @param inputScholarship
+	 * @param	inputScholarship
 	 */
-	public void viewScholarships(ArrayList<Scholarship> inputScholarship) {
-		if (inputScholarship.size() <= 0) {
-			System.out.println("There are no scholarships available.");
-		}
-		for (Scholarship s : inputScholarship) {
-			System.out.println(s.getName() + "\nReward: $" + s.getRewardAmount() + "\nTerm(s) considered: " + s.getSemester() + " " + 
-					s.getYear() + "\n" + s.getReceive() + " student(s) may receive this award for the indicated term(s)" + 
-					"\nGPA requirement: " + s.getGPAreq() + " or above\nA student may have a \"W\" on their transcript: " + s.getWonTranscript());
-			System.out.println(s.getDeptSpecific() + "\n" + s.getFacultySpecific() + "\n" + s.getUniSpecific() + "\n" + s.getDegreeSpecific());
-			System.out.println("Extra criteria:\n" + s.getExtraCriteria());
-			System.out.println();
-		}
-
-	}
 	public String viewScholarshipsGui(ArrayList<Scholarship> inputScholarship) {
-		String returnThis="";
-		if (inputScholarship.size() <= 0) {
-			System.out.println("There are no scholarships available.");
+		String returnThis = "";
+		if (inputScholarship.size() <= 0) {	// if there are no scholarships...
 			returnThis = "There are no scholarships avaliable.";
 			return returnThis;
 		}
 		for (Scholarship s : inputScholarship) {
-			String eachScholarship="";
-			System.out.println(s.getName() + "\nReward: $" + s.getRewardAmount() + "\nTerm(s) considered: " + s.getSemester() + " " + 
-					s.getYear() + "\n" + s.getReceive() + " student(s) may receive this award for the indicated term(s)" + 
-					"\nGPA requirement: " + s.getGPAreq() + " or above\nA student may have a \"W\" on their transcript: " + s.getWonTranscript());
-			System.out.println(s.getDeptSpecific() + "\n" + s.getFacultySpecific() + "\n" + s.getUniSpecific() + "\n" + s.getDegreeSpecific());
-			System.out.println("Extra criteria:\n" + s.getExtraCriteria());
-			System.out.println();
+			String eachScholarship = "";
 			eachScholarship = s.getName() + "\nReward: $" + s.getRewardAmount() + "\nTerm(s) considered: " + s.getSemester() + " " + 
 					s.getYear() + "\n" + s.getReceive() + " student(s) may receive this award for the indicated term(s)" + 
 					"\nGPA requirement: " + s.getGPAreq() + " or above\nA student may have a \"W\" on their transcript: " + s.getWonTranscript()+ "\n"+
@@ -76,16 +59,15 @@ public class User {
 			returnThis = returnThis.concat(eachScholarship);
 		}
 		return returnThis;
-
 	}
 	
 
 	/**
-	 * find the Scholarship associated with the name of the indicated scholarship
-	 * practically a duplicate function from Start, and this method is used in both Coordinator and Student
-	 * @param name indicated scholarship
-	 * @param inputS allScholarships
-	 * @return	the Scholarship with the name of the indicated scholarship
+	 * Find the Scholarship associated with the name of the indicated scholarship
+	 * Essentially turns a String into its corresponding Scholarship object
+	 * @param name		indicated scholarship
+	 * @param inputS	allScholarships
+	 * @return			the Scholarship with the name of the indicated scholarship
 	 */
 	public Scholarship findScholarship(String name, ArrayList<Scholarship> inputS) {
 		Scholarship toReturn = new Scholarship();

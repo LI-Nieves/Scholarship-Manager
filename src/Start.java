@@ -1,10 +1,10 @@
-
+package backend;
 
 import java.util.*;
 import java.io.*;
 
 /*
- * This is our main class that starts everything.
+ * This class allows for login, registering, and loading from and updating to the databases.
  */
 
 public class Start {
@@ -39,38 +39,13 @@ public class Start {
 	}
 	
 	/**
-	 * This is the first method executed by the main() (other than the loading and storing mechanisms).
-	 * This prompts the user to log in or register.
-	 * (Will probably not be used by GUI)
+	 * Used to register a user.
+	 * @param username	the desired username
+	 * @param password	the desired password
+	 * @param role		the desired role
+	 * @return			success indicator
 	 */
-	public void initiateLogin() {
-		System.out.println("-----------------------------------------------------------------------------------------------");
-		System.out.println("Welcome to USask's Scholarship Center!\n Please type \"login\" to log in or \"register\" if you're a new user.");
-
-		Scanner loginPrompt = new Scanner(System.in);
-		String prompt1 = loginPrompt.nextLine();
-		
-		if (prompt1.contentEquals("register")) {
-			register();
-			
-		}
-		else if (prompt1.contentEquals("login")) {
-			login();
-		}
-		else {
-			System.out.println("Input invalid. Plese try again.");
-			initiateLogin();
-		}
-		
-	}
-	
-	/**
-	 * This is the function called if the user decides to register themselves.
-	 * Helper function: userAlreadyExists()
-	 * (Will need a variation for the GUI)
-	 */
-	public void register() {
-		System.out.println("Please register by typing your desired <username> <password> <Student, Coordinator>. To cancel, type \"Please cancel registration\".");
+	public int registerGui(String username, String password, String role) {
 		
 		// Opening up for printing (I/O)
 		PrintWriter outputStream = null;
@@ -79,72 +54,32 @@ public class Start {
             System.out.println("Error opening the file " + userInfoDatabase);
             System.exit(0);
         }
-        
-        // Registering them (for the GUI, use text boxes)
-		Scanner register = new Scanner(System.in);
-		String username = register.next();
-		String password = register.next();
-		String role = register.next();
-	
-		// if the entered role is invalid (for the GUI, this might not be needed - use tick boxes)
+     	
+		// if the entered role is invalid
 		if (!(role.contentEquals("Student")) && !(role.contentEquals("Coordinator"))) {
-			System.out.println("Registration failed. Please select a valid role (Student, Staff, Coordinator). Role is case-sensitive.");
 			outputStream.close();
+			return 1;
 		}
+		// if the user already exists
 		else if (userAlreadyExists(username)) {
-			System.out.println("This username already exists in the server. Please try again.");
-			register();
+			return 2;
 		}
-		// if everything is valid (minor variation needed for GUI)
+		// if everything is valid
 		else {
 			outputStream.print("\n" + username + " " + password + " " + role);
 			if (role.equals("Student")) {
-				allStudents.add(new Student(username,password)); // if the newly registered person is a student, create an object for them
-			}
-			System.out.println("Registration successful.");
-	        outputStream.close();	
-		}
-
-		initiateLogin();
-	}
-	public int registerGui(String username, String password, String role) {
-		//System.out.println("Please register by typing your desired <username> <password> <Student, Coordinator>. To cancel, type \"Please cancel registration\".");
+				loadStudents();
+				loadStudentFiles();
+				Student adding = new Student(username,password);
+				adding.uploadGui(username,"");
 		
-		// Opening up for printing (I/O)
-		PrintWriter outputStream = null;
-        try { outputStream = new PrintWriter(new FileOutputStream (userInfoDatabase, true)); }
-        catch(FileNotFoundException e) {
-            System.out.println("Error opening the file " + userInfoDatabase);
-            System.exit(0);
-        }
-     // Registering them (for the GUI, use text boxes)
-     		//Scanner register = new Scanner(System.in);
-     		//String username = register.next();
-     		//String password = register.next();
-     		//String role = register.next();
-     	
-     		// if the entered role is invalid (for the GUI, this might not be needed - use tick boxes)
-     		if (!(role.contentEquals("Student")) && !(role.contentEquals("Coordinator"))) {
-     			System.out.println("Registration failed. Please select a valid role (Student,Coordinator). Role is case-sensitive.");
-     			outputStream.close();
-     			return 1;
-     		}
-     		else if (userAlreadyExists(username)) {
-     			System.out.println("This username already exists in the server. Please try again.");
-     			return 2;
-     			//register();
-     		}
-     		// if everything is valid (minor variation needed for GUI)
-     		else {
-     			outputStream.print("\n" + username + " " + password + " " + role);
-     			if (role.equals("Student")) {
-     				allStudents.add(new Student(username,password)); // if the newly registered person is a student, create an object for them
-     			}
-     			System.out.println("Registration successful.");
-     	        outputStream.close();	
-     		}
-     		return 3;
-
+				allStudents.add(adding); // if the newly registered person is a student, create an object for them
+			
+				storeStudentFiles();
+			}
+			outputStream.close();	
+		}
+		return 3;
 	}
 
 	/**
@@ -174,263 +109,38 @@ public class Start {
 	}
 	
 	/**
-	 * This is the function called when the user decides to log in.
-	 * (Will need a variation for the GUI)
+	 * Used to log a user in.
+	 * @param user		their username
+	 * @param Password	their password
+	 * @param role		their role
+	 * @return			success indicator
 	 */
-	public void login() {
-		System.out.println("Please log in by typing <username> <password> <one of: Student, Coordinator>.");
+	public boolean loginGui(String user, String Password, String role) {
 		
-		// attempt to parse user input (for the GUI, use text boxes)
-		Scanner login = new Scanner(System.in);
-		String pendingUsername = login.next();
-		String pendingPassword = login.next();
-		String pendingRole = login.next();
-		
-		// in case of error in reading from file
         Scanner inputStream = null;
         try { inputStream = new Scanner(new File(userInfoDatabase)); }
-        catch(FileNotFoundException e) {
-            System.out.println("Error opening the file " + userInfoDatabase);
-            System.exit(0);
-        }
-		
-		boolean loginSuccess = false;
-        // parse file to see if user exists (will need this for the GUI)
-        while (inputStream.hasNextLine()) {
-			  try {
-		        	String readUser = inputStream.next();
-		        	String readPass = inputStream.next();
-		        	String readRole = inputStream.next();
-				  
-				  if (readUser.contentEquals(pendingUsername) && readPass.contentEquals(pendingPassword) && readRole.contentEquals(pendingRole)) { // if username, password, and role match
-					  System.out.println("Login successful.");
-					  loginSuccess = true;
-					  break;
-				  } 
-			  } 
-			  catch (NoSuchElementException e) {
-				  System.out.println("Login error."); // should print this error on the GUI!
-			  }
-        }     
-		
-		// if the login was successful (need variation for GUI)
-        if (loginSuccess) {
-			String username = pendingUsername;
-			String password = pendingPassword;
-			String role = pendingRole;
-        	
-        	if (role.contentEquals("Student")) {	// if the user is a student...
-				for (Student a : allStudents) {	// find the student from the known list of students, then use their object to do more actions
-					if (username.equals(a.getUsername()) && password.equals(a.getPassword())) {
-						studentCommands(a);
-					}
-				}
-        		
-        	}
-        	else if (role.contentEquals("Coordinator")) {	// if the user is a coordinator...
-        		Coordinator newCoordinator = new Coordinator(username,password);	// a new coordinator object is made - this is because coordinators don't retain profiles
-        		coordinatorCommands(newCoordinator);
-        	}
-        	else {
-        		System.out.println("User error.");
-        		initiateLogin();
-        	}
-        }
-        else {
-        	System.out.println("Login failed.");
-        	initiateLogin();
-        }
-        
-        inputStream.close();
-        
-		// try-catch: if parsing fails, spit out error
-	}
-public boolean loginGui(String user, String Password, String role) {
-		
-        Scanner inputStream =null;
-        try {
-            inputStream = new Scanner(new File(userInfoDatabase));
-            //File a = new File("");
-            //System.out.println(this.getClass().getResource("UserInfoDatabase.txt"));
-            //inputStream = new Scanner(a);
-    
-            //URL url = getClass().getResource(userInfoDatabase);
-            //File a = new File(url.toURI());
-            //inputStream = new Scanner(a);
-    
-            //System.out.println(file.getAbsoloutePath);
-            //File check = new File(userInfoDatabase);
-        }
         catch(FileNotFoundException e ) {
             System.out.println("Error opening the file " + userInfoDatabase);
-            //System.out.println(inputStream);
-            //System.out.println(a.getAbsoloutePath);
             System.exit(0);
         }
-    /* 		catch(URISyntaxException e) {
-            System.out.println("URI EXCEPTION");
-            System.exit(0);
-        } */
         
-        
-         while (inputStream.hasNextLine()) {
+        while (inputStream.hasNextLine()) {
               try {
                     String readUser = inputStream.next();
                     String readPass = inputStream.next();
                     String readRole = inputStream.next();
                   
                   if (readUser.contentEquals(user) && readPass.contentEquals(Password) && readRole.contentEquals(role)) {
-                      System.out.println("Login successful.");
                       return true;
                   } 
               } 
-              catch (NoSuchElementException e) {
-                  System.out.println("Login error."); 
-              }
-       }
-         return false;
-        
-        
+              catch (NoSuchElementException e) { }
+        }
+		return false;
     }
 	
 	/**
-	 * Once a student logs in, these are the actions they can do
-	 * (You won't need this method for the GUI - just use buttons or something.
-	 * 	However, note ALL the functions that are called for each actions - all are important.) 
-	 * */
-	public void studentCommands(Student inputStudent) {
-		System.out.println("***********************************************************************************************");
-		System.out.println("Here are your options: \n <View all scholarships> \n <Apply for scholarships> "
-				+ "\n <View scholarships I've applied to> \n <Upload transcripts, certificates, essays> " +
-				"\n <View my uploaded files> \n <View and accept granted scholarships> \n <Log out>");
-		System.out.println("Please type the option of your choosing EXACTLY as it is shown. It is case-sensitive.");
-		
-		Scanner newCommand = new Scanner(System.in);
-		String command = newCommand.nextLine();
-		
-		if (command.contentEquals("View all scholarships")) {
-			inputStudent.viewScholarships(allScholarships);
-			studentCommands(inputStudent);
-		}
-		
-		else if (command.contentEquals("Apply for scholarships")) { // *******************************
-			inputStudent.chooseTerm(inputStudent, getAllScholarships());
-			storeScholarshipApplicants();
-			storeStudentApplied();
-			studentCommands(inputStudent);
-		}
-		
-		else if (command.contentEquals("View scholarships I've applied to")) {
-			inputStudent.viewMyScholarships();
-			studentCommands(inputStudent);
-		}		
-		
-		else if (command.contentEquals("Upload transcripts, certificates, essays")) {       // Instead of uploading, u modify your Portfolio
-			inputStudent.upload();
-			storeStudentFiles();
-			studentCommands(inputStudent);
-		}
-		
-		else if (command.contentEquals("View my uploaded files")) {
-			inputStudent.viewUploaded();
-			studentCommands(inputStudent);
-		}
-
-		else if (command.contentEquals("View and accept granted scholarships")) {		//Check over, Error with checkGrantedGui
-			inputStudent.viewGranted(allScholarships);
-			storeStudentAccepted();
-			storeStudentTermYear();
-			studentCommands(inputStudent);
-		}
-		
-		else if (command.contentEquals("Log out")) {							
-			System.out.println("Thank you for using USask's Scholarship Center!");
-			initiateLogin();
-		}
-		
-		else {
-			System.out.println("Invalid command.");
-			studentCommands(inputStudent);
-		}
-	}
-	
-	/**
-	 * Once a coordinator logs in, these are the actions they can do
-	 * (You won't need this method for the GUI - just use buttons or something.
-	 * 	However, note ALL the functions that are called for each actions - all are important.) 
-	 * */
-	public void coordinatorCommands(Coordinator inputCoordinator) {
-		System.out.println("***********************************************************************************************");
-		System.out.println("Here are your options: \n <View all scholarships> \n <View statistics for all scholarships> \n <Add scholarships> "
-				+ "\n <Edit scholarships> \n <Remove scholarships> \n <Grant scholarships> \n <View student profiles> \n <Log out>");
-		System.out.println("Please type the option of your choosing EXACTLY as it is shown. It is case-sensitive.");
-		
-		Scanner newCommand = new Scanner(System.in);
-		String command = newCommand.nextLine();
-		
-		if (command.contentEquals("View all scholarships")) {			
-			inputCoordinator.viewScholarships(allScholarships);
-			coordinatorCommands(inputCoordinator);
-		}
-
-		else if (command.contentEquals("View statistics for all scholarships")) {		//Prints all as of now, can print one by one later if needed
-			inputCoordinator.viewStatistics(allScholarships);
-			coordinatorCommands(inputCoordinator);
-		}
-		
-		else if (command.contentEquals("Add scholarships")) {			//***************************
-			Scholarship newS = inputCoordinator.addScholarship();
-			addtoAllScholarships(newS);
-			storeScholarships();
-			coordinatorCommands(inputCoordinator);
-		}
-		
-		else if (command.contentEquals("Edit scholarships")) {			//**************************
-			// Somewhat questionable implementation - I noticed that editing a scholarship would take a 
-			// ridiculous amount of time, so instead it just allows them to remove the indicated one and
-			// create a new one. You can do this differently in the GUI if you want.
-			System.out.println("To edit a scholarship, you will remove the scholarship then add it back in with new information.");
-			inputCoordinator.removeScholarships(allScholarships);
-			Scholarship newS = inputCoordinator.addScholarship();
-			addtoAllScholarships(newS);
-			storeScholarships();
-			coordinatorCommands(inputCoordinator);
-		}		
-		
-		// errors to consider: what if several scholarships have the same name?
-		else if (command.contentEquals("Remove scholarships")) {					// Removes from Getall, but what if a student applied for it? Doesn't remove it from there
-			this.allScholarships = inputCoordinator.removeScholarships(allScholarships);
-			storeScholarships();
-			storeStudentApplied();
-			storeScholarshipApplicants();
-			coordinatorCommands(inputCoordinator);
-		}	
-		
-		else if (command.contentEquals("Grant scholarships")) {					//I think its done?
-			inputCoordinator.grantScholarship(allScholarships, allStudents);
-			storeScholarshipGrant();
-			storeStudentGranted();
-			coordinatorCommands(inputCoordinator);
-		}
-
-		else if (command.contentEquals("View student profiles")) {				
-			inputCoordinator.viewProfiles(allStudents);
-			coordinatorCommands(inputCoordinator);
-		}
-		
-		else if (command.contentEquals("Log out")) {			
-			System.out.println("Thank you for using USask's Scholarship Center!");
-			initiateLogin();
-		}
-		
-		else {
-			System.out.println("Invalid command.");
-			coordinatorCommands(inputCoordinator);
-		}
-	}
-
-	/**
-	 * These are the loading and storing functions!! They're very important and you WILL need them for the GUI
+	 * These are the loading and storing functions!!
 	 * Essentially, storing all our information in mutable lists is not enough, because once the program stops running nothing is saved
 	 * So everytime the program boots up, it loads information from a "database" using the load functions and into the mutable lists (to allow us to easily change info)
 	 * and whenever something is changed, the information in the (appropriate) mutable lists are update in their respective databases
@@ -472,17 +182,7 @@ public boolean loginGui(String user, String Password, String role) {
 				inputStream.nextLine();
 			}
         }     
-		
-/* 		// For debugging
-        for (Scholarship s : allScholarships) {
-			System.out.println(s.getName()); System.out.println(s.getRewardAmount()); System.out.println(s.getSemester()); System.out.println(s.getYear());
-			System.out.println(s.getReceive()); System.out.println(s.getGPAreq()); System.out.println(s.getWonTranscript()); System.out.println(s.getDeptSpecific());
-			System.out.println(s.getFacultySpecific()); System.out.println(s.getUniSpecific()); System.out.println(s.getDegreeSpecific()); System.out.println(s.getExtraCriteria());
-			System.out.println();
-		} */
-        
 		inputStream.close();
-		
 	}
 
 	/**
@@ -514,9 +214,7 @@ public boolean loginGui(String user, String Password, String role) {
 			outputStream.println(s.getExtraCriteria());
 			outputStream.println();
 		}     
-        
 		outputStream.close();
-		
 	}
 
 	/**
@@ -547,19 +245,12 @@ public boolean loginGui(String user, String Password, String role) {
 				}
 			}
         }    
-		
-		// For debugging
-/*         for (Scholarship s : allScholarships) {
-			for (String a : s.getApplicants()) {
-				System.out.println(s.getName() + " " + a);
-			}
-			System.out.println();
-		} */
-        
 		inputStream.close();
-		
 	}
 
+	/**
+	 * This function stores information of the applicants of each scholarship to the database
+	 */
 	public void storeScholarshipApplicants() {
 		PrintWriter outputStream = null;
         try {
@@ -577,11 +268,12 @@ public boolean loginGui(String user, String Password, String role) {
 			}
 			outputStream.println();
 		}     
-        
 		outputStream.close();
-		
 	}	
 
+	/**
+	 * This function loads information of the Student's accounts from the database
+	 */
 	public void loadStudents() {
 		Scanner inputStream = null;
         try {
@@ -603,18 +295,12 @@ public boolean loginGui(String user, String Password, String role) {
 				allStudents.add(new Student(username,password));
 			}
         }    
-		
-		// For debugging
-/*         for (Student s : allStudents) {
-			System.out.println("username: " + s.getUsername());
-			System.out.println("password: " + s.getPassword());
-			System.out.println();
-		} */
-        
 		inputStream.close();
-		
 	}
 
+	/**
+	 * This function loads information of the Student's files from the database
+	 */
 	public void loadStudentFiles() {
 		Scanner inputStream = null;
         try {
@@ -640,19 +326,12 @@ public boolean loginGui(String user, String Password, String role) {
 				}
 			}
         }    
-		
-		// For debugging
-/*         for (Student s : allStudents) {
-			for (String a : s.getStudentFiles()) {
-				System.out.println(s.getUsername() + " " + a);
-			}
-			System.out.println();
-		} */
-        
 		inputStream.close();
-		
 	}
 
+	/**
+	 * This function stores information of the Student's files to the database
+	 */
 	public void storeStudentFiles() {
 		PrintWriter outputStream = null;
         try {
@@ -670,11 +349,12 @@ public boolean loginGui(String user, String Password, String role) {
 			}
 			outputStream.println();
 		}     
-        
 		outputStream.close();
-		
 	}
 
+	/**
+	 * This function loads information of the scholarships the students have applied to from the database
+	 */
 	public void loadStudentApplied() {
 		Scanner inputStream = null;
         try {
@@ -700,19 +380,12 @@ public boolean loginGui(String user, String Password, String role) {
 				}
 			}
         }    
-		
-		// For debugging
-/*         for (Student s : allStudents) {
-			for (String a : s.getStudentApplied()) {
-				System.out.println(s.getUsername() + " " + a);
-			}
-			System.out.println();
-		} */
-        
 		inputStream.close();
-		
 	}
 
+	/**
+	 * This function stores information of the scholarships the students have applied to to the database
+	 */
 	public void storeStudentApplied() {
 		PrintWriter outputStream = null;
         try {
@@ -730,11 +403,12 @@ public boolean loginGui(String user, String Password, String role) {
 			}
 			outputStream.println();
 		}     
-        
 		outputStream.close();
-		
 	}
 
+	/**
+	 * This loads the information of students the scholarships have been granted to from the database
+	 */
 	public void loadScholarshipGrant() {
 		Scanner inputStream = null;
         try {
@@ -760,19 +434,12 @@ public boolean loginGui(String user, String Password, String role) {
 				}
 			}
         }    
-		
-		// For debugging
-/*         for (Scholarship s : allScholarships) {
-			for (String a : s.getGranted()) {
-				System.out.println(s.getName() + " " + a);
-			}
-			System.out.println();
-		} */
-        
 		inputStream.close();
-		
 	}
 
+		/**
+	 * This stores the information of students the scholarships have been granted to to the database
+	 */
 	public void storeScholarshipGrant() {
 		PrintWriter outputStream = null;
         try {
@@ -790,11 +457,10 @@ public boolean loginGui(String user, String Password, String role) {
 			}
 			outputStream.println();
 		}     
-        
 		outputStream.close();
-		
 	}
 
+	
 	public void loadStudentGranted() {
 		Scanner inputStream = null;
         try {
@@ -820,14 +486,6 @@ public boolean loginGui(String user, String Password, String role) {
 				}
 			}
         }    
-		
-		// For debugging
-/*         for (Student s : allStudents) {
-			for (String a : s.getStudentApplied()) {
-				System.out.println(s.getUsername() + " " + a);
-			}
-			System.out.println();
-		} */
         
 		inputStream.close();
 		
@@ -880,14 +538,6 @@ public boolean loginGui(String user, String Password, String role) {
 				}
 			}
         }    
-		
-		// For debugging
-/*         for (Student s : allStudents) {
-			for (String a : s.getStudentApplied()) {
-				System.out.println(s.getUsername() + " " + a);
-			}
-			System.out.println();
-		} */
         
 		inputStream.close();
 		
@@ -940,14 +590,6 @@ public boolean loginGui(String user, String Password, String role) {
 				}
 			}
         }    
-		
-		// For debugging
-/*         for (Student s : allStudents) {
-			for (String a : s.getStudentApplied()) {
-				System.out.println(s.getUsername() + " " + a);
-			}
-			System.out.println();
-		} */
         
 		inputStream.close();
 		
@@ -1005,20 +647,4 @@ public boolean loginGui(String user, String Password, String role) {
 		return false;
 	}
 	
-	
-	public static void main(String[] args) {
-		Start s = new Start();
-		s.loadScholarships();
-		s.loadScholarshipApplicants();
-		s.loadStudents();
-		s.loadStudentFiles();
-		s.loadStudentApplied();
-		s.loadScholarshipGrant();
-		s.loadStudentGranted();
-		s.loadStudentAccepted();
-		s.loadStudentTermYear();
-		s.initiateLogin();
-
-	}
-
 }
