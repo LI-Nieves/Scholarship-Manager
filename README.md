@@ -2,100 +2,18 @@
 
 Disclaimer: This is a term project for the class SENG300 W2020. This has no affiliation with the University of Saskatchewan whatsoever.
 
-## Compiling and running the terminal-based version
+## Compiling and running the application through the terminal
 Step 0. Open the terminal
 
 Step 1. Change your directory to `\<projectFolder>\src`
 
 Step 2. Type the command: `javac -d . *.java`
 
-Step 3. Type the command: `java logic.Start`
+Step 3. Type the command: `java frontend.Main`
 
-First of all, the terminal will prompt you to either register or login. Register with new login information by typing `register`. Then use that information to login by typing `login` then entering that information in the form of `<user> <password> <role>`. There are also more user/password combinations in `UserDatabaseInfo.txt`. 
+The login screen is the first to pop-up, and you can enter the application by registering yourself (as either one of the two roles: Student or Coordinator) and logging in. You will see that the functionalities for the Student and the functionalities for the Coordinator are different. 
 
-After logging in, the program will provide you with several options. Type them in verbatim in order to execute the commands.
+A very important part of our project is the use of "databases" (in reality, they are text files) that are written to and read from in order to maintain the information entered in the application by the users. To see these databases, redirect `\src\databases` and you will see the information being stored in the files at that directory. 
 
-### User stories implemented in the terminal-based version:
-
-Students: log in, log out, view all scholarships available.
-
-Scholarship coordinators: log in, log out, add scholarships, remove scholarships, view all scholarships available.
-
-## Compiling and running the GUI-based version
-
-#### Option 1: Running in Eclipse
-I ran this file on Eclipse, I would prefer running this file in Eclipse.
-
-In order to compile the files, please put the following files into the same folder:
-
-
-- AfterLogin.java
-
-- Guii.java
-
-- Register.java
-
-- Coordinator.java
-
-- Scholarship.java
-
-- StartGui.java
-
-- Student.java
-
-- studentClass.java
-
-- User.java
-
-
-As well as:
-
-- rsz_2019_05_03-cap_and_gown_commercial_shoot_jatorner_-0255-web.jpg
-
-- rsz_usask.png
-
-- sask.jpg
-
-- usask.png
-
-- UserInfoDatabase.txt
-
-
-#### Option 2: Cloning/forking from GitHub and running in the terminal
-If you clone/download straight from GitHub, which is higly preferred, it makes the above running the program really easy.
-
-In order to run in terminal do the following:
-
-Step 0. Open the terminal
-
-Step 1. Change your directory to `\<projectFolder>\src`
-
-Step 2. Type the command: `javac -d . *.java`
-
-Step 3. Type the command: `java logic.Guii`
-
-In front of you, the GUI will appear.
-
-Running from the terminal, the GUI will look really bad, but running it in Eclipse will make it look much better.
-
-Right now, the *Login* button and *Register* button work.
-
-By pressing the *Register* button, it will prompt for your name and other details.
-
-As of right now, that's all that has been implemented for the register part.
-
-By pressing the *Login* button, the program will try to log you in, but correct login information is needed. For now you can look inside the `UserInfoDatabase.txt` and choose one of the username/password combinations. It's in the form *<username> <password> <role>*; you will also have to check the correct role, depending on the account belongs to a student or a coordinator.
-
-Once you login, you will be taken to a new Panel, which has not been fully implemented yet.
-
-As of now we are trying to implement the backend and have the code working.
-
-We are getting closer and closer to finishing this, once we are done we will fully implement these functions into the GUI. As of now, we have started a little bit of the GUI, and have been focusing more on implementing the classes and funcitonality. 
-
-### User stories implemented in the GUI-based version:
-
-Students: log in, log out. 
-
-Scholarship coordinators: log in, log out.
-
+Note that there are two packages: `frontend` and `backend`. They are aptly-named.
 
