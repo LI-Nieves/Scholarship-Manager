@@ -14,6 +14,8 @@ Step 3. Type the command: `java frontend.Main`
 The login screen is the first to pop-up, and you can enter the application by registering yourself (as either one of the two roles: Student or Coordinator) and logging in. You will see that the functionalities for the Student and the functionalities for the Coordinator are different. 
 
 A very important part of our project is the use of "databases" (in reality, they are text files) that are written to and read from in order to maintain the information entered in the application by the users. To see these databases, redirect `\src\databases` and you will see the information being stored in the files at that directory. 
+Currently, all databases are empty except for `scholarships.txt`, which handles all the scholarships and their attributes. You can still write to and read from this file; it is not empty merely to provide several examples for you to work with.
 
 Note that there are two packages: `frontend` and `backend`. They are aptly-named.
+
 
