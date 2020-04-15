@@ -163,7 +163,5 @@ public class Register extends JFrame {
 		
 		errorLabel.setBounds(272, 121, 480, 16);
 		contentPane.add(errorLabel);
-		
-		
 	}
 }

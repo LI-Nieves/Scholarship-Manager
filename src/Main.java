@@ -218,8 +218,6 @@ public class Main extends JFrame {
 		});
 		btnNewButton.setBounds(517, 458, 98, 49);
 		contentPane.add(btnNewButton);
-		
-		
 	}
 }
 

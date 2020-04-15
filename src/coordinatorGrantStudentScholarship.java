@@ -2,7 +2,7 @@ package frontend;
 import backend.*;
 
 /*
- * This function is used for accepting a student's transcript in the GUI window for the Coordinator role
+ * This class is used for accepting a student's transcript in the GUI window for the Coordinator role
  * after pressing the Grant Scholarships label
  */
 
@@ -104,7 +104,6 @@ public class CoordinatorGrantStudentScholarship extends JFrame {
 				c.storeStudentGranted();
 				lblVerdict.setText(verdict);
 				lblVerdict.setVisible(true);
-				System.out.println(verdict);
 			}
 		});
 		btnYes.setBounds(59, 185, 97, 25);

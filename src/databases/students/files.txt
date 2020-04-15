@@ -1,17 +1,1 @@
-l
-2.txt
-
-f
-3.txt
-
-user
-
-nom
-
-hi
-
-k
-
-comp
-CompSciTranscript.txt
 

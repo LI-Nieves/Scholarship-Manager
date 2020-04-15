@@ -75,16 +75,3 @@ Across all faculties
 Across all universities
 Across all degrees (BA, BSc, MS, MBA, PhD, etc.)
 None
-
-B Scholarship
-1
-Fall and Winter
-2020
-100000000
-1.0
-true
-Across all departments
-Across all faculties
-Across all universities
-Across all degrees (BA, BSc, MS, MBA, PhD, etc.)
-None

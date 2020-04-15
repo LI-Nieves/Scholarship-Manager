@@ -384,7 +384,7 @@ public class Start {
 	}
 
 	/**
-	 * This function stores information of the scholarships the students have applied to to the database
+	 * This function stores information of the scholarships the students have applied to into the database
 	 */
 	public void storeStudentApplied() {
 		PrintWriter outputStream = null;
@@ -407,7 +407,7 @@ public class Start {
 	}
 
 	/**
-	 * This loads the information of students the scholarships have been granted to from the database
+	 * This loads the information of students each scholarships have been granted to from the database
 	 */
 	public void loadScholarshipGrant() {
 		Scanner inputStream = null;
@@ -437,8 +437,8 @@ public class Start {
 		inputStream.close();
 	}
 
-		/**
-	 * This stores the information of students the scholarships have been granted to to the database
+	/**
+	 * This stores the information of students each scholarships have been granted to into the database
 	 */
 	public void storeScholarshipGrant() {
 		PrintWriter outputStream = null;
@@ -460,7 +460,9 @@ public class Start {
 		outputStream.close();
 	}
 
-	
+	/**
+	 * This loads the information of the scholarships each student has been granted from the database 
+	 */
 	public void loadStudentGranted() {
 		Scanner inputStream = null;
         try {
@@ -491,6 +493,9 @@ public class Start {
 		
 	}
 
+	/**
+	 * This stores the information of the scholarships each student has been granted into the database 
+	 */
 	public void storeStudentGranted() {
 		PrintWriter outputStream = null;
         try {
@@ -513,6 +518,9 @@ public class Start {
 		
 	}
 
+	/**
+	 * This loads the information of the scholarships each student has accepted from the database 
+	 */
 	public void loadStudentAccepted() {
 		Scanner inputStream = null;
         try {
@@ -543,6 +551,9 @@ public class Start {
 		
 	}
 
+	/**
+	 * This stores the information of the scholarships each student has accepted into the database 
+	 */
 	public void storeStudentAccepted() {
 		PrintWriter outputStream = null;
         try {
@@ -565,6 +576,9 @@ public class Start {
 		
 	}
 
+	/**
+	 * This loads the information of the terms + years of scholarships each student has already accepted from the database 
+	 */
 	public void loadStudentTermYear() {
 		Scanner inputStream = null;
         try {
@@ -595,6 +609,9 @@ public class Start {
 		
 	}
 
+	/**
+	 * This stores the information of the terms + years of scholarships each student has already accepted into the database 
+	 */
 	public void storeStudentTermYear() {
 		PrintWriter outputStream = null;
         try {
@@ -617,7 +634,11 @@ public class Start {
 		
 	}
 
-	// Similar function in Student
+	/**
+	 * Returns a Scholarship object with the same name as the indicated name in the argument
+	 * @param name	indicated name
+	 * @return		Scholarship object with that name
+	 */
 	public Scholarship findScholarship(String name) {
 		Scholarship toReturn = new Scholarship();
 		for (Scholarship s : allScholarships) {
@@ -628,6 +649,11 @@ public class Start {
 		return toReturn;
 	}
 	
+	/**
+	 * Returns a Student object with the same name as the indicated name in the argument
+	 * @param name	indicated name
+	 * @return		Student object with that name
+	 */
 	public Student findStudent(String name) {
 		Student toReturn = new Student();
 		for (Student s : allStudents) {
@@ -637,6 +663,12 @@ public class Start {
 		}
 		return toReturn;
 	}
+
+	/**
+	 * Checks to see if a Student with the indicated name exists in the database
+	 * @param name	indicated name
+	 * @return		true if there is a Student with the indicated name, false otherwise
+	 */
 	public boolean checkStudentGui(String name) {
 		Student toReturn = new Student();
 		for (Student s : allStudents) {

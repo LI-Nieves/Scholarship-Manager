@@ -2,7 +2,7 @@ package frontend;
 import backend.*;
 
 /*
- * This function is used for the GUI portion of Edit Scholarship for the Coordinator role
+ * This class is used for the GUI portion of Edit Scholarship for the Coordinator role
  * */
 
 //Imports the following libraries
@@ -603,9 +603,5 @@ public class CoordinatorEditScholarship extends JFrame {
 		});
 		btnExtra.setBounds(488, 814, 84, 25);
 		contentPane.add(btnExtra);
-		
-		
-		
-		
 	}
 }

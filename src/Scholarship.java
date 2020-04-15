@@ -1,11 +1,9 @@
-// DONE
-
 package backend;
 
 import java.util.*;
 
 /**
- * This class is for all the attributes of a scholarship.
+ * This class is for all the attributes of a scholarship and the functions that apply to scholarships.
  */
 
 public class Scholarship {

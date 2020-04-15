@@ -108,8 +108,6 @@ public class StudentAcceptGrantedScholarship extends JFrame {
 				String verdict = a.checkGrantedGui(getScholarName, b.getAllScholarships());
 				b.storeStudentAccepted();
 				b.storeStudentTermYear();
-				System.out.println(a.getStudentAccepted().size());
-				System.out.println(verdict);
 				lblVerdictFinal.setText(verdict);
 				lblVerdictFinal.setFont(new Font("Times New Roman", Font.BOLD, 14));
 				lblVerdictFinal.setForeground(Color.LIGHT_GRAY);
@@ -132,8 +130,5 @@ public class StudentAcceptGrantedScholarship extends JFrame {
 		});
 		btnNo.setBounds(288, 173, 97, 25);
 		contentPane.add(btnNo);
-		
-		
-		
 	}
 }

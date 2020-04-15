@@ -18,10 +18,10 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 /**
- * 
+ * This class is the first window and part to apply for a scholarship it asked for the term and year then searches for scholarships 
  * @author navjeethundal
- *This class is the first window and part to apply for a scholarship it asked for the term and year then searches for scholarships 
  */
+
 public class StudentApplyForScholarship extends JFrame {
 
 	private JPanel contentPane;
@@ -118,11 +118,5 @@ public class StudentApplyForScholarship extends JFrame {
 		});
 		btnNewButton.setBounds(135, 169, 184, 29);
 		contentPane.add(btnNewButton);
-		
-		
-		
-		
-		
-		
 	}
 }

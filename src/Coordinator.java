@@ -13,7 +13,7 @@ public class Coordinator extends User {
 	public Coordinator(String inputUsername, String inputPassword) {
 		super(inputUsername,inputPassword);
 	}
-	public Coordinator(String inputUsername) {	// I ADDED THIS -KAM
+	public Coordinator(String inputUsername) {
 		super(inputUsername);
 	}
 	
@@ -24,8 +24,8 @@ public class Coordinator extends User {
 	public String viewAllStatisticsGui(ArrayList<Scholarship> inputS) {
 		String returnThis = "";
 		for (Scholarship s : inputS) {
-			returnThis = returnThis+s.getName()+":\nThis scholarship will be granted to " + s.getReceive() + " applicants.\n" + 
-				s.getApplicants().size() + " students have applied to this scholarship:\n\n";
+			returnThis = returnThis+s.getName()+":\nThis scholarship will be granted to " + s.getReceive() + " applicant(s).\n" + 
+				s.getApplicants().size() + " student(s) have applied to this scholarship:\n\n";
 			for (String a : s.getApplicants()) {
 				returnThis = returnThis+" * "+a+"\n";
 			}
@@ -72,8 +72,7 @@ public class Coordinator extends User {
 		if (selectedS.getName() != null) {		
 			// if no students have applied to this scholarship
 			if (selectedS.getApplicants().size() == 0) {			
-				System.out.println("There are no applicants to this scholarship yet.");
-				return "There are no applicants to this scholarship";
+				return "There are no applicants to this scholarship.";
 			} 
 			// otherwise, show the applicants
 			else {
@@ -104,7 +103,7 @@ public class Coordinator extends User {
 			else {
 				foundStu.addStudentGranted(schol.getName());
 				schol.addGranted(foundStu.getUsername());
-				returnThis = returnThis + "Student: " + foundStu.getUsername()+ " Has been granted " + schol.getName();
+				returnThis = returnThis + "The student " + foundStu.getUsername()+ " has been granted " + schol.getName();
 			}
 		}
 		// if the scholarship has been granted to the max amount of students yet

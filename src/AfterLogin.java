@@ -6,6 +6,7 @@
  * view scholarships, as well as edit scholarships, and accepting scholarships.
  * It is the HomePage for the Student
  */
+
 package frontend;
 import backend.*;
 
@@ -281,7 +282,6 @@ public class AfterLogin extends JFrame{
 						students1 = loading.findStudent(a);
 						students1.uploadGui(a, textPane.getText());
 						loading.storeStudentFiles();
-						//System.out.println(textPane.getText());
 					}
 				});
 				textPane.insertComponent(btnSave);
@@ -358,12 +358,9 @@ public class AfterLogin extends JFrame{
 					try {
 						doc.insertString(doc.getLength(), "\n", null);
 					} catch (BadLocationException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					//System.out.println(scholar);
 					textPane.insertComponent(l);
-
 				}
 				scrollPane.setVisible(true);
 				
@@ -410,20 +407,8 @@ public class AfterLogin extends JFrame{
 		lblApplyForScholarships.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		lblApplyForScholarships.setBounds(12, 91, 155, 16);
 		panel_2.add(lblApplyForScholarships);
-		
-		
-		
-		
-		
-		
-		
-		
 	}
-	
-	
 }
-
-
 
 /** REFERENCES
  * 

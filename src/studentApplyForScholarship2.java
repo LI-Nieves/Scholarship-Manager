@@ -16,11 +16,12 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+
 /**
- * 
+ * This class in the second window where you choose which scholarship you wish to apply, pretty much lets you apply 
  * @author navjeethundal
- *This class in the second window where you choose which scholarship you wish to apply, pretty much lets you apply 
  */
+
 public class StudentApplyForScholarship2 extends JFrame {
 
 	private JPanel contentPane;
@@ -104,10 +105,5 @@ public class StudentApplyForScholarship2 extends JFrame {
 		});
 		btnNewButton.setBounds(154, 109, 117, 29);
 		contentPane.add(btnNewButton);
-		
-		
-		
-		
-		
 	}
 }

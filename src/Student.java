@@ -1,5 +1,3 @@
-// DONE
-
 package backend;
 
 import java.io.File;
@@ -271,7 +269,7 @@ public class Student extends User {
 	 * Method used to view the scholarships they applied for
 	 */
 	public String viewMyScholarshipsGui() {
-		String finals = "You have applied to the following Scholarships: \n\n";
+		String finals = "You have applied to the following scholarships: \n\n";
 		for (String s : scholarshipsAppliedTo) {
 			String temp =" * " + s + "\n\n";
 			finals = finals.concat(temp);

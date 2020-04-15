@@ -28,9 +28,9 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 /**
- * This class is the log out class used to exit the prgram once user logs out
- * 
+ * This class is the log out class used to exit the program once user logs out
  */
 public class LogOut extends JFrame {
 

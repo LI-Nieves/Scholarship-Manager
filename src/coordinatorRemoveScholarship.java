@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 /**
  * This class is used to create the GUI for the coordinator to remove scholarships from the database
- * 
  */
 public class CoordinatorRemoveScholarship extends JFrame {
 
@@ -101,12 +100,10 @@ public class CoordinatorRemoveScholarship extends JFrame {
 				if (scholSelected.getName() != null) {
 					// if the scholarship has already been granted to students, it shouldn't be removed - that's messed up
 					if (scholSelected.getGranted().size() > 0) {
-						System.out.println("This scholarship has already been granted. You cannot remove/edit it.");
 						lblNewLabel.setText("This scholarship has already been granted. You cannot remove/edit it.");
 					}
 					// if students have already applied to the scholarship...
 					else if (scholSelected.getApplicants().size() > 0) {
-						System.out.println("Students have already applied to this scholarship. You cannot remove/edit it.");
 						lblNewLabel.setText("Students have already applied to this scholarship. You cannot remove/edit it.");
 					}
 					// otherwise...
@@ -123,14 +120,11 @@ public class CoordinatorRemoveScholarship extends JFrame {
 						}
 						//update the database
 						updated.remove(indexOfSchol);
-						System.out.println(getScholarName + " has been removed.");
 						lblNewLabel.setText(getScholarName + " has been removed.");
 					}
 				}
 				else {
-					System.out.println("There is no scholarship with that name.");
 				}
-			    System.out.println(scholar);
 			    b.setAllScholarships(updated);
 				b.storeScholarships();
 				
@@ -149,8 +143,5 @@ public class CoordinatorRemoveScholarship extends JFrame {
 		});
 		btnNo.setBounds(287, 178, 97, 25);
 		contentPane.add(btnNo);
-		
-		
 	}
-
 }
