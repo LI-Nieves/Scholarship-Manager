@@ -1,0 +1,1 @@
+This file serves to keep uploadedFiles as an existing directory. It has no other purpose. 
