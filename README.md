@@ -1,6 +1,6 @@
 # Scholarship Distributor for USask
 
-Disclaimer: This is a term project for a university Computer Science class. This has no affiliation with the University of Saskatchewan whatsoever.
+Disclaimer: This is a term project for a university Software Engineering class. This has no affiliation with the University of Saskatchewan whatsoever.
 
 ## Compiling and running the application through the terminal
 Step 0. Open the terminal
